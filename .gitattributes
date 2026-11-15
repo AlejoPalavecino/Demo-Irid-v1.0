@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ttf binary
+*.zip binary
+*.xlsx binary
+*.pdf binary
+index.html linguist-generated=true
+assets/fonts/OFL.txt -whitespace
