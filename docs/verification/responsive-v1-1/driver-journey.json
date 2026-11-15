@@ -1,0 +1,10 @@
+{
+  "tripStatus": "Realizado",
+  "passengers": [
+    "No viajó",
+    "No viajó",
+    "No viajó"
+  ],
+  "width": 320,
+  "finalizationBlockedUntilAllMarked": true
+}

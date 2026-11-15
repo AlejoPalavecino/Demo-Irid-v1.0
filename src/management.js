@@ -57,7 +57,7 @@ function kv(ctx, pairs) {
 }
 
 function table(ctx, caption, headers, rows) {
-  return `<div class="table-wrap" tabindex="0" role="region" aria-label="${ctx.h(caption)}"><table class="table"><thead><tr>${headers.map(label => `<th scope="col">${ctx.h(label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(value => `<td>${value}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-wrap records-table" role="region" aria-label="${ctx.h(caption)}"><table class="table" role="table"><thead role="rowgroup"><tr role="row">${headers.map(label => `<th scope="col" role="columnheader">${ctx.h(label)}</th>`).join('')}</tr></thead><tbody role="rowgroup">${rows.map(row => `<tr role="row">${row.map((value, index) => `<td role="cell" data-label="${ctx.h(headers[index])}"><div class="cell-value">${value}</div></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
 const historyFields = {

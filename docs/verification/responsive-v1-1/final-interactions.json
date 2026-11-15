@@ -1,0 +1,49 @@
+{
+  "discardFocus": {
+    "name": "name",
+    "value": "Prueba de foco"
+  },
+  "login": [
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "scrollUnlocked": true,
+      "profiles": 4
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "scrollUnlocked": true,
+      "profiles": 4
+    },
+    {
+      "width": 768,
+      "scrollWidth": 753,
+      "scrollUnlocked": true,
+      "profiles": 4
+    },
+    {
+      "width": 1024,
+      "scrollWidth": 1024,
+      "scrollUnlocked": true,
+      "profiles": 4
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "scrollUnlocked": true,
+      "profiles": 4
+    },
+    {
+      "width": 1920,
+      "scrollWidth": 1920,
+      "scrollUnlocked": true,
+      "profiles": 4
+    }
+  ],
+  "downloads": [
+    "liquidacion-octubre.xlsx",
+    "liquidacion-octubre.pdf"
+  ],
+  "keyboardTableScroll": 31.200000762939453
+}

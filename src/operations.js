@@ -111,7 +111,7 @@ function calendar(ctx, days, trips) {
       return `<td>${act(ctx, day.slice(-2), 'day', '', day === today ? 'primary' : 'ghost', `data-date="${ctx.h(day)}" aria-label="${ctx.h(label)}"${day === today ? ' aria-current="date"' : ''}`)}${count ? `<small class="hint">${count} ${count === 1 ? 'viaje' : 'viajes'}</small>` : ''}</td>`;
     }).join('')}</tr>`);
   }
-  return `<div class="table-wrap"><table class="table" aria-label="Calendario del mes"><thead><tr>${['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(day => `<th scope="col">${day}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+  return `<div class="table-wrap calendar-wrap"><table class="table" aria-label="Calendario del mes"><thead><tr>${['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(day => `<th scope="col">${day}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
 }
 function agenda(ctx, input) {
   const plan = ctx.can('plan');

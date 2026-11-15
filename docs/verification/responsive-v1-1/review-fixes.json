@@ -1,0 +1,34 @@
+{
+  "logout": {
+    "screen": "login",
+    "overflow": "",
+    "scroll": 320,
+    "width": 320
+  },
+  "retained": {
+    "value": "cuenta-de-prueba",
+    "expanded": true
+  },
+  "opened": {
+    "shift": {
+      "id": "s-1001",
+      "driverId": "d-diego",
+      "vehicleId": "v-1",
+      "openedAt": "2026-11-16T06:16:41-03:00",
+      "closedAt": null,
+      "startKm": 50000,
+      "endKm": null,
+      "closedBy": null,
+      "closeReason": "",
+      "history": [
+        {
+          "id": "h-1002",
+          "at": "2026-11-16T06:16:42-03:00",
+          "actorId": "u-driver",
+          "text": "Se abrió el turno"
+        }
+      ]
+    },
+    "focus": "main-content"
+  }
+}

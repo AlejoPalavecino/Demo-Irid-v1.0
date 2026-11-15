@@ -6,6 +6,8 @@ Esta demo permite revisar con el cliente los flujos acordados antes de implement
 
 Abrí `IRID-maqueta-interactiva.html` con Chrome, Edge o un navegador actual. No requiere instalación ni conexión: el logo, la tipografía y los módulos están dentro del archivo. Para compartirla, enviá el HTML o el ZIP de entrega; no publiques datos reales en la demo.
 
+En el repositorio, el mismo archivo se llama `index.html`. El paquete actualizado es `releases/IRID-demo-v1.1.zip`. En tablet y celular, el botón de menú abre las secciones del perfil; en listados administrativos cada registro se presenta como una ficha. En liquidaciones y reportes, deslizá la tabla cuando aparezca el aviso de columnas adicionales.
+
 Para probar el adjunto de una boleta, usá `IRID-comprobante-ficticio.png`, incluido en esta entrega.
 
 Los accesos rápidos permiten ingresar como Alejandro, Walter, Secretaria o Chofer. Los cambios se guardan en el navegador usado y se comparten entre esos perfiles de prueba. «Cambiar de perfil» conserva los cambios. «Reiniciar datos» los reemplaza por los ejemplos iniciales, con confirmación.

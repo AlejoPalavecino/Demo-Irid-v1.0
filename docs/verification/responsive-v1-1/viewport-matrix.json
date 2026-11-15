@@ -1,0 +1,1145 @@
+{
+  "results": [
+    {
+      "width": 320,
+      "screen": "resumen",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "agenda",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "revisiones",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "turnos",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "kilometraje",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "pacientes",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "choferes",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "vehiculos",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "recorridos",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "combustible",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "gastos",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "tarifas",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        },
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "liquidaciones",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "reportes",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 320,
+      "screen": "usuarios",
+      "scrollWidth": 320,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "resumen",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "agenda",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "revisiones",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "turnos",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "kilometraje",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "pacientes",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "choferes",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "vehiculos",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "recorridos",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "combustible",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "gastos",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "tarifas",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        },
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "liquidaciones",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "reportes",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 390,
+      "screen": "usuarios",
+      "scrollWidth": 390,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "resumen",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "agenda",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "revisiones",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "turnos",
+      "scrollWidth": 768,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "kilometraje",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "pacientes",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "choferes",
+      "scrollWidth": 768,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "vehiculos",
+      "scrollWidth": 768,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "recorridos",
+      "scrollWidth": 768,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "combustible",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "gastos",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "tarifas",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "liquidaciones",
+      "scrollWidth": 768,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "reportes",
+      "scrollWidth": 753,
+      "error": null,
+      "tables": [
+        {
+          "overflow": true,
+          "keyboard": true,
+          "cue": true
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 768,
+      "screen": "usuarios",
+      "scrollWidth": 768,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "resumen",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "agenda",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "revisiones",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "turnos",
+      "scrollWidth": 1024,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "kilometraje",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "pacientes",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "choferes",
+      "scrollWidth": 1024,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "vehiculos",
+      "scrollWidth": 1024,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "recorridos",
+      "scrollWidth": 1024,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "combustible",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "gastos",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "tarifas",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "liquidaciones",
+      "scrollWidth": 1024,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "reportes",
+      "scrollWidth": 1009,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1024,
+      "screen": "usuarios",
+      "scrollWidth": 1024,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "resumen",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "agenda",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "revisiones",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "turnos",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "kilometraje",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "pacientes",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "choferes",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "vehiculos",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "recorridos",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "combustible",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "gastos",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "tarifas",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "liquidaciones",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "reportes",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1440,
+      "screen": "usuarios",
+      "scrollWidth": 1425,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "resumen",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "agenda",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "revisiones",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "turnos",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "kilometraje",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "pacientes",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "choferes",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "vehiculos",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "recorridos",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "combustible",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "gastos",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "tarifas",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        },
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "liquidaciones",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "reportes",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    },
+    {
+      "width": 1920,
+      "screen": "usuarios",
+      "scrollWidth": 1905,
+      "error": null,
+      "tables": [
+        {
+          "overflow": false,
+          "keyboard": false,
+          "cue": false
+        }
+      ],
+      "drawerHidden": true
+    }
+  ],
+  "errors": []
+}

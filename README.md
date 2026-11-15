@@ -10,6 +10,16 @@ Los cambios se guardan en el navegador usado. «Cambiar de perfil» los conserva
 
 Consultá la [guía de presentación](docs/guia-demo.md). Podés usar el [comprobante ficticio](tests/fixtures/comprobante-ficticio.png) para probar los adjuntos.
 
+## Versión 1.1 · Diseño adaptable
+
+La identidad conserva el bordó, los fondos claros, Montserrat y el logo original. Esta iteración mejora la jerarquía, los espacios, la lectura de horarios y los estados; usa un menú lateral en escritorio y desplegable en tablet y celular.
+
+Los listados administrativos se convierten en fichas en pantallas pequeñas. Las tablas financieras tienen desplazamiento propio y aviso visible. Los formularios se apilan en móvil; con poca altura se puede desplazar todo el diálogo. El menú y los cambios de tamaño conservan los campos ingresados.
+
+[Descargar paquete portable v1.1](releases/IRID-demo-v1.1.zip) · [Verificación y límites](docs/verification/responsive-v1-1/verification.md)
+
+![Resumen general en escritorio](docs/verification/responsive-v1-1/dashboard-1440.png)
+
 ## Desarrollo
 
 Node.js 22 o posterior, sin paquetes externos ni instalación de dependencias:

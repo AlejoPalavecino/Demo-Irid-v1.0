@@ -1,0 +1,18 @@
+{
+  "today": {
+    "text": "16",
+    "color": "rgb(255, 255, 255)",
+    "background": "rgb(123, 31, 54)"
+  },
+  "error": {
+    "message": "Elegí al menos un recorrido.",
+    "scrollable": true,
+    "overflow": "auto",
+    "height": 220
+  },
+  "preview": {
+    "title": "Vista previa de generación",
+    "scroll": 390,
+    "width": 390
+  }
+}

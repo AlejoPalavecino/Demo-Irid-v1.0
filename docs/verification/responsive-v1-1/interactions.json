@@ -1,0 +1,18 @@
+{
+  "drawer": {
+    "focusOnOpen": "Cerrar menú",
+    "backgroundInert": true,
+    "tabTrapped": true,
+    "focusOnClose": "Abrir menú",
+    "closedInert": true
+  },
+  "modal": {
+    "width": 320,
+    "scroll": 320,
+    "footerBottom": 467.0500030517578,
+    "height": 480,
+    "bodyScrollable": false,
+    "backgroundInert": true
+  },
+  "retained": "Paciente de prueba con nombre compuesto y apellido extenso"
+}
