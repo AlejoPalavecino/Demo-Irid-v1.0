@@ -33,9 +33,9 @@ Autorización de Alejo el 15/11/2026: crear la carpeta del proyecto en Documento
 - **Blocker:** none
 
 ### TASK-004 — Versión mejorada publicada
-- **State:** IN_PROGRESS
+- **State:** DONE
 - **Depends on:** TASK-003
 - **Owner:** root
 - **Acceptance:** Build, documentación y paquete actualizados, commit publicado en el remoto y HEAD local/remoto coincidentes.
-- **Evidence:** none
+- **Evidence:** Versión 1.1 publicada en main con 03b6d37ed7fb34a99530d29fcd3cf288b60ebae0; git ls-remote coincide con HEAD y git status limpio. releases/IRID-demo-v1.1.zip comprobado contra index.html (SHA-256 716405a334a15420fa2b82358efff3e2e69f9f21df635cf97fafda99290ca5c8). Original 250191d preservado. taskboard.py check: cuatro tareas válidas. Este cierre documental se publica después de verificar la entrega.
 - **Blocker:** none
