@@ -4,6 +4,8 @@ Prototipo para validar con IRID los flujos de traslados, flota y administración
 
 ## Abrir la demo
 
+**[Abrir IRID en GitHub Pages](https://alejopalavecino.github.io/Demo-Irid-v1.0/)**. Podés compartir este enlace para probar los cuatro perfiles desde el celular o la computadora, sin instalar nada. Los datos de prueba se conservan por navegador; no se comparten entre dispositivos.
+
 Abrí [`index.html`](index.html) en un navegador actual. No requiere instalación ni conexión. El logo y Montserrat están incrustados. Para compartirla, descargá el paquete de [`releases/`](releases/).
 
 Los cambios se guardan en el navegador usado. «Cambiar de perfil» los conserva y «Reiniciar datos» restaura los ejemplos. El día simulado es el 16/11/2026. Las cuentas iniciales `alejandro`, `walter`, `secretaria` y `diego` usan `demo123`; son credenciales ficticias y no representan seguridad productiva.
@@ -31,6 +33,8 @@ npm run build
 
 Editá `src/`. El build genera `index.html` y una copia en `dist/IRID-maqueta-interactiva.html`; ambos son autónomos. `index.html` se versiona para que se pueda abrir después de clonar o descargar el repositorio.
 
+GitHub Pages publica la raíz de `main`. El archivo `.nojekyll` permite servir el HTML estático sin procesarlo con Jekyll. Para actualizar la versión web, ejecutá el build y publicá el `index.html` resultante en `main`.
+
 ## Contenido
 
 | Ruta | Contenido |
@@ -46,7 +50,7 @@ Editá `src/`. El build genera `index.html` y una copia en `dist/IRID-maqueta-in
 
 ## Límites y pendientes
 
-Es una demo local: no tiene backend, autenticación segura, almacenamiento privado, respaldos ni despliegue. No ingreses información sensible ni claves reales. La validación con el cliente está pendiente.
+Es una demo estática disponible en GitHub Pages y como archivo local: no tiene backend, autenticación segura, almacenamiento privado ni respaldos. No ingreses información sensible ni claves reales. La validación con el cliente está pendiente.
 
 - Q-001: importe y aplicación del mínimo mensual garantizado.
 - Q-002: volumen aproximado de traslados diarios.
