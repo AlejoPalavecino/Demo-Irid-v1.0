@@ -44,8 +44,8 @@ const fuelEdit = (ctx, item) => ctx.can('fuelVerify') ||
 const openShift = ctx => ctx.can('drive') && ctx.driver?.active && ctx.getState().shifts.find(shift => shift.driverId === ctx.driver.id && !shift.closedAt);
 const vehicleName = (ctx, id) => ctx.lookup('vehicles', id, 'alias');
 
-function page(ctx, title, summary, actions = '', eyebrow = 'Gestión') {
-  return `<header class="page-head"><div><p class="eyebrow">${ctx.h(eyebrow)}</p><h1>${ctx.h(title)}</h1>${summary ? `<p>${ctx.h(summary)}</p>` : ''}</div>${actions ? `<div class="actions">${actions}</div>` : ''}</header>`;
+function page(ctx, title, summary, actions = '', eyebrow = 'Gestión', backHTML = '') {
+  return `<header class="page-head"><div>${backHTML}<p class="eyebrow">${ctx.h(eyebrow)}</p><h1>${ctx.h(title)}</h1>${summary ? `<p>${ctx.h(summary)}</p>` : ''}</div>${actions ? `<div class="actions">${actions}</div>` : ''}</header>`;
 }
 
 function panel(ctx, title, body) {
@@ -120,7 +120,7 @@ function masterList(ctx, collection, params) {
     return (status === 'all' || item.active === (status === 'active')) && searchable.some(value => value.includes(normalize(q)));
   }).sort((a, b) => recordName(a).localeCompare(recordName(b), 'es-AR'));
   const tool = `<form class="toolbar" data-action="mg:master-filter" ${attr(ctx, 'collection', collection)}>
-    ${ctx.field('Buscar', 'q', q, 'search')}${ctx.select('Estado', 'status', activityOptions, status)}
+    ${ctx.field('Buscar', 'q', q, 'search')}${ctx.select('Estado', 'status', activityOptions, status, 'data-change="mg:master-filter"')}
     <button type="submit" class="btn secondary">Aplicar filtros</button>
   </form>`;
   const details = {
@@ -144,9 +144,9 @@ function masterDetail(ctx, collection, item) {
   const meta = masters[collection];
   const recordAttrs = `${attr(ctx, 'collection', collection)} ${attr(ctx, 'id', item.id)}`;
   const editable = item.active && ctx.can('masters');
+  const backBtn = ctx.button(`← Volver a ${meta.title.toLowerCase()}`, 'mg:master-back',
+    `${attr(ctx, 'collection', collection)} ${attr(ctx, 'q', ctx.params?.q ?? '')} ${attr(ctx, 'status', ctx.params?.status ?? 'active')}`, 'back-link');
   const actions = [
-    ctx.button(`Volver a ${meta.title.toLowerCase()}`, 'mg:master-back',
-      `${attr(ctx, 'collection', collection)} ${attr(ctx, 'q', ctx.params?.q ?? '')} ${attr(ctx, 'status', ctx.params?.status ?? 'active')}`, 'ghost'),
     editable ? ctx.button('Editar', 'mg:master-edit', recordAttrs, 'primary') : '',
     editable && collection === 'routes' && ctx.can('plan')
       ? ctx.button('Reprogramar', 'op:reschedule', attr(ctx, 'route-id', item.id)) : '',
@@ -179,7 +179,7 @@ function masterDetail(ctx, collection, item) {
     related = panel(ctx, 'Recorridos', routes.length ? `<ul class="stack">${routes.map(route => `<li>${ctx.button(route.name, 'mg:master-view', `${attr(ctx, 'collection', 'routes')} ${attr(ctx, 'id', route.id)}`, 'ghost')} ${statusBadge(ctx, route.active)}</li>`).join('')}</ul>` : '<p class="hint">Todavía no participa en recorridos.</p>');
   }
   if (collection === 'vehicles' && ctx.can('expense')) related = vehicleExpenses(ctx, item);
-  return page(ctx, recordName(item), '', actions, meta.singular)
+  return page(ctx, recordName(item), '', actions, meta.singular, backBtn)
     + `<div class="stack">${panel(ctx, 'Datos de la ficha', statusBadge(ctx, item.active) + kv(ctx, data))}${related}${panel(ctx, 'Historial de cambios', history(ctx, item.history, collection === 'routes' && !ctx.can('commercial')))}</div>`;
 }
 
@@ -285,10 +285,10 @@ function fuelList(ctx, params) {
   }).sort((a, b) => `${b.date}${b.time}`.localeCompare(`${a.date}${a.time}`));
   const newButton = openShift(ctx) ? ctx.button('Registrar combustible', 'mg:fuel-edit', '', 'primary') : '';
   const tool = `<form class="toolbar" data-action="mg:fuel-filter">
-    ${ctx.field('Mes', 'month', month, 'month')}
-    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx).filter(vehicle => fuelScopeAll(ctx) || all.some(item => item.vehicleId === vehicle.id))], vehicleId)}
-    ${fuelScopeAll(ctx) ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...ctx.state.drivers], driverId) : ''}
-    ${ctx.select('Comprobante', 'filter', fuelFilters, filter)}
+    ${ctx.field('Mes', 'month', month, 'month', 'data-change="mg:fuel-filter"')}
+    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx).filter(vehicle => fuelScopeAll(ctx) || all.some(item => item.vehicleId === vehicle.id))], vehicleId, 'data-change="mg:fuel-filter"')}
+    ${fuelScopeAll(ctx) ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...ctx.state.drivers], driverId, 'data-change="mg:fuel-filter"') : ''}
+    ${ctx.select('Comprobante', 'filter', fuelFilters, filter, 'data-change="mg:fuel-filter"')}
     <button type="submit" class="btn secondary">Aplicar filtros</button>
   </form>`;
   const sum = records => ctx.money(records.reduce((total, item) => total + item.amount, 0));
@@ -323,17 +323,20 @@ function receiptImage(ctx, receipt) {
 function fuelDetail(ctx, item) {
   const itemAttr = attr(ctx, 'id', item.id);
   const editable = fuelEdit(ctx, item);
-  const controls = [
-    ctx.button('Volver a combustible', 'mg:fuel-back', ['filter', 'month', 'vehicleId', 'driverId'].map(key => {
-      const dataKey = { vehicleId: 'vehicle-id', driverId: 'driver-id' }[key] ?? key;
-      return attr(ctx, dataKey, ctx.params?.[key] ?? '');
-    }).join(' '), 'ghost'),
-    editable && !item.receipt ? ctx.button('Adjuntar comprobante', 'mg:fuel-edit', `${itemAttr} data-mode="attach"`, 'primary') : '',
-    editable ? ctx.button('Corregir', 'mg:fuel-edit', itemAttr) : '',
-    ctx.can('fuelVerify') && !item.verified ? item.receipt
+  const backBtn = ctx.button('← Volver a combustible', 'mg:fuel-back', ['filter', 'month', 'vehicleId', 'driverId'].map(key => {
+    const dataKey = { vehicleId: 'vehicle-id', driverId: 'driver-id' }[key] ?? key;
+    return attr(ctx, dataKey, ctx.params?.[key] ?? '');
+  }).join(' '), 'back-link');
+  const verifyBtn = ctx.can('fuelVerify') && !item.verified
+    ? item.receipt
       ? ctx.button('Marcar como verificada', 'mg:fuel-verify', itemAttr, 'primary')
       : '<button type="button" class="btn secondary" disabled aria-describedby="mg-missing-receipt">Marcar como verificada</button>'
-      : ''
+    : '';
+  const attachBtn = editable && !item.receipt ? ctx.button('Adjuntar comprobante', 'mg:fuel-edit', `${itemAttr} data-mode="attach"`, 'primary') : '';
+  const controls = [
+    attachBtn,
+    editable ? ctx.button('Corregir', 'mg:fuel-edit', itemAttr) : '',
+    verifyBtn
   ].join('');
   const pairs = [
     ['Fecha y hora', dateTime(ctx, item)], ['Vehículo', vehicleName(ctx, item.vehicleId)],
@@ -342,9 +345,16 @@ function fuelDetail(ctx, item) {
     ['Importe', ctx.money(item.amount)], ['Odómetro', `${number(item.odometer)} km`]
   ];
   const photo = receiptImage(ctx, item.receipt) || '<p id="mg-missing-receipt" class="notice warning">Falta adjuntar el comprobante</p>';
-  return page(ctx, 'Detalle de carga', dateTime(ctx, item), controls, 'Combustible') + `<div class="stack"><div class="grid-2">
+  const photoActions = (item.receipt ? verifyBtn : attachBtn) ? `<div class="actions">${item.receipt ? verifyBtn : attachBtn}</div>` : '';
+  const pendingOthers = item.verified && ctx.can('fuelVerify')
+    ? ctx.state.fuel.filter(entry => entry.id !== item.id && entry.receipt && !entry.verified)
+    : [];
+  const nextNotice = pendingOthers.length
+    ? `<div class="notice info"><div class="panel-head"><span>${ctx.h(pendingOthers.length === 1 ? 'Queda 1 comprobante pendiente de verificación.' : `Quedan ${pendingOthers.length} comprobantes pendientes de verificación.`)}</span>${ctx.button('Ir al siguiente pendiente →', 'mg:fuel-view', attr(ctx, 'id', pendingOthers[0].id), 'small')}</div></div>`
+    : '';
+  return page(ctx, 'Detalle de carga', dateTime(ctx, item), controls, 'Combustible', backBtn) + `<div class="stack">${nextNotice}<div class="grid-2">
     ${panel(ctx, 'Datos de la carga', fuelBadge(ctx, item) + kv(ctx, pairs))}
-    ${panel(ctx, 'Comprobante', photo)}
+    ${panel(ctx, 'Comprobante', photo + photoActions)}
   </div>${panel(ctx, 'Historial de la carga', history(ctx, item.history))}</div>`;
 }
 
@@ -404,7 +414,22 @@ async function selectReceipt(input) {
     } catch {
       throw new Error('La imagen no se puede previsualizar. Probá con una foto JPG o PNG.');
     }
-    upload.data = data;
+    let result = data;
+    if (file.type !== 'image/svg+xml' && (data.length > 260000 || image.naturalWidth > 1400 || image.naturalHeight > 1400)) {
+      const scale = Math.min(1, 1400 / Math.max(image.naturalWidth || 1, image.naturalHeight || 1));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const ctx2d = canvas.getContext('2d');
+      if (ctx2d) {
+        ctx2d.fillStyle = '#ffffff';
+        ctx2d.fillRect(0, 0, canvas.width, canvas.height);
+        ctx2d.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL('image/jpeg', 0.78);
+        if (compressed.startsWith('data:image/') && compressed.length < data.length) result = compressed;
+      }
+    }
+    upload.data = result;
   } catch (error) {
     upload.error = error.message;
   } finally {
@@ -498,9 +523,9 @@ function expenseList(ctx, params) {
     (!vehicleId || item.vehicleId === vehicleId) && (!category || item.category === category));
   const newButton = ctx.button('Registrar gasto o intervención', 'mg:expense-edit', '', 'primary');
   const filters = `<form class="toolbar" data-action="mg:expense-filter">
-    ${ctx.field('Mes', 'month', month, 'month')}
-    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx)], vehicleId)}
-    ${ctx.select('Categoría', 'category', [{ id: '', name: 'Todas' }, ...options(expenseCategories)], category)}
+    ${ctx.field('Mes', 'month', month, 'month', 'data-change="mg:expense-filter"')}
+    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx)], vehicleId, 'data-change="mg:expense-filter"')}
+    ${ctx.select('Categoría', 'category', [{ id: '', name: 'Todas' }, ...options(expenseCategories)], category, 'data-change="mg:expense-filter"')}
     <button type="submit" class="btn secondary">Aplicar filtros</button>
   </form>`;
   const content = items.length
@@ -690,11 +715,13 @@ const fuelParams = ({ filter, month, vehicleId, driverId }) => Object.fromEntrie
 );
 
 export async function handle(ctx, action, el) {
-  const { id, mode, collection, vehicle, q, status } = el.dataset;
+  const { id, mode, vehicle, q, status } = el.dataset;
+  const form = el.form || el;
+  const collection = el.dataset.collection || form?.dataset?.collection;
   if (action.startsWith('mg:master-') && masterRead(ctx, collection)) {
     const item = ctx.getState()[collection].find(record => record.id === id);
     const meta = masters[collection];
-    if (action === 'mg:master-filter') ctx.go(meta.screen, ctx.form(el));
+    if (action === 'mg:master-filter') ctx.go(meta.screen, ctx.form(form));
     if (action === 'mg:master-clear') ctx.go(meta.screen, { status: 'all' });
     if (action === 'mg:master-back') ctx.go(meta.screen, { q: q ?? '', status: status ?? 'active' });
     if (action === 'mg:master-view' && item) {
@@ -709,7 +736,7 @@ export async function handle(ctx, action, el) {
   }
   if (action.startsWith('mg:fuel-') && ctx.can('fuelRead')) {
     const item = ctx.getState().fuel.find(record => record.id === id);
-    if (action === 'mg:fuel-filter') ctx.go('combustible', fuelParams(ctx.form(el)));
+    if (action === 'mg:fuel-filter') ctx.go('combustible', fuelParams(ctx.form(form)));
     if (action === 'mg:fuel-clear') ctx.go('combustible', { filter: 'all' });
     if (action === 'mg:fuel-back') ctx.go('combustible', fuelParams(el.dataset));
     if (action === 'mg:fuel-view' && item && fuelRead(ctx, item)) {
@@ -736,7 +763,7 @@ export async function handle(ctx, action, el) {
   }
   if (action.startsWith('mg:expense-') && ctx.can('expense')) {
     const item = ctx.getState().expenses.find(record => record.id === id);
-    if (action === 'mg:expense-filter') ctx.go('gastos', ctx.form(el));
+    if (action === 'mg:expense-filter') ctx.go('gastos', ctx.form(form));
     if (action === 'mg:expense-clear') ctx.go('gastos');
     if (action === 'mg:expense-view' && item) expenseView(ctx, item);
     if (action === 'mg:expense-edit' && (!id || item)) expenseForm(ctx, item, vehicle);

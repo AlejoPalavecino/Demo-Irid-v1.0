@@ -219,8 +219,8 @@ const reportTypes = {
 };
 const categories = ['Seguro', 'GPS', 'Mantenimiento', 'Cubiertas', 'Reparaciones'];
 
-function heading(ctx, title, description, actions = '') {
-  return `<header class="page-head"><div><h1>${ctx.h(title)}</h1><p>${ctx.h(description)}</p></div>${actions && `<div class="actions">${actions}</div>`}</header>`;
+function heading(ctx, title, description, actions = '', backHTML = '') {
+  return `<header class="page-head"><div>${backHTML}<h1>${ctx.h(title)}</h1><p>${ctx.h(description)}</p></div>${actions && `<div class="actions">${actions}</div>`}</header>`;
 }
 
 function columnsTable(ctx, columns, rows) {
@@ -249,8 +249,8 @@ function sessionTime(ctx, stamp) {
   return `${ctx.date(stamp.slice(0, 10))} ${stamp.slice(11, 16)}`;
 }
 
-function metric(ctx, label, value) {
-  return `<div class="metric"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
+function metric(ctx, label, value, extraClass = '') {
+  return `<div class="metric${extraClass ? ` ${extraClass}` : ''}"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
 }
 
 function note(ctx, text, tone = 'info') {
@@ -349,14 +349,19 @@ function settlementData(ctx, input, rows) {
   return {headers, detailed, completed, subtotals, exportRows};
 }
 
-function settlementRowsPanel(ctx, input, rows, total) {
+function settlementRowsPanel(ctx, input, rows, total, editable = false) {
   const data = settlementData(ctx, input, rows);
-  const displayRows = data.detailed.map(row => [...row.slice(0, -1), ctx.money(row.at(-1))]);
+  const tableHeaders = [...data.headers.slice(0, -1), 'Importe', ...(editable ? ['Ajuste'] : [])];
+  const displayRows = data.detailed.map((row, index) => [
+    ...row.slice(0, -1),
+    ctx.money(row.at(-1)),
+    ...(editable ? [{html: ctx.button('Ajustar', 'fin:adjust', `data-id="${ctx.h(rows[index].tripId)}"`, 'small')}] : []),
+  ]);
   const completed = data.completed;
   const displaySubtotals = data.subtotals.map(item => [item.group, item.type, item.count, ctx.money(item.amount)]);
-  return `<div class="grid-3">${metric(ctx, 'Servicios realizados', completed.length)}${metric(ctx, 'No realizados', rows.filter(row => row.status === 'No realizado').length)}${metric(ctx, input.type === 'Chofer' ? 'Subtotal por servicios' : 'Total', ctx.money(total))}</div>
+  return `<div class="metrics settlement-metrics">${metric(ctx, 'Servicios realizados', completed.length)}${metric(ctx, 'No realizados', rows.filter(row => row.status === 'No realizado').length)}${metric(ctx, input.type === 'Chofer' ? 'Subtotal por servicios' : 'Total', ctx.money(total), 'metric-total')}</div>
     <section class="panel"><h2>Servicios del período</h2>
-      ${displayRows.length ? columnsTable(ctx, [...data.headers.slice(0, -1), 'Importe'], displayRows) : ctx.empty('Sin servicios en el período', 'Probá con otro mes o destinatario.')}
+      ${displayRows.length ? columnsTable(ctx, tableHeaders, displayRows) : ctx.empty('Sin servicios en el período', 'Probá con otro mes o destinatario.')}
     </section>
     ${displaySubtotals.length ? `<section class="panel"><h2>Subtotales por grupo y servicio</h2>${columnsTable(ctx, ['Grupo', 'Servicio', 'Realizados', 'Subtotal'], displaySubtotals)}</section>` : ''}`;
 }
@@ -365,15 +370,30 @@ function renderSettlements(ctx, params) {
   if (params.period && params.type) return renderPreparation(ctx, params);
   const latest = [...ctx.state.settlements].sort((a, b) => sortRecent(a, b, 'period') || b.version - a.version);
   const listed = latest.filter((item, index) => latest.findIndex(other => other.period === item.period && other.type === item.type && other.driverId === item.driverId) === index);
+  const periods = [...new Set(ctx.state.trips.map(trip => trip.date.slice(0, 7)))].sort((a, b) => b.localeCompare(a));
+  const quickPeriods = periods.map(period => {
+    const periodTrips = ctx.state.trips.filter(trip => trip.date.startsWith(period + '-'));
+    const pendingCount = periodTrips.filter(trip => !['Realizado', 'No realizado'].includes(trip.status)).length;
+    const issued = listed.find(item => item.period === period && item.type === 'Transp SERV');
+    const statusLabel = pendingCount
+      ? `${pendingCount} ${pendingCount === 1 ? 'viaje sin resolver' : 'viajes sin resolver'}`
+      : issued ? `Emitida · Versión ${issued.version}` : 'Lista para emitir';
+    const tone = pendingCount ? 'warning' : issued ? 'info' : 'success';
+    const btnLabel = pendingCount ? 'Revisar pendientes' : issued ? 'Revisar corrección' : 'Revisar Transp SERV';
+    return `<div class="list-row"><div><strong>${ctx.h(formatPeriod(period))} · Transp SERV</strong><p>${ctx.h(`${periodTrips.length} ${periodTrips.length === 1 ? 'viaje' : 'viajes'} registrados`)}</p>${ctx.badge(statusLabel, tone)}</div>${ctx.button(btnLabel, 'fin:quick-prepare', `data-period="${ctx.h(period)}" data-type="Transp SERV"`, pendingCount || issued ? 'secondary small' : 'primary small')}</div>`;
+  }).join('');
   const rows = listed.map(item => [
     formatPeriod(item.period), titleForSettlement(ctx, item), `Versión ${item.version}`,
     sessionTime(ctx, item.issuedAt), ctx.money(item.total), item.minimumPending ? 'Mínimo pendiente' : 'Emitida',
     {html: ctx.button('Ver liquidación', 'fin:version', `data-id="${ctx.h(item.id)}"`, 'small')},
   ]);
   return `${heading(ctx, 'Liquidaciones', 'Revisá los servicios del mes y consultá las versiones emitidas.', ctx.button('Preparar liquidación', 'fin:prepare', '', 'primary'))}
-    <section class="panel"><h2>Últimas versiones emitidas</h2>
-      ${rows.length ? columnsTable(ctx, ['Período', 'Destinatario', 'Versión', 'Emisión', 'Total', 'Estado', 'Detalle'], rows) : ctx.empty('Sin liquidaciones emitidas', 'Prepará una liquidación para revisar los servicios antes de emitir.')}
-    </section>`;
+    <div class="stack">
+      ${quickPeriods ? `<section class="panel"><h2>Períodos para revisar</h2>${quickPeriods}</section>` : ''}
+      <section class="panel"><h2>Últimas versiones emitidas</h2>
+        ${rows.length ? columnsTable(ctx, ['Período', 'Destinatario', 'Versión', 'Emisión', 'Total', 'Estado', 'Detalle'], rows) : ctx.empty('Sin liquidaciones emitidas', 'Prepará una liquidación para revisar los servicios antes de emitir.')}
+      </section>
+    </div>`;
 }
 
 function toSettlementParams(params) {
@@ -397,11 +417,12 @@ function settlementDiff(ctx, input, result) {
 
 function renderPreparation(ctx, params) {
   const input = toSettlementParams(params);
+  const backBtn = ctx.button('← Volver a liquidaciones', 'fin:settlements', '', 'back-link');
   let result;
   try {
     result = ctx.preview('settlementPreview', input);
   } catch (error) {
-    return `${heading(ctx, 'Preparar liquidación', error.message, ctx.button('Volver a liquidaciones', 'fin:settlements'))}`;
+    return `${heading(ctx, 'Preparar liquidación', error.message, '', backBtn)}`;
   }
   const blocked = result.unresolved.length > 0;
   const review = {...input, minimumPending: result.minimumPending};
@@ -411,14 +432,14 @@ function renderPreparation(ctx, params) {
   ]);
   const actions = ctx.button('Cambiar selección', 'fin:prepare')
     + (blocked ? '' : ctx.button('Emitir liquidación', 'fin:issue', '', 'primary'));
-  return `${heading(ctx, result.previous ? 'Preparar corrección' : 'Revisar liquidación', `${formatPeriod(input.period)} · ${titleForSettlement(ctx, {...input, rows: result.rows})}`, actions)}
+  return `${heading(ctx, result.previous ? 'Preparar corrección' : 'Revisar liquidación', `${formatPeriod(input.period)} · ${titleForSettlement(ctx, {...input, rows: result.rows})}`, actions, backBtn)}
     <div class="stack">
       ${result.minimumPending ? note(ctx, minimumText, 'warning') : ''}
       ${blocked ? `<section class="panel"><h2>Viajes pendientes</h2>
         ${note(ctx, `Resolvé los ${unsettled.length} viajes pendientes antes de emitir.`, 'warning')}
         ${columnsTable(ctx, ['Fecha', 'Hora', 'Recorrido', 'Estado', 'Detalle'], unsettled)}</section>` : ''}
       ${settlementDiff(ctx, input, result)}
-      ${settlementRowsPanel(ctx, review, result.rows.filter(row => row.status === 'Realizado' || row.status === 'No realizado'), result.total)}
+      ${settlementRowsPanel(ctx, review, result.rows.filter(row => row.status === 'Realizado' || row.status === 'No realizado'), result.total, true)}
       <div class="actions">${ctx.button('Volver a liquidaciones', 'fin:settlements')}</div>
     </div>`;
 }
@@ -432,7 +453,7 @@ function renderVersion(ctx, id) {
     version.id === item.id ? 'En pantalla' : {html: ctx.button('Ver versión', 'fin:version', `data-id="${ctx.h(version.id)}"`, 'small')},
   ]);
   const correction = history[0]?.id === item.id ? ctx.button('Preparar corrección', 'fin:correction', `data-id="${ctx.h(item.id)}"`) : '';
-  return `${heading(ctx, `Liquidación · ${titleForSettlement(ctx, item)}`, `${formatPeriod(item.period)} · Versión ${item.version} · Emitida el ${sessionTime(ctx, item.issuedAt)}`, ctx.button('Volver a liquidaciones', 'fin:settlements'))}
+  return `${heading(ctx, `Liquidación · ${titleForSettlement(ctx, item)}`, `${formatPeriod(item.period)} · Versión ${item.version} · Emitida el ${sessionTime(ctx, item.issuedAt)}`, '', ctx.button('← Volver a liquidaciones', 'fin:settlements', '', 'back-link'))}
     <div class="stack">
       ${note(ctx, 'Versión emitida de demostración. Las correcciones se guardan en una nueva versión.')}
       ${item.minimumPending ? note(ctx, minimumText, 'warning') : ''}
@@ -776,7 +797,7 @@ function downloadSettlement(ctx, id, format) {
   ctx.download(filename, blob);
 }
 
-const commercialActions = new Set(['new-tariff', 'adjust', 'adjustment-value', 'prepare', 'destination', 'issue', 'settlements', 'version', 'correction']);
+const commercialActions = new Set(['new-tariff', 'adjust', 'adjustment-value', 'prepare', 'quick-prepare', 'destination', 'issue', 'settlements', 'version', 'correction']);
 
 export async function handle(ctx, action, el) {
   if (!action.startsWith('fin:')) return false;
@@ -796,6 +817,9 @@ export async function handle(ctx, action, el) {
     }
     case 'prepare':
       prepareSettlement(ctx);
+      break;
+    case 'quick-prepare':
+      ctx.go('liquidaciones', {period: el.dataset.period, type: el.dataset.type || 'Transp SERV'});
       break;
     case 'destination': {
       const driver = el.form?.elements.namedItem('driverId');

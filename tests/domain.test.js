@@ -309,3 +309,9 @@ test('ajustar este viaje conserva su cálculo base y los totales cuentan solamen
   review.rows[0].driverPay = 0;
   assert.equal(preview(adjusted, admin, 'settlementPreview', scope).total, 4500);
 });
+
+test('los mensajes de validación numérica respetan concordancia de género', () => {
+  const state = seed();
+  assert.throws(() => apply(state, diego, 'requestReadingReview', { vehicleId: 'v-3', reading: -1 }), /una lectura válida/);
+  assert.throws(() => apply(state, admin, 'adjustTrip', { id: 't-oct-diego', amount: 30000, driverPay: -1, reason: 'Test' }), /una remuneración válida/);
+});

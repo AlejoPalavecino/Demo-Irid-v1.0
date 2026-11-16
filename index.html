@@ -8,13 +8,14 @@ h1,h2,h3,h4,p{margin-top:0}h1{font-size:clamp(28px,2.5vw,36px);font-weight:750;l
 
 /* Acciones y estructura compartida. */
 .btn{min-height:44px;padding:11px 16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #d9cfd2;border-radius:8px;background:#fff;color:var(--ink);font-weight:650;line-height:1.4;text-align:center;text-decoration:none;transition:background .15s,border-color .15s;overflow-wrap:anywhere}
-.btn:hover{background:#f7f1f3;border-color:#c5abb4}.btn.primary,.btn.active{background:var(--brand);border-color:var(--brand);color:white}.btn.primary:hover,.btn.active:hover{background:var(--brand-deep)}.btn.ghost{background:transparent;border-color:transparent;color:var(--brand)}.btn.ghost:hover{background:var(--pale)}.btn.danger{color:var(--danger);border-color:#e8bec4;background:#fff9f9}.btn.small{padding:9px 12px;font-size:12px}.btn svg{width:18px;height:18px;flex-shrink:0}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+.btn:hover{background:#f7f1f3;border-color:#c5abb4}.btn.primary,.btn.active{background:var(--brand);border-color:var(--brand);color:white}.btn.primary:hover,.btn.active:hover{background:var(--brand-deep)}.btn.ghost{background:transparent;border-color:transparent;color:var(--brand)}.btn.ghost:hover{background:var(--pale)}.btn.danger{color:var(--danger);border-color:#e8bec4;background:#fff9f9}.btn.small{padding:9px 12px;font-size:12px}.btn.back-link{min-height:44px;padding:6px 10px 6px 0;border:0;background:transparent;color:var(--brand);font-size:13px;font-weight:650;margin-bottom:4px;justify-content:flex-start}.btn.back-link:hover{background:transparent;border-color:transparent;color:var(--brand-deep);text-decoration:underline}.btn svg{width:18px;height:18px;flex-shrink:0}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
 .eyebrow,.section-label{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:1px;color:var(--rose);margin-bottom:10px}
 .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:28px}.page-head>div{min-width:0}.page-head p{margin-bottom:0;color:var(--muted);max-width:650px}.page-head>.actions{justify-content:flex-end;max-width:50%;flex-shrink:0}
 .panel{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:24px;min-width:0}.panel h2:last-child,.panel p:last-child{margin-bottom:0}.panel-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px}.panel-head>div{min-width:0}.panel-head h2,.panel-head h3{margin:0}
-.stack{display:grid;gap:20px;min-width:0}.grid-2,.grid-3,.grid-4,.metrics{display:grid;gap:20px;min-width:0}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4,.metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.grid-2>*,.grid-3>*,.grid-4>*{min-width:0}.section-gap{margin-top:28px}
+.stack{display:grid;gap:20px;min-width:0}.grid-2,.grid-3,.grid-4,.metrics{display:grid;gap:20px;min-width:0}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4,.metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.settlement-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-2>*,.grid-3>*,.grid-4>*{min-width:0}.section-gap{margin-top:28px}
 .metric{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:20px;text-align:left;min-width:0}.metric .number,.metric strong{font-size:clamp(22px,2.4vw,32px);font-variant-numeric:tabular-nums;letter-spacing:-1px;display:block;margin:8px 0;line-height:1.3;overflow-wrap:anywhere}.metric p,.metric span{font-size:12px;color:var(--muted);margin:0}
-.metric.link{position:relative;border-top:3px solid #b6a3ab}.metric.link:hover{border-color:var(--brand);background:#fffafb}.metric.link[data-status="En curso"]{border-top-color:#3e819f}.metric.link[data-status="Realizado"]{border-top-color:var(--good)}.metric.link[data-status="No realizado"]{border-top-color:var(--danger)}.metric.link[data-status="Realizado"] strong{color:var(--good)}
+.metric.link{position:relative;border-top:3px solid #b6a3ab}.metric.link:hover{border-color:var(--brand);background:#fffafb}.metric.link[data-status="En curso"]{border-top-color:#3e819f}.metric.link[data-status="Realizado"]{border-top-color:var(--good)}.metric.link[data-status="No realizado"]{border-top-color:var(--danger)}.metric.link[data-status="Realizado"] strong{color:var(--good)}.metric.link.is-zero{border-top-color:#dfd8da}.metric.is-zero strong{color:var(--muted);opacity:.72}.metric.metric-total{background:#fbf5f7;border-color:#dfbfc9}.metric.metric-total strong{color:var(--brand-deep)}
+.list-row .btn.has-items{background:#fbf4f6;border-color:#dfbfc9;color:var(--brand-deep);font-weight:750}.list-row .btn.is-zero{color:var(--muted);border-color:var(--line);background:#faf9f8}.list-row .btn.is-zero svg{opacity:.6}
 .toolbar{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin:0 0 20px;min-width:0}.toolbar .field{flex:1;min-width:min(170px,100%);margin:0}.toolbar .field input,.toolbar .field select{margin:0}
 
 /* Formularios y feedback. */
@@ -26,28 +27,29 @@ input[type=file]{max-width:100%;font-size:12px}input[type=file]::file-selector-b
 .badge{display:inline-flex;gap:5px;align-items:center;padding:5px 9px;border-radius:5px;background:#f0eded;color:#5d5757;font-size:11px;font-weight:700;line-height:1.5;white-space:normal}.badge.success,.badge.green{background:#e7f4ed;color:var(--good)}.badge.warning,.badge.amber{background:#fff1d7;color:#80520a}.badge.danger,.badge.red{background:#fbe8eb;color:#972738}.badge.info,.badge.blue{background:#e6f1f8;color:#27647f}.badge.brand{background:var(--pale);color:var(--brand)}
 
 /* Tablas, fichas e historiales. */
-.table-wrap{overflow:auto;max-width:100%;border:1px solid var(--line);border-radius:10px;background:white;overscroll-behavior-x:contain;scrollbar-color:#bc9ca7 #f4edef}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left;font-variant-numeric:tabular-nums}th{color:#62585e;font-weight:700;background:#f5f2f3;font-size:12px}th,td{padding:16px;border-bottom:1px solid var(--line);vertical-align:middle}tr:last-child td{border-bottom:0}tbody tr:hover{background:#fcf9fa}td .actions{flex-wrap:nowrap}td small{display:block;margin-top:5px}
+.table-wrap{overflow:auto;max-width:100%;border:1px solid var(--line);border-radius:10px;background:white;overscroll-behavior-x:contain;scrollbar-color:#bc9ca7 #f4edef}.table-wrap.has-scroll{box-shadow:inset -18px 0 14px -15px rgba(80,19,34,.22)}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left;font-variant-numeric:tabular-nums}th{color:#62585e;font-weight:700;background:#f5f2f3;font-size:12px}th,td{padding:16px;border-bottom:1px solid var(--line);vertical-align:middle}tr:last-child td{border-bottom:0}tbody tr:hover{background:#fcf9fa}td .actions{flex-wrap:nowrap}td small{display:block;margin-top:5px}
 .scroll-hint{margin:8px 0 0;color:var(--muted);font-size:12px}.scroll-hint::before{content:'↔';color:var(--brand);font-weight:700;margin-right:8px}
-.calendar-wrap{padding:6px}.calendar-wrap table{table-layout:fixed;min-width:448px}.calendar-wrap th{text-align:center;border:0;background:white}.calendar-wrap td{padding:8px;vertical-align:top;height:112px;border:1px solid var(--line)}.calendar-wrap .btn{width:100%;padding:9px 4px;border-color:transparent;background:transparent;font-weight:750}.calendar-wrap .btn:hover{background:var(--pale)}.calendar-wrap .btn.primary{background:var(--brand);border-color:var(--brand);color:white}.calendar-wrap .btn.primary:hover{background:var(--brand-deep)}.calendar-wrap .badge{font-size:10px;display:flex;margin-top:4px;justify-content:center}
+.calendar-wrap{padding:6px}.calendar-wrap table{table-layout:fixed;min-width:448px}.calendar-wrap th{text-align:center;border:0;background:white}.calendar-wrap td{padding:6px;vertical-align:top;height:84px;border:1px solid var(--line)}.calendar-wrap .btn{width:100%;padding:8px 4px;border-color:transparent;background:transparent;font-weight:750}.calendar-wrap .btn:hover{background:var(--pale)}.calendar-wrap .btn.primary{background:var(--brand);border-color:var(--brand);color:white}.calendar-wrap .btn.primary:hover{background:var(--brand-deep)}.calendar-wrap .cal-count{display:block;margin-top:4px;padding:2px 6px;border-radius:5px;background:var(--pale);color:var(--brand-deep);font-size:11px;font-weight:650;text-align:center}
 .list-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);min-width:0}.list-row:last-child{border-bottom:0;padding-bottom:0}.list-row>div{min-width:0;overflow-wrap:anywhere}.list-row>.btn{flex-shrink:0}.list-row p{margin:5px 0 0;font-size:12px;color:var(--muted)}
 .key-value{display:grid;grid-template-columns:minmax(100px,1fr) 2fr;gap:14px 24px;font-size:13px}.key-value:has(>div){grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 24px}.key-value>div{min-width:0}.key-value dt{color:var(--muted);font-weight:500}.key-value dd{margin:0;font-weight:650;overflow-wrap:anywhere}.key-value>div dd{margin-top:5px}dl{margin:0}dt{font-weight:600}dd{margin:5px 0 16px}
 .history{padding:0;list-style:none}.history li{padding:12px 0 12px 22px;border-left:2px solid var(--line);position:relative;font-size:13px;line-height:1.65;overflow-wrap:anywhere}.history li::before{content:'';position:absolute;width:8px;height:8px;background:var(--rose);border-radius:100%;left:-5px;top:20px}.history small{display:block}
 .empty-state{text-align:center;padding:44px 24px;border:1px dashed #d6cacd;border-radius:12px;background:#fff}.empty-state h3{margin:0 0 8px}.empty-state p{font-size:13px;color:var(--muted);max-width:460px;margin:0 auto 20px}.empty-state .actions{justify-content:center}.receipt-preview{display:block;max-width:100%;max-height:460px;object-fit:contain;border:1px solid var(--line);border-radius:10px;background:#f9f8f7;padding:10px}
 
 /* Jornada: horario, recorrido, estado y acción en ese orden visual. */
-.trip-card{background:white;border:1px solid var(--line);border-radius:12px;padding:22px;min-width:0}.trip-card h3{margin:18px 0 6px;font-size:18px;letter-spacing:-.3px}.trip-card p{font-size:13px;color:var(--muted);margin-bottom:0}.trip-card.next{border-left:4px solid var(--brand)}.trip-card .time{font-size:30px;font-weight:750;letter-spacing:-.8px;color:var(--brand-deep);font-variant-numeric:tabular-nums;line-height:1.2}
-.trip-top,.trip-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.trip-top>div{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}.trip-top .section-label{margin:0;padding-left:12px;border-left:1px solid var(--line);color:var(--muted)}.trip-top>.badge{flex-shrink:0}.trip-bottom{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}.trip-bottom>div{min-width:0}.trip-bottom>.btn{flex-shrink:0}
+.trip-card{background:white;border:1px solid var(--line);border-radius:12px;padding:22px;min-width:0}.trip-card h3{margin:16px 0 6px;font-size:18px;letter-spacing:-.3px}.trip-card p{font-size:13px;color:var(--muted);margin-bottom:0}.trip-card .trip-patients{margin-top:6px;font-size:12px;color:var(--ink)}.trip-card.next{border-left:4px solid var(--brand);background:#fffcfd}.trip-card .time{font-size:30px;font-weight:750;letter-spacing:-.8px;color:var(--brand-deep);font-variant-numeric:tabular-nums;line-height:1.2}
+.trip-top,.trip-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.trip-top>div{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}.trip-top .section-label{margin:0;padding-left:12px;border-left:1px solid var(--line);color:var(--muted)}.trip-top>.badge{flex-shrink:0}.trip-bottom{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}.trip-bottom>div:first-child{min-width:0}.trip-bottom>.btn,.trip-bottom>.actions{flex-shrink:0;justify-content:flex-end}
+.agenda-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}.agenda-nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 
 /* Navegación: lateral en escritorio, panel con foco contenido en tablet/móvil. */
-.demo-strip{min-height:36px;background:var(--brand-deep);color:#f9e9ed;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:10px;gap:16px}.demo-strip>span:first-child{font-weight:650;letter-spacing:.6px}.demo-strip button{border:0;background:none;color:white;text-decoration:underline;text-underline-offset:3px;font-size:11px;cursor:pointer;min-height:36px;flex-shrink:0}
-.app-layout{display:grid;grid-template-columns:228px minmax(0,1fr);min-height:calc(100dvh - 36px)}.sidebar{border-right:1px solid var(--line);background:white;display:flex;flex-direction:column;padding:20px 14px;position:sticky;top:0;height:100dvh;overflow:auto;scrollbar-width:thin}.brand{display:flex;align-items:center;gap:10px;padding:0 8px 20px;border-bottom:1px solid var(--line);margin-bottom:12px}.brand img{width:64px;height:64px;object-fit:contain}.brand strong{font-size:20px;letter-spacing:1px}.brand span{display:block;font-size:10px;font-weight:600;letter-spacing:1.3px;color:var(--muted);margin-top:3px}
+.demo-strip{min-height:32px;background:var(--brand-deep);color:#f9e9ed;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:10px;gap:16px}.demo-strip>span:first-child{font-weight:650;letter-spacing:.6px}.demo-strip button{border:0;background:none;color:white;text-decoration:underline;text-underline-offset:3px;font-size:11px;cursor:pointer;min-height:32px;flex-shrink:0}
+.app-layout{display:grid;grid-template-columns:228px minmax(0,1fr);min-height:calc(100dvh - 32px)}.sidebar{border-right:1px solid var(--line);background:white;display:flex;flex-direction:column;padding:20px 14px;position:sticky;top:0;height:100dvh;overflow:auto;scrollbar-width:thin}.sidebar .brand,.forced-password .brand{display:flex;align-items:center;gap:10px;padding:0 8px 20px;border-bottom:1px solid var(--line);margin-bottom:12px}.sidebar .brand img,.forced-password .brand img{width:64px;height:64px;object-fit:contain}.sidebar .brand strong,.forced-password .brand strong{font-size:20px;letter-spacing:1px}.sidebar .brand span{display:block;font-size:10px;font-weight:600;letter-spacing:1.3px;color:var(--muted);margin-top:3px}
 .nav-section{font-size:11px;font-weight:600;color:#776c72;padding:22px 12px 8px}.nav-item{display:flex;width:100%;align-items:center;gap:11px;background:transparent;border:0;color:#62585e;min-height:44px;padding:11px 12px;border-radius:7px;font-size:12px;font-weight:600;text-align:left;margin-bottom:2px}.nav-item:hover{background:#faf4f5}.nav-item.active{background:var(--pale);color:var(--brand);font-weight:750;box-shadow:inset 3px 0 var(--brand)}.nav-item svg{height:18px;width:18px;flex-shrink:0}.sidebar-foot{margin-top:auto;padding-top:28px}.sidebar-foot p{font-size:10px;padding:0 12px;color:var(--muted);line-height:1.7}
-.main-wrap{min-width:0}.topbar{min-height:80px;display:flex;justify-content:space-between;align-items:center;padding:14px 32px;gap:20px;border-bottom:1px solid var(--line);background:#fff}.crumb{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px;min-width:0}.crumb strong{color:var(--ink);font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.profile{display:flex;align-items:center;gap:12px;flex-shrink:0}.avatar{width:38px;height:38px;border-radius:50%;background:var(--pale);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:750;flex-shrink:0}.profile strong{font-size:12px;display:block}.profile small{display:block;font-size:10px;margin-top:2px}.mobile-toggle,.mobile-logo,.drawer-close{display:none}
-.content{padding:32px 32px 64px;max-width:1384px;margin:0 auto;outline:none}.content>div>.stack,.content .stack+.stack{margin-top:20px}.content[data-screen="jornada"]{max-width:1000px}.dashboard-welcome{display:flex;justify-content:space-between;align-items:center;background:var(--pale);border:1px solid #e6d1d7;padding:24px 28px;border-radius:12px;margin-bottom:24px;gap:24px}.dashboard-welcome h2{margin-bottom:8px;font-size:24px;color:var(--brand-deep)}.dashboard-welcome p{font-size:13px;margin:0;color:#694a54;max-width:620px}.dashboard-welcome .date-block{border-left:1px solid #d9bbc4;padding-left:28px;min-width:140px;text-align:center}.date-block strong{display:block;font-size:40px;line-height:1.1;color:var(--brand);font-variant-numeric:tabular-nums}.date-block span{font-size:11px;display:block;margin-top:5px}.overlay-close{position:fixed;inset:0;background:#21121a66;z-index:45;border:0}
+.main-wrap{min-width:0}.topbar{min-height:76px;display:flex;justify-content:space-between;align-items:center;padding:12px 32px;gap:20px;border-bottom:1px solid var(--line);background:#fff}.crumb{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px;min-width:0}.crumb strong{color:var(--ink);font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.profile{display:flex;align-items:center;gap:12px;flex-shrink:0}.avatar{width:38px;height:38px;border-radius:50%;background:var(--pale);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:750;flex-shrink:0}.profile strong{font-size:12px;display:block}.profile small{display:block;font-size:10px;margin-top:2px}.mobile-toggle,.mobile-logo,.drawer-close{display:none}
+.content{padding:32px 32px 64px;max-width:1384px;margin:0 auto;outline:none}.content>div>.stack,.content .stack+.stack{margin-top:20px}.content[data-screen="jornada"]{max-width:1000px}.dashboard-welcome{display:flex;justify-content:space-between;align-items:center;background:var(--pale);border:1px solid #e6d1d7;padding:24px 28px;border-radius:12px;margin-bottom:24px;gap:24px}.dashboard-welcome h2{margin-bottom:8px;font-size:24px;color:var(--brand-deep)}.dashboard-welcome p{font-size:13px;margin:0;color:#694a54;max-width:620px}.dashboard-welcome .date-block{border-left:1px solid #d9bbc4;padding-left:28px;min-width:140px;text-align:center}.date-block strong{display:block;font-size:40px;line-height:1.1;color:var(--brand);font-variant-numeric:tabular-nums}.date-block span{font-size:11px;display:block;margin-top:5px}.questions-panel{background:#fcfbfa;padding:18px 22px}.questions-panel .panel-head{margin-bottom:14px}.questions-panel h2{font-size:16px}.overlay-close{position:fixed;inset:0;background:#21121a66;z-index:45;border:0}
 
 /* Inicio de sesión y cuatro accesos de demostración. */
 .login-layout{min-height:100dvh;display:grid;grid-template-columns:minmax(360px,.95fr) minmax(500px,1.05fr)}.login-story{padding:48px clamp(32px,5.5vw,96px);background:var(--brand-deep);color:#fff;display:flex;flex-direction:column;position:relative;overflow:hidden}.login-brand{display:flex;gap:18px;align-items:center;margin-bottom:clamp(40px,6vh,80px)}.login-brand img{background:white;border-radius:14px;width:92px;height:92px;object-fit:contain}.login-brand p{margin:0;font-weight:700;letter-spacing:1px;font-size:22px}.login-brand small{display:block;color:#e5b7c3;margin-top:3px;font-size:13px}.login-story h1{font-size:clamp(36px,4.4vw,64px);line-height:1.12;letter-spacing:-2px;max-width:540px;margin-bottom:24px;font-weight:700}.login-story>.intro{font-size:15px;line-height:1.85;color:#e7ced5;max-width:450px}.story-bottom{margin-top:auto;padding-top:48px;position:relative}.story-bottom .line{height:3px;background:#d8acb8;width:48px;margin-bottom:20px}.story-bottom p{font-size:12px;color:#dbb8c2;max-width:410px;margin:0}
-.login-panel{padding:48px clamp(28px,4.5vw,80px);align-self:center;width:100%;max-width:800px;margin:auto}.login-panel h2{font-size:28px;letter-spacing:-.8px;margin-bottom:12px}.login-panel>p{font-size:14px;color:var(--muted);margin-bottom:28px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.quick-card{background:white;border:1px solid #dfd5d8;border-radius:10px;padding:22px;text-align:left;min-height:160px;position:relative;color:var(--ink);transition:background .15s,border-color .15s;min-width:0}.quick-card:hover{border-color:var(--brand);background:#fff9fb}.quick-card .avatar{margin-bottom:20px;width:40px;height:40px}.quick-card strong{display:block;font-size:14px;margin-bottom:6px;line-height:1.5}.quick-card small{font-size:12px;display:block;line-height:1.5}.quick-card .arrow{position:absolute;right:22px;top:27px;color:var(--brand);font-size:20px}
+.login-panel{padding:48px clamp(28px,4.5vw,80px);align-self:center;width:100%;max-width:800px;margin:auto}.login-panel h2{font-size:28px;letter-spacing:-.8px;margin-bottom:12px}.login-panel>p{font-size:14px;color:var(--muted);margin-bottom:28px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.quick-card{background:white;border:1px solid #dfd5d8;border-radius:10px;padding:22px;text-align:left;min-height:160px;position:relative;color:var(--ink);transition:background .15s,border-color .15s;min-width:0}.quick-card:hover{border-color:var(--brand);background:#fff9fb}.quick-card .avatar{margin-bottom:14px;width:40px;height:40px}.quick-role{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--brand);background:var(--pale);padding:3px 8px;border-radius:4px;margin-bottom:8px}.quick-card strong{display:block;font-size:14px;margin-bottom:4px;line-height:1.45}.quick-card small{font-size:12px;display:block;line-height:1.5;color:var(--muted)}.quick-card .arrow{position:absolute;right:22px;top:27px;color:var(--brand);font-size:20px}
 .login-form{margin-top:28px;padding:16px 18px;background:transparent}.login-form summary{font-size:13px;min-height:28px}.login-form form{display:grid;gap:16px;margin-top:20px}.login-form .btn{width:100%}.login-note{margin-top:20px!important;margin-bottom:12px!important;font-size:11px!important;line-height:1.7}.login-tools{display:flex;gap:8px;flex-wrap:wrap}.login-tools button{font-size:12px}.forced-password{max-width:490px;margin:60px auto;padding:32px}.forced-password .brand{justify-content:center}.forced-password form{display:grid;gap:20px}
 
 /* Encabezado y acciones de los diálogos siempre alcanzables. */
@@ -63,13 +65,13 @@ input[type=file]{max-width:100%;font-size:12px}input[type=file]::file-selector-b
   .login-layout{display:block}.login-story{padding:28px 32px}.login-brand{margin-bottom:24px;gap:14px}.login-brand img{width:72px;height:72px;border-radius:10px}.login-story h1{font-size:38px;max-width:650px;letter-spacing:-1.2px;margin-bottom:16px}.login-story h1 br{display:none}.login-story>.intro{font-size:14px;max-width:650px;margin-bottom:0}.login-story>.eyebrow,.story-bottom{display:none}.login-panel{padding:32px;max-width:760px}
 }
 @media(max-width:760px){
-  .demo-strip{padding-inline:16px;min-height:40px;font-size:9px;gap:8px}.demo-strip span:last-of-type{display:none}.demo-strip button{min-height:40px;font-size:10px}.topbar{min-height:72px;padding:10px 16px;gap:10px}.crumb{gap:8px}.profile .profile-copy,.profile .avatar{display:none}.profile .btn{padding-inline:8px}.content{padding:24px 20px 40px}.page-head{display:block;margin-bottom:24px}.page-head>.actions{margin-top:18px}h1{font-size:28px;letter-spacing:-.8px}h2{font-size:20px}.page-head p{font-size:13px}
-  .grid-2,.grid-3{grid-template-columns:1fr}.grid-4,.metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.metric{padding:18px}.metric .number,.metric strong{font-size:28px}.panel{padding:20px}.dashboard-welcome{padding:22px;align-items:flex-start}.dashboard-welcome h2{font-size:22px}.dashboard-welcome .date-block{display:none}.form-grid{grid-template-columns:1fr;gap:20px}.toolbar{gap:12px}.toolbar .field{min-width:calc(50% - 6px)}.toolbar .field:has(input[type="month"]){flex-basis:100%}input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px}.list-row{flex-wrap:wrap}.receipt-preview{max-height:340px}
+  .demo-strip{padding-inline:16px;min-height:34px;font-size:9px;gap:8px}.demo-strip span:last-of-type{display:none}.demo-strip button{min-height:34px;font-size:10px}.topbar{min-height:66px;padding:10px 16px;gap:10px}.crumb{gap:8px}.profile .profile-copy,.profile .avatar{display:none}.profile .btn{padding-inline:8px}.content{padding:20px 20px 40px}.page-head{display:block;margin-bottom:24px}.page-head>.actions{margin-top:18px}h1{font-size:28px;letter-spacing:-.8px}h2{font-size:20px}.page-head p{font-size:13px}
+  .grid-2,.grid-3{grid-template-columns:1fr}.grid-4,.metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.settlement-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.settlement-metrics .metric-total{grid-column:1/-1}.metric{padding:18px}.metric .number,.metric strong{font-size:28px}.panel{padding:20px}.dashboard-welcome{padding:22px;align-items:flex-start}.dashboard-welcome h2{font-size:22px}.dashboard-welcome .date-block{display:none}.form-grid{grid-template-columns:1fr;gap:20px}.toolbar{gap:12px}.toolbar .field{min-width:min(200px,100%)}.toolbar .field:has(input[type="month"]){flex-basis:100%}input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px}.list-row{flex-wrap:wrap}.receipt-preview{max-height:340px}
   .records-table{overflow:visible;background:transparent;border:0;border-radius:0}.records-table table,.records-table tbody{display:block}.records-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}.records-table tr{display:block;background:white;border:1px solid var(--line);border-radius:10px;padding:8px 16px;margin-bottom:12px}.records-table tr:last-child{margin-bottom:0}.records-table td{display:grid;grid-template-columns:minmax(90px,.8fr) minmax(0,1.3fr);gap:16px;padding:12px 0;border:0;overflow-wrap:anywhere}.records-table td+td{border-top:1px solid #f1edef}.records-table td::before{content:attr(data-label);color:var(--muted);font-weight:500;font-size:12px}.records-table td>div{min-width:0}.records-table td .actions{flex-wrap:wrap;gap:8px}.records-table td .btn{width:100%}.records-table td .badge{justify-self:start;align-self:start}.records-table td small{grid-column:2}
-  .calendar-wrap td{height:96px;padding:4px}.calendar-wrap th{padding:12px 4px}.forced-password{margin:28px 20px;padding:24px}.modal-backdrop{padding:12px}.modal{max-height:calc(100dvh - 24px);border-radius:12px}.modal-header{padding:16px 20px}.modal-header h2{font-size:19px}.modal-body{padding:20px;gap:20px}.modal-footer{padding:16px 20px max(16px,env(safe-area-inset-bottom));flex-wrap:wrap}.modal-footer .btn{flex:1}.modal-error{margin-inline:20px}#toast{bottom:16px;right:16px}
+  .calendar-wrap td{height:72px;padding:4px}.calendar-wrap th{padding:10px 4px}.calendar-wrap .cal-count{font-size:10px;padding:2px 3px}.forced-password{margin:28px 20px;padding:24px}.modal-backdrop{padding:12px}.modal{max-height:calc(100dvh - 24px);border-radius:12px}.modal-header{padding:16px 20px}.modal-header h2{font-size:19px}.modal-body{padding:20px;gap:20px}.modal-footer{padding:16px 20px max(16px,env(safe-area-inset-bottom));flex-wrap:wrap}.modal-footer .btn{flex:1}.modal-error{margin-inline:20px}#toast{bottom:16px;right:16px}
 }
 @media(max-width:480px){
-  .content{padding:24px 16px 40px}.topbar{padding-inline:10px}.crumb{gap:4px}.crumb strong{font-size:11px}.mobile-logo{width:34px;height:34px}.panel{padding:18px}.panel-head{margin-bottom:18px}.page-head>.actions>.btn{flex:1}.metric{padding:15px}.metric p{font-size:11px}.dashboard-welcome{padding:20px}.key-value{grid-template-columns:1fr 1.15fr;gap:14px}.key-value:has(>div){gap:20px 14px}.trip-card{padding:18px}.trip-card .time{font-size:28px}.trip-card h3{font-size:17px}.trip-top{align-items:flex-start}.trip-top>div{gap:6px}.trip-top .section-label{flex-basis:100%;border:0;padding:0;font-size:10px;margin-top:4px}.trip-bottom{flex-wrap:wrap;margin-top:18px}.trip-bottom>.btn{margin-left:auto}
+  .content{padding:20px 16px 40px}.topbar{padding-inline:10px}.crumb{gap:4px}.crumb strong{font-size:11px}.mobile-logo{width:34px;height:34px}.panel{padding:18px}.panel-head{margin-bottom:18px}.page-head>.actions>.btn{flex:1}.toolbar .field{flex-basis:100%}.metric{padding:15px}.metric p{font-size:11px}.dashboard-welcome{padding:20px}.key-value{grid-template-columns:1fr 1.15fr;gap:14px}.key-value:has(>div){gap:20px 14px}.trip-card{padding:18px}.trip-card .time{font-size:28px}.trip-card h3{font-size:17px}.trip-top{align-items:flex-start}.trip-top>div{gap:6px}.trip-top .section-label{flex-basis:100%;border:0;padding:0;font-size:10px;margin-top:4px}.trip-bottom{flex-wrap:wrap;margin-top:16px}.trip-bottom>.btn,.trip-bottom>.actions{margin-left:auto;justify-content:flex-end}
   .login-story{padding:24px}.login-brand{margin-bottom:20px}.login-brand img{width:64px;height:64px}.login-story h1{font-size:32px;line-height:1.15}.login-story>.intro{font-size:13px}.login-panel{padding:28px 20px}.login-panel h2{font-size:25px}.login-panel>.eyebrow{font-size:10px;letter-spacing:.7px}.quick-grid{gap:12px}.quick-card{padding:16px;min-height:172px}.quick-card strong{font-size:13px}.quick-card small{font-size:11px}.quick-card .arrow{right:16px;top:23px}.quick-card .avatar{width:36px;height:36px;margin-bottom:16px}.login-tools{gap:4px;justify-content:center}.login-tools button{padding-inline:10px}
   .modal-backdrop{padding:8px}.modal{max-height:calc(100dvh - 16px)}.modal-header,.modal-body{padding:16px}.modal-footer{padding:14px 16px max(14px,env(safe-area-inset-bottom));gap:8px}.modal-footer .btn{font-size:13px;padding:10px 12px}.dirty-panel{padding:22px}.dirty-panel .btn{width:100%}
 }
@@ -288,7 +290,8 @@ function optional(value) {
 function number(value, label, { minimum = 0, integer = false } = {}) {
   const validInput = typeof value === 'number' || (typeof value === 'string' && value.trim() !== '');
   const parsed = validInput ? Number(value) : NaN;
-  ensure(Number.isFinite(parsed) && parsed >= minimum && (!integer || Number.isSafeInteger(parsed)), 'Ingresá ' + label + ' válido.');
+  const suffix = label.startsWith('una ') ? ' válida.' : ' válido.';
+  ensure(Number.isFinite(parsed) && parsed >= minimum && (!integer || Number.isSafeInteger(parsed)), 'Ingresá ' + label + suffix);
   return parsed;
 }
 
@@ -1146,8 +1149,8 @@ function idAttr(ctx, id) { return `data-id="${ctx.h(id)}"`; }
 function act(ctx, label, action, id, kind = 'secondary', more = '') {
   return ctx.button(label, `op:${action}`, `${id ? idAttr(ctx, id) : ''} ${more}`, kind);
 }
-function heading(ctx, title, subtitle, actions = '') {
-  return `<header class="page-head"><div><h1>${ctx.h(title)}</h1><p>${ctx.h(subtitle)}</p></div>${actions ? `<div class="actions">${actions}</div>` : ''}</header>`;
+function heading(ctx, title, subtitle, actions = '', backHTML = '') {
+  return `<header class="page-head"><div>${backHTML}<h1>${ctx.h(title)}</h1><p>${ctx.h(subtitle)}</p></div>${actions ? `<div class="actions">${actions}</div>` : ''}</header>`;
 }
 function metric(ctx, label, value) {
   return `<div class="metric"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
@@ -1182,6 +1185,7 @@ function journey(ctx) {
   const { today, trips, fuel } = ctx.getState();
   const shift = ownShift(ctx);
   const todayTrips = ordered(trips.filter(trip => trip.date === today && owns(ctx, trip)));
+  const activeTrip = todayTrips.find(trip => trip.status === 'En curso') || todayTrips.find(trip => trip.status === 'Programado');
   const receipts = fuel.filter(item => item.driverId === ctx.driver.id && !item.receipt);
   const fuelButton = shift ? ctx.button('Registrar combustible', 'mg:fuel-edit', `data-vehicle="${ctx.h(shift.vehicleId)}"`, 'primary') : '';
   const turn = shift
@@ -1191,12 +1195,21 @@ function journey(ctx) {
   return `${heading(ctx, 'Mi jornada', `${ctx.driver.name} · ${weekday.format(timeOf(today))} ${ctx.date(today)}`)}
     <div class="stack"><section class="panel"><div class="panel-head">${turn}</div></section>${receiptNotice}
     <section class="stack" aria-label="Viajes de hoy"><div class="panel-head"><h2>Viajes de hoy</h2><span>${todayTrips.length} ${todayTrips.length === 1 ? 'viaje' : 'viajes'}</span></div>
-    ${todayTrips.length ? todayTrips.map(trip => tripCard(ctx, trip, false)).join('') : ctx.empty('Sin viajes asignados hoy', 'Los viajes que te asignen para hoy aparecen acá.')}</section></div>`;
+    ${todayTrips.length ? todayTrips.map(trip => tripCard(ctx, trip, false, trip.id === activeTrip?.id)).join('') : ctx.empty('Sin viajes asignados hoy', 'Los viajes que te asignen para hoy aparecen acá.')}</section></div>`;
 }
-function tripCard(ctx, trip, showDriver = true) {
+function tripCard(ctx, trip, showDriver = true, isNext = false) {
   const route = records(ctx, 'routes', trip.routeId);
   const reasons = ctx.can('plan') ? pendingReviews(trip) : [];
-  return `<article class="trip-card"><div class="trip-top"><div><strong class="time">${ctx.h(trip.time)}</strong> <span class="section-label">${ctx.h(trip.type)}</span></div>${ctx.badge(trip.status, TONES[trip.status])}</div><h3>${ctx.h(route?.name || 'Recorrido')}</h3><p>${ctx.h(route?.destination || '—')} · ${trip.passengers.length} ${trip.passengers.length === 1 ? 'pasajero' : 'pasajeros'}</p><div class="trip-bottom"><div>${showDriver ? `<p>${ctx.h(driverName(ctx, trip.driverId))}</p>` : ''}${reasons.length ? ctx.badge('Pendiente de revisión', 'warning') : ''}</div>${act(ctx, 'Ver viaje', 'trip', trip.id)}</div></article>`;
+  const patientNames = trip.passengers.map(passenger => ctx.lookup('patients', passenger.patientId)).filter(Boolean);
+  const passengersLine = patientNames.length ? `<p class="trip-patients">${ctx.h(patientNames.join(' · '))}</p>` : '';
+  const canStart = !showDriver && owns(ctx, trip) && trip.status === 'Programado' && ownShift(ctx)
+    && !ctx.getState().trips.some(item => item.id !== trip.id && item.driverId === ctx.driver?.id && item.status === 'En curso');
+  const quickAction = canStart
+    ? act(ctx, 'Iniciar viaje', 'start-trip', trip.id, 'primary')
+    : showDriver && ctx.can('plan') && trip.status === 'Programado'
+      ? act(ctx, trip.driverId ? 'Reasignar' : 'Asignar chofer', 'assign', trip.id, trip.driverId ? 'secondary' : 'primary')
+      : '';
+  return `<article class="trip-card${isNext ? ' next' : ''}"><div class="trip-top"><div><strong class="time">${ctx.h(trip.time)}</strong> <span class="section-label">${ctx.h(trip.type)}</span></div>${ctx.badge(trip.status, TONES[trip.status])}</div><h3>${ctx.h(route?.name || 'Recorrido')}</h3><p>${ctx.h(route?.destination || '—')} · ${trip.passengers.length} ${trip.passengers.length === 1 ? 'pasajero' : 'pasajeros'}</p>${passengersLine}<div class="trip-bottom"><div>${showDriver ? `<p>${ctx.h(driverName(ctx, trip.driverId))}</p>` : ''}${reasons.length ? ctx.badge('Pendiente de revisión', 'warning') : ''}</div><div class="actions">${quickAction}${act(ctx, 'Ver viaje', 'trip', trip.id)}</div></div></article>`;
 }
 function unavailable(ctx) { return ctx.empty('Vista no disponible', 'No tenés acceso a esta información con tu cuenta.'); }
 
@@ -1235,7 +1248,7 @@ function calendar(ctx, days, trips) {
       if (!day) return '<td></td>';
       const count = counts.get(day) || 0;
       const label = `${ctx.date(day)}, ${count} ${count === 1 ? 'viaje' : 'viajes'}`;
-      return `<td>${act(ctx, day.slice(-2), 'day', '', day === today ? 'primary' : 'ghost', `data-date="${ctx.h(day)}" aria-label="${ctx.h(label)}"${day === today ? ' aria-current="date"' : ''}`)}${count ? `<small class="hint">${count} ${count === 1 ? 'viaje' : 'viajes'}</small>` : ''}</td>`;
+      return `<td>${act(ctx, day.slice(-2), 'day', '', day === today ? 'primary' : 'ghost', `data-date="${ctx.h(day)}" aria-label="${ctx.h(label)}"${day === today ? ' aria-current="date"' : ''}`)}${count ? `<span class="cal-count">${count} ${count === 1 ? 'viaje' : 'viajes'}</span>` : ''}</td>`;
     }).join('')}</tr>`);
   }
   return `<div class="table-wrap calendar-wrap"><table class="table" aria-label="Calendario del mes"><thead><tr>${['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(day => `<th scope="col">${day}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
@@ -1267,12 +1280,14 @@ function agenda(ctx, input) {
   const statuses = STATES.map(state => ({ id: state, name: state }));
   const noTrips = driverId || status || filter ? ctx.empty('Sin coincidencias', 'Probá con otros filtros para este período.', clear)
     : ctx.empty('Sin viajes en este período', plan ? 'Podés elegir otras fechas o generar viajes desde los recorridos activos.' : 'Tus viajes asignados aparecerán acá.', plan ? act(ctx, 'Generar mes', 'generate') : '');
-  const groups = [...rows].map(([day, group]) => `<section class="stack"><div class="panel-head"><h3>${ctx.h(`${weekday.format(timeOf(day))} ${ctx.date(day)}`)}</h3><span>${group.length} ${group.length === 1 ? 'viaje' : 'viajes'}</span></div>${group.map(trip => tripCard(ctx, trip, plan)).join('')}</section>`).join('');
+  const groups = [...rows].map(([day, group]) => {
+    const groupTitle = view === 'day' ? 'Programación del día' : `${weekday.format(timeOf(day))} ${ctx.date(day)}`;
+    return `<section class="stack"><div class="panel-head"><h3>${ctx.h(groupTitle)}</h3><span>${group.length} ${group.length === 1 ? 'viaje' : 'viajes'}</span></div>${group.map(trip => tripCard(ctx, trip, plan)).join('')}</section>`;
+  }).join('');
   return `${heading(ctx, plan ? 'Agenda' : 'Mis viajes', plan ? 'Consultá la programación y organizá las asignaciones.' : 'Consultá tus viajes asignados por fecha.', agendaActions)}
     <div class="stack"><section class="panel stack" aria-label="Controles de agenda">
-      <div class="panel-head"><h2>${ctx.h(caption)}</h2><div class="actions" aria-label="Vista de agenda">${switchView}</div></div>
-      <div class="actions">${act(ctx, 'Anterior', 'move', '', 'secondary', 'data-direction="-1"')}${act(ctx, 'Hoy', 'today', '', date === today ? 'ghost' : 'secondary')}${act(ctx, 'Siguiente', 'move', '', 'secondary', 'data-direction="1"')}</div>
-      <form class="toolbar" data-action="op:agenda-filter">${ctx.field('Ir a la fecha', 'date', date, 'date', 'required')}${plan ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...drivers], driverId) : ''}${ctx.select('Estado', 'status', [{ id: '', name: 'Todos' }, ...statuses], status)}<button type="submit" class="btn secondary">Aplicar filtros</button>${driverId || status || filter ? clear : ''}</form>${quick}
+      <div class="agenda-bar"><h2>${ctx.h(caption)}</h2><div class="agenda-nav"><div class="actions">${act(ctx, 'Anterior', 'move', '', 'secondary', 'data-direction="-1"')}${act(ctx, 'Hoy', 'today', '', date === today ? 'ghost' : 'secondary')}${act(ctx, 'Siguiente', 'move', '', 'secondary', 'data-direction="1"')}</div><div class="actions" aria-label="Vista de agenda">${switchView}</div></div></div>
+      <form class="toolbar" data-action="op:agenda-filter">${ctx.field('Ir a la fecha', 'date', date, 'date', 'required data-change="op:agenda-filter"')}${plan ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...drivers], driverId, 'data-change="op:agenda-filter"') : ''}${ctx.select('Estado', 'status', [{ id: '', name: 'Todos' }, ...statuses], status, 'data-change="op:agenda-filter"')}<button type="submit" class="btn secondary">Aplicar filtros</button>${driverId || status || filter ? clear : ''}</form>${quick}
     </section>${view === 'month' ? `<section class="panel">${calendar(ctx, days, filtered)}</section>` : ''}${groups || noTrips}</div>`;
 }
 
@@ -1421,9 +1436,13 @@ function tripDetail(ctx, params) {
   const factsHtml = facts(ctx, [['Horario', trip.time], ['Tipo', trip.type], ['Destino', route?.destination], ['Chofer', driverName(ctx, trip.driverId)], ['Vehículo del viaje', trip.vehicleId ? vehicleName(ctx, trip.vehicleId) : 'Se toma del turno al iniciar'], ...(plan ? [['Kilómetros comerciales', km(trip.commercialKm)]] : []), ...(ctx.can('commercial') ? [['Importe del viaje', ctx.money(trip.amount)], ['Remuneración', ctx.money(trip.driverPay)]] : [])]);
   const reviewNotice = reviews.length ? notice('warning', `<h2>Motivos de revisión</h2><ul>${reviews.map(review => `<li class="list-row"><span>${ctx.h(review.reason)}</span>${act(ctx, 'Marcar como revisado', 'review-trip', trip.id, 'secondary', `data-review="${ctx.h(review.id)}"`)}</li>`).join('')}</ul>`) : '';
   const notes = [...trip.notes].reverse().map(note => `<li><p>${ctx.h(note.text)}</p><p class="hint">${ctx.h(dateTime(ctx, note.at))} · ${ctx.h(ctx.lookup('users', note.authorId))}</p></li>`).join('');
-  return `${heading(ctx, route?.name || 'Detalle del viaje', `${ctx.date(trip.date)} · ${trip.type} · ${trip.time}`, act(ctx, 'Volver', 'back'))}
+  const batchBtn = own && inCourse && trip.passengers.some(passenger => passenger.status !== 'Recogido')
+    ? act(ctx, 'Marcar todos recogidos', 'passengers-all', trip.id, 'secondary small') : '';
+  const footerFinish = own && inCourse
+    ? `<div class="actions section-gap">${act(ctx, 'Finalizar viaje', 'finish-trip', trip.id, 'primary', unmarked ? 'disabled' : '')}${unmarked ? `<span class="hint">${ctx.h(unmarked === 1 ? 'Falta indicar 1 pasajero.' : `Faltan indicar ${unmarked} pasajeros.`)}</span>` : ''}</div>` : '';
+  return `${heading(ctx, route?.name || 'Detalle del viaje', `${ctx.date(trip.date)} · ${trip.type} · ${trip.time}`, '', act(ctx, '← Volver', 'back', '', 'back-link'))}
     <div class="stack"><section class="panel stack"><div class="panel-head"><h2>Datos del viaje</h2>${ctx.badge(trip.status, TONES[trip.status])}</div>${factsHtml}${trip.nonperformanceReason ? `<p><strong>Motivo de no realización</strong> ${ctx.h(trip.nonperformanceReason)}</p>` : ''}${workflow.join('')}${buttons.length ? `<div class="actions">${buttons.join('')}</div>` : ''}</section>${reviewNotice}
-    <section class="panel"><h2>Pasajeros</h2>${persons ? `<ul class="stack">${persons}</ul>` : '<p class="hint">Sin pasajeros previstos.</p>'}</section>
+    <section class="panel"><div class="panel-head"><h2>Pasajeros</h2>${batchBtn}</div>${persons ? `<ul class="stack">${persons}</ul>` : '<p class="hint">Sin pasajeros previstos.</p>'}${footerFinish}</section>
     <section class="panel"><h2>Historial del viaje</h2>${notes ? `<h3>Novedades</h3><ol class="history">${notes}</ol>` : ''}${history(ctx, trip.history)}</section></div>`;
 }
 
@@ -1501,13 +1520,18 @@ function openShift(ctx) {
   ctx.dialog({ title: 'Abrir turno', submitLabel: 'Confirmar apertura',
     body: `<div class="stack">${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Elegí un vehículo' }, ...options], '', 'required data-change="op:opening-vehicle" aria-describedby="opening-reference"')}
     <p class="hint" id="opening-reference" data-opening-reference aria-live="polite">${ctx.h(openingReference(ctx))}</p>
+    <div data-opening-quick hidden><button type="button" class="btn small secondary" data-action="op:use-last-km" data-km=""></button></div>
     ${ctx.field('Lectura actual del odómetro (km)', 'reading', '', 'number', 'required min="0" step="1" inputmode="numeric"')}${FORM_ERROR}</div>`,
     onSubmit(values, form) {
       try { result(ctx, 'openShift', values, 'Turno abierto.'); }
       catch (error) {
         const vehicle = records(ctx, 'vehicles', values.vehicleId);
         const busy = ctx.getState().shifts.some(shift => shift.vehicleId === values.vehicleId && !shift.closedAt);
-        if (!vehicle?.active || busy || ownShift(ctx) || vehicle.lastCloseKm == null || Number(values.reading) >= vehicle.lastCloseKm) throw error;
+        const rawReading = String(values.reading ?? '').trim();
+        const parsed = Number(rawReading);
+        const validNegative = rawReading !== '' && Number.isSafeInteger(parsed) && parsed >= 0 && parsed < vehicle?.lastCloseKm;
+        const unresolved = ctx.getState().readingReviews.some(review => review.vehicleId === values.vehicleId && review.kind === 'negative' && review.status === 'Pendiente');
+        if (!vehicle?.active || busy || ownShift(ctx) || vehicle.lastCloseKm == null || !validNegative || unresolved) throw error;
         const target = form.querySelector('[data-operation-error]');
         target.innerHTML = notice('danger', `<p>${ctx.h(error.message)}</p><p>Podés enviar la lectura real informada para revisión.</p>${act(ctx, 'Enviar lectura para revisión', 'request-reading')}`);
         target.focus();
@@ -1673,7 +1697,12 @@ async function handle(ctx, action, el) {
     case 'op:move': goAgenda({ date: moveDate(params, Number(el.dataset.direction)) }); break;
     case 'op:clear-filters': goAgenda({ driverId: '', status: '', filter: '' }); break;
     case 'op:quick-filter': requirePermission(plan); goAgenda({ filter: params.filter === el.dataset.filter ? '' : el.dataset.filter, driverId: '', status: '' }); break;
-    case 'op:agenda-filter': goAgenda(ctx.form(el)); break;
+    case 'op:agenda-filter': {
+      const form = el.form || el;
+      const values = ctx.form(form);
+      goAgenda({ ...values, filter: values.driverId || values.status ? '' : params.filter });
+      break;
+    }
     case 'op:generate': requirePermission(plan); generate(ctx); break;
     case 'op:reschedule': requirePermission(plan); reprogram(ctx, trip, el.dataset.routeId); break;
     case 'op:reprogram-route': {
@@ -1688,9 +1717,29 @@ async function handle(ctx, action, el) {
     }
     case 'op:open-shift': requirePermission(ctx.can('drive') && ctx.driver && !ownShift(ctx)); openShift(ctx); break;
     case 'op:opening-vehicle': {
+      const vehicle = records(ctx, 'vehicles', el.value);
       const reference = el.form.querySelector('[data-opening-reference]');
-      reference.textContent = openingReference(ctx, records(ctx, 'vehicles', el.value));
+      reference.textContent = openingReference(ctx, vehicle);
+      const quickWrap = el.form.querySelector('[data-opening-quick]');
+      const quickBtn = quickWrap?.querySelector('button');
+      const busy = vehicle && ctx.getState().shifts.some(shift => shift.vehicleId === vehicle.id && !shift.closedAt);
+      const unresolved = vehicle && ctx.getState().readingReviews.some(review => review.vehicleId === vehicle.id && review.kind === 'negative' && review.status === 'Pendiente');
+      if (quickWrap && quickBtn && vehicle?.active && !busy && !unresolved && vehicle.lastCloseKm != null) {
+        quickBtn.dataset.km = String(vehicle.lastCloseKm);
+        quickBtn.textContent = `Usar último cierre (${km(vehicle.lastCloseKm)})`;
+        quickWrap.hidden = false;
+      } else if (quickWrap) {
+        quickWrap.hidden = true;
+      }
       el.form.querySelector('[data-operation-error]').replaceChildren(); break;
+    }
+    case 'op:use-last-km': {
+      if (el.form?.elements.reading) {
+        el.form.elements.reading.value = el.dataset.km || '';
+        el.form.querySelector('[data-operation-error]')?.replaceChildren();
+        el.form.elements.reading.focus();
+      }
+      break;
     }
     case 'op:request-reading': requirePermission(ctx.can('drive')); reportReading(ctx, ctx.form(el.form)); break;
     case 'op:close-shift': {
@@ -1707,8 +1756,21 @@ async function handle(ctx, action, el) {
     case 'op:reading-history': requirePermission(ctx.can('odometer')); readingHistory(ctx, id); break;
     case 'op:confirm-reading': requirePermission(ctx.can('odometer') && review?.status === 'Pendiente' && review.kind === 'positive'); confirmReading(ctx, review); break;
     case 'op:correct-reading': requirePermission(ctx.can('odometer') && review?.status === 'Pendiente'); correctReading(ctx, review); break;
-    case 'op:start-trip': requirePermission(own && trip.status === 'Programado'); result(ctx, 'startTrip', { id }, 'Viaje iniciado.'); break;
-    case 'op:passenger': requirePermission(own && trip.status === 'En curso'); result(ctx, 'passenger', { id, patientId: el.dataset.patient, status: el.dataset.status }, 'Estado del pasajero guardado.'); break;
+    case 'op:start-trip': {
+      requirePermission(own && trip.status === 'Programado');
+      result(ctx, 'startTrip', { id }, 'Viaje iniciado.');
+      if (ctx.screen !== 'viaje') ctx.go('viaje', { id, back: ctx.screen, returnParams: ctx.params });
+      break;
+    }
+    case 'op:passenger': requirePermission(own && trip.status === 'En curso'); ctx.run('passenger', { id, patientId: el.dataset.patient, status: el.dataset.status }); break;
+    case 'op:passengers-all': {
+      requirePermission(own && trip.status === 'En curso');
+      for (const item of trip.passengers) {
+        if (item.status !== 'Recogido') ctx.run('passenger', { id, patientId: item.patientId, status: 'Recogido' });
+      }
+      ctx.toast('Todos los pasajeros marcados como recogidos.');
+      break;
+    }
     case 'op:finish-trip': requirePermission(own && trip.status === 'En curso'); finish(ctx, trip); break;
     case 'op:no-trip': {
       requirePermission(trip && (plan || own) && ['Programado', 'En curso'].includes(trip.status));
@@ -1776,8 +1838,8 @@ const fuelEdit = (ctx, item) => ctx.can('fuelVerify') ||
 const openShift = ctx => ctx.can('drive') && ctx.driver?.active && ctx.getState().shifts.find(shift => shift.driverId === ctx.driver.id && !shift.closedAt);
 const vehicleName = (ctx, id) => ctx.lookup('vehicles', id, 'alias');
 
-function page(ctx, title, summary, actions = '', eyebrow = 'Gestión') {
-  return `<header class="page-head"><div><p class="eyebrow">${ctx.h(eyebrow)}</p><h1>${ctx.h(title)}</h1>${summary ? `<p>${ctx.h(summary)}</p>` : ''}</div>${actions ? `<div class="actions">${actions}</div>` : ''}</header>`;
+function page(ctx, title, summary, actions = '', eyebrow = 'Gestión', backHTML = '') {
+  return `<header class="page-head"><div>${backHTML}<p class="eyebrow">${ctx.h(eyebrow)}</p><h1>${ctx.h(title)}</h1>${summary ? `<p>${ctx.h(summary)}</p>` : ''}</div>${actions ? `<div class="actions">${actions}</div>` : ''}</header>`;
 }
 
 function panel(ctx, title, body) {
@@ -1852,7 +1914,7 @@ function masterList(ctx, collection, params) {
     return (status === 'all' || item.active === (status === 'active')) && searchable.some(value => value.includes(normalize(q)));
   }).sort((a, b) => recordName(a).localeCompare(recordName(b), 'es-AR'));
   const tool = `<form class="toolbar" data-action="mg:master-filter" ${attr(ctx, 'collection', collection)}>
-    ${ctx.field('Buscar', 'q', q, 'search')}${ctx.select('Estado', 'status', activityOptions, status)}
+    ${ctx.field('Buscar', 'q', q, 'search')}${ctx.select('Estado', 'status', activityOptions, status, 'data-change="mg:master-filter"')}
     <button type="submit" class="btn secondary">Aplicar filtros</button>
   </form>`;
   const details = {
@@ -1876,9 +1938,9 @@ function masterDetail(ctx, collection, item) {
   const meta = masters[collection];
   const recordAttrs = `${attr(ctx, 'collection', collection)} ${attr(ctx, 'id', item.id)}`;
   const editable = item.active && ctx.can('masters');
+  const backBtn = ctx.button(`← Volver a ${meta.title.toLowerCase()}`, 'mg:master-back',
+    `${attr(ctx, 'collection', collection)} ${attr(ctx, 'q', ctx.params?.q ?? '')} ${attr(ctx, 'status', ctx.params?.status ?? 'active')}`, 'back-link');
   const actions = [
-    ctx.button(`Volver a ${meta.title.toLowerCase()}`, 'mg:master-back',
-      `${attr(ctx, 'collection', collection)} ${attr(ctx, 'q', ctx.params?.q ?? '')} ${attr(ctx, 'status', ctx.params?.status ?? 'active')}`, 'ghost'),
     editable ? ctx.button('Editar', 'mg:master-edit', recordAttrs, 'primary') : '',
     editable && collection === 'routes' && ctx.can('plan')
       ? ctx.button('Reprogramar', 'op:reschedule', attr(ctx, 'route-id', item.id)) : '',
@@ -1911,7 +1973,7 @@ function masterDetail(ctx, collection, item) {
     related = panel(ctx, 'Recorridos', routes.length ? `<ul class="stack">${routes.map(route => `<li>${ctx.button(route.name, 'mg:master-view', `${attr(ctx, 'collection', 'routes')} ${attr(ctx, 'id', route.id)}`, 'ghost')} ${statusBadge(ctx, route.active)}</li>`).join('')}</ul>` : '<p class="hint">Todavía no participa en recorridos.</p>');
   }
   if (collection === 'vehicles' && ctx.can('expense')) related = vehicleExpenses(ctx, item);
-  return page(ctx, recordName(item), '', actions, meta.singular)
+  return page(ctx, recordName(item), '', actions, meta.singular, backBtn)
     + `<div class="stack">${panel(ctx, 'Datos de la ficha', statusBadge(ctx, item.active) + kv(ctx, data))}${related}${panel(ctx, 'Historial de cambios', history(ctx, item.history, collection === 'routes' && !ctx.can('commercial')))}</div>`;
 }
 
@@ -2017,10 +2079,10 @@ function fuelList(ctx, params) {
   }).sort((a, b) => `${b.date}${b.time}`.localeCompare(`${a.date}${a.time}`));
   const newButton = openShift(ctx) ? ctx.button('Registrar combustible', 'mg:fuel-edit', '', 'primary') : '';
   const tool = `<form class="toolbar" data-action="mg:fuel-filter">
-    ${ctx.field('Mes', 'month', month, 'month')}
-    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx).filter(vehicle => fuelScopeAll(ctx) || all.some(item => item.vehicleId === vehicle.id))], vehicleId)}
-    ${fuelScopeAll(ctx) ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...ctx.state.drivers], driverId) : ''}
-    ${ctx.select('Comprobante', 'filter', fuelFilters, filter)}
+    ${ctx.field('Mes', 'month', month, 'month', 'data-change="mg:fuel-filter"')}
+    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx).filter(vehicle => fuelScopeAll(ctx) || all.some(item => item.vehicleId === vehicle.id))], vehicleId, 'data-change="mg:fuel-filter"')}
+    ${fuelScopeAll(ctx) ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...ctx.state.drivers], driverId, 'data-change="mg:fuel-filter"') : ''}
+    ${ctx.select('Comprobante', 'filter', fuelFilters, filter, 'data-change="mg:fuel-filter"')}
     <button type="submit" class="btn secondary">Aplicar filtros</button>
   </form>`;
   const sum = records => ctx.money(records.reduce((total, item) => total + item.amount, 0));
@@ -2055,17 +2117,20 @@ function receiptImage(ctx, receipt) {
 function fuelDetail(ctx, item) {
   const itemAttr = attr(ctx, 'id', item.id);
   const editable = fuelEdit(ctx, item);
-  const controls = [
-    ctx.button('Volver a combustible', 'mg:fuel-back', ['filter', 'month', 'vehicleId', 'driverId'].map(key => {
-      const dataKey = { vehicleId: 'vehicle-id', driverId: 'driver-id' }[key] ?? key;
-      return attr(ctx, dataKey, ctx.params?.[key] ?? '');
-    }).join(' '), 'ghost'),
-    editable && !item.receipt ? ctx.button('Adjuntar comprobante', 'mg:fuel-edit', `${itemAttr} data-mode="attach"`, 'primary') : '',
-    editable ? ctx.button('Corregir', 'mg:fuel-edit', itemAttr) : '',
-    ctx.can('fuelVerify') && !item.verified ? item.receipt
+  const backBtn = ctx.button('← Volver a combustible', 'mg:fuel-back', ['filter', 'month', 'vehicleId', 'driverId'].map(key => {
+    const dataKey = { vehicleId: 'vehicle-id', driverId: 'driver-id' }[key] ?? key;
+    return attr(ctx, dataKey, ctx.params?.[key] ?? '');
+  }).join(' '), 'back-link');
+  const verifyBtn = ctx.can('fuelVerify') && !item.verified
+    ? item.receipt
       ? ctx.button('Marcar como verificada', 'mg:fuel-verify', itemAttr, 'primary')
       : '<button type="button" class="btn secondary" disabled aria-describedby="mg-missing-receipt">Marcar como verificada</button>'
-      : ''
+    : '';
+  const attachBtn = editable && !item.receipt ? ctx.button('Adjuntar comprobante', 'mg:fuel-edit', `${itemAttr} data-mode="attach"`, 'primary') : '';
+  const controls = [
+    attachBtn,
+    editable ? ctx.button('Corregir', 'mg:fuel-edit', itemAttr) : '',
+    verifyBtn
   ].join('');
   const pairs = [
     ['Fecha y hora', dateTime(ctx, item)], ['Vehículo', vehicleName(ctx, item.vehicleId)],
@@ -2074,9 +2139,16 @@ function fuelDetail(ctx, item) {
     ['Importe', ctx.money(item.amount)], ['Odómetro', `${number(item.odometer)} km`]
   ];
   const photo = receiptImage(ctx, item.receipt) || '<p id="mg-missing-receipt" class="notice warning">Falta adjuntar el comprobante</p>';
-  return page(ctx, 'Detalle de carga', dateTime(ctx, item), controls, 'Combustible') + `<div class="stack"><div class="grid-2">
+  const photoActions = (item.receipt ? verifyBtn : attachBtn) ? `<div class="actions">${item.receipt ? verifyBtn : attachBtn}</div>` : '';
+  const pendingOthers = item.verified && ctx.can('fuelVerify')
+    ? ctx.state.fuel.filter(entry => entry.id !== item.id && entry.receipt && !entry.verified)
+    : [];
+  const nextNotice = pendingOthers.length
+    ? `<div class="notice info"><div class="panel-head"><span>${ctx.h(pendingOthers.length === 1 ? 'Queda 1 comprobante pendiente de verificación.' : `Quedan ${pendingOthers.length} comprobantes pendientes de verificación.`)}</span>${ctx.button('Ir al siguiente pendiente →', 'mg:fuel-view', attr(ctx, 'id', pendingOthers[0].id), 'small')}</div></div>`
+    : '';
+  return page(ctx, 'Detalle de carga', dateTime(ctx, item), controls, 'Combustible', backBtn) + `<div class="stack">${nextNotice}<div class="grid-2">
     ${panel(ctx, 'Datos de la carga', fuelBadge(ctx, item) + kv(ctx, pairs))}
-    ${panel(ctx, 'Comprobante', photo)}
+    ${panel(ctx, 'Comprobante', photo + photoActions)}
   </div>${panel(ctx, 'Historial de la carga', history(ctx, item.history))}</div>`;
 }
 
@@ -2136,7 +2208,22 @@ async function selectReceipt(input) {
     } catch {
       throw new Error('La imagen no se puede previsualizar. Probá con una foto JPG o PNG.');
     }
-    upload.data = data;
+    let result = data;
+    if (file.type !== 'image/svg+xml' && (data.length > 260000 || image.naturalWidth > 1400 || image.naturalHeight > 1400)) {
+      const scale = Math.min(1, 1400 / Math.max(image.naturalWidth || 1, image.naturalHeight || 1));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const ctx2d = canvas.getContext('2d');
+      if (ctx2d) {
+        ctx2d.fillStyle = '#ffffff';
+        ctx2d.fillRect(0, 0, canvas.width, canvas.height);
+        ctx2d.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL('image/jpeg', 0.78);
+        if (compressed.startsWith('data:image/') && compressed.length < data.length) result = compressed;
+      }
+    }
+    upload.data = result;
   } catch (error) {
     upload.error = error.message;
   } finally {
@@ -2230,9 +2317,9 @@ function expenseList(ctx, params) {
     (!vehicleId || item.vehicleId === vehicleId) && (!category || item.category === category));
   const newButton = ctx.button('Registrar gasto o intervención', 'mg:expense-edit', '', 'primary');
   const filters = `<form class="toolbar" data-action="mg:expense-filter">
-    ${ctx.field('Mes', 'month', month, 'month')}
-    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx)], vehicleId)}
-    ${ctx.select('Categoría', 'category', [{ id: '', name: 'Todas' }, ...options(expenseCategories)], category)}
+    ${ctx.field('Mes', 'month', month, 'month', 'data-change="mg:expense-filter"')}
+    ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx)], vehicleId, 'data-change="mg:expense-filter"')}
+    ${ctx.select('Categoría', 'category', [{ id: '', name: 'Todas' }, ...options(expenseCategories)], category, 'data-change="mg:expense-filter"')}
     <button type="submit" class="btn secondary">Aplicar filtros</button>
   </form>`;
   const content = items.length
@@ -2422,11 +2509,13 @@ const fuelParams = ({ filter, month, vehicleId, driverId }) => Object.fromEntrie
 );
 
 async function handle(ctx, action, el) {
-  const { id, mode, collection, vehicle, q, status } = el.dataset;
+  const { id, mode, vehicle, q, status } = el.dataset;
+  const form = el.form || el;
+  const collection = el.dataset.collection || form?.dataset?.collection;
   if (action.startsWith('mg:master-') && masterRead(ctx, collection)) {
     const item = ctx.getState()[collection].find(record => record.id === id);
     const meta = masters[collection];
-    if (action === 'mg:master-filter') ctx.go(meta.screen, ctx.form(el));
+    if (action === 'mg:master-filter') ctx.go(meta.screen, ctx.form(form));
     if (action === 'mg:master-clear') ctx.go(meta.screen, { status: 'all' });
     if (action === 'mg:master-back') ctx.go(meta.screen, { q: q ?? '', status: status ?? 'active' });
     if (action === 'mg:master-view' && item) {
@@ -2441,7 +2530,7 @@ async function handle(ctx, action, el) {
   }
   if (action.startsWith('mg:fuel-') && ctx.can('fuelRead')) {
     const item = ctx.getState().fuel.find(record => record.id === id);
-    if (action === 'mg:fuel-filter') ctx.go('combustible', fuelParams(ctx.form(el)));
+    if (action === 'mg:fuel-filter') ctx.go('combustible', fuelParams(ctx.form(form)));
     if (action === 'mg:fuel-clear') ctx.go('combustible', { filter: 'all' });
     if (action === 'mg:fuel-back') ctx.go('combustible', fuelParams(el.dataset));
     if (action === 'mg:fuel-view' && item && fuelRead(ctx, item)) {
@@ -2468,7 +2557,7 @@ async function handle(ctx, action, el) {
   }
   if (action.startsWith('mg:expense-') && ctx.can('expense')) {
     const item = ctx.getState().expenses.find(record => record.id === id);
-    if (action === 'mg:expense-filter') ctx.go('gastos', ctx.form(el));
+    if (action === 'mg:expense-filter') ctx.go('gastos', ctx.form(form));
     if (action === 'mg:expense-clear') ctx.go('gastos');
     if (action === 'mg:expense-view' && item) expenseView(ctx, item);
     if (action === 'mg:expense-edit' && (!id || item)) expenseForm(ctx, item, vehicle);
@@ -2718,8 +2807,8 @@ const reportTypes = {
 };
 const categories = ['Seguro', 'GPS', 'Mantenimiento', 'Cubiertas', 'Reparaciones'];
 
-function heading(ctx, title, description, actions = '') {
-  return `<header class="page-head"><div><h1>${ctx.h(title)}</h1><p>${ctx.h(description)}</p></div>${actions && `<div class="actions">${actions}</div>`}</header>`;
+function heading(ctx, title, description, actions = '', backHTML = '') {
+  return `<header class="page-head"><div>${backHTML}<h1>${ctx.h(title)}</h1><p>${ctx.h(description)}</p></div>${actions && `<div class="actions">${actions}</div>`}</header>`;
 }
 
 function columnsTable(ctx, columns, rows) {
@@ -2748,8 +2837,8 @@ function sessionTime(ctx, stamp) {
   return `${ctx.date(stamp.slice(0, 10))} ${stamp.slice(11, 16)}`;
 }
 
-function metric(ctx, label, value) {
-  return `<div class="metric"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
+function metric(ctx, label, value, extraClass = '') {
+  return `<div class="metric${extraClass ? ` ${extraClass}` : ''}"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
 }
 
 function note(ctx, text, tone = 'info') {
@@ -2848,14 +2937,19 @@ function settlementData(ctx, input, rows) {
   return {headers, detailed, completed, subtotals, exportRows};
 }
 
-function settlementRowsPanel(ctx, input, rows, total) {
+function settlementRowsPanel(ctx, input, rows, total, editable = false) {
   const data = settlementData(ctx, input, rows);
-  const displayRows = data.detailed.map(row => [...row.slice(0, -1), ctx.money(row.at(-1))]);
+  const tableHeaders = [...data.headers.slice(0, -1), 'Importe', ...(editable ? ['Ajuste'] : [])];
+  const displayRows = data.detailed.map((row, index) => [
+    ...row.slice(0, -1),
+    ctx.money(row.at(-1)),
+    ...(editable ? [{html: ctx.button('Ajustar', 'fin:adjust', `data-id="${ctx.h(rows[index].tripId)}"`, 'small')}] : []),
+  ]);
   const completed = data.completed;
   const displaySubtotals = data.subtotals.map(item => [item.group, item.type, item.count, ctx.money(item.amount)]);
-  return `<div class="grid-3">${metric(ctx, 'Servicios realizados', completed.length)}${metric(ctx, 'No realizados', rows.filter(row => row.status === 'No realizado').length)}${metric(ctx, input.type === 'Chofer' ? 'Subtotal por servicios' : 'Total', ctx.money(total))}</div>
+  return `<div class="metrics settlement-metrics">${metric(ctx, 'Servicios realizados', completed.length)}${metric(ctx, 'No realizados', rows.filter(row => row.status === 'No realizado').length)}${metric(ctx, input.type === 'Chofer' ? 'Subtotal por servicios' : 'Total', ctx.money(total), 'metric-total')}</div>
     <section class="panel"><h2>Servicios del período</h2>
-      ${displayRows.length ? columnsTable(ctx, [...data.headers.slice(0, -1), 'Importe'], displayRows) : ctx.empty('Sin servicios en el período', 'Probá con otro mes o destinatario.')}
+      ${displayRows.length ? columnsTable(ctx, tableHeaders, displayRows) : ctx.empty('Sin servicios en el período', 'Probá con otro mes o destinatario.')}
     </section>
     ${displaySubtotals.length ? `<section class="panel"><h2>Subtotales por grupo y servicio</h2>${columnsTable(ctx, ['Grupo', 'Servicio', 'Realizados', 'Subtotal'], displaySubtotals)}</section>` : ''}`;
 }
@@ -2864,15 +2958,30 @@ function renderSettlements(ctx, params) {
   if (params.period && params.type) return renderPreparation(ctx, params);
   const latest = [...ctx.state.settlements].sort((a, b) => sortRecent(a, b, 'period') || b.version - a.version);
   const listed = latest.filter((item, index) => latest.findIndex(other => other.period === item.period && other.type === item.type && other.driverId === item.driverId) === index);
+  const periods = [...new Set(ctx.state.trips.map(trip => trip.date.slice(0, 7)))].sort((a, b) => b.localeCompare(a));
+  const quickPeriods = periods.map(period => {
+    const periodTrips = ctx.state.trips.filter(trip => trip.date.startsWith(period + '-'));
+    const pendingCount = periodTrips.filter(trip => !['Realizado', 'No realizado'].includes(trip.status)).length;
+    const issued = listed.find(item => item.period === period && item.type === 'Transp SERV');
+    const statusLabel = pendingCount
+      ? `${pendingCount} ${pendingCount === 1 ? 'viaje sin resolver' : 'viajes sin resolver'}`
+      : issued ? `Emitida · Versión ${issued.version}` : 'Lista para emitir';
+    const tone = pendingCount ? 'warning' : issued ? 'info' : 'success';
+    const btnLabel = pendingCount ? 'Revisar pendientes' : issued ? 'Revisar corrección' : 'Revisar Transp SERV';
+    return `<div class="list-row"><div><strong>${ctx.h(formatPeriod(period))} · Transp SERV</strong><p>${ctx.h(`${periodTrips.length} ${periodTrips.length === 1 ? 'viaje' : 'viajes'} registrados`)}</p>${ctx.badge(statusLabel, tone)}</div>${ctx.button(btnLabel, 'fin:quick-prepare', `data-period="${ctx.h(period)}" data-type="Transp SERV"`, pendingCount || issued ? 'secondary small' : 'primary small')}</div>`;
+  }).join('');
   const rows = listed.map(item => [
     formatPeriod(item.period), titleForSettlement(ctx, item), `Versión ${item.version}`,
     sessionTime(ctx, item.issuedAt), ctx.money(item.total), item.minimumPending ? 'Mínimo pendiente' : 'Emitida',
     {html: ctx.button('Ver liquidación', 'fin:version', `data-id="${ctx.h(item.id)}"`, 'small')},
   ]);
   return `${heading(ctx, 'Liquidaciones', 'Revisá los servicios del mes y consultá las versiones emitidas.', ctx.button('Preparar liquidación', 'fin:prepare', '', 'primary'))}
-    <section class="panel"><h2>Últimas versiones emitidas</h2>
-      ${rows.length ? columnsTable(ctx, ['Período', 'Destinatario', 'Versión', 'Emisión', 'Total', 'Estado', 'Detalle'], rows) : ctx.empty('Sin liquidaciones emitidas', 'Prepará una liquidación para revisar los servicios antes de emitir.')}
-    </section>`;
+    <div class="stack">
+      ${quickPeriods ? `<section class="panel"><h2>Períodos para revisar</h2>${quickPeriods}</section>` : ''}
+      <section class="panel"><h2>Últimas versiones emitidas</h2>
+        ${rows.length ? columnsTable(ctx, ['Período', 'Destinatario', 'Versión', 'Emisión', 'Total', 'Estado', 'Detalle'], rows) : ctx.empty('Sin liquidaciones emitidas', 'Prepará una liquidación para revisar los servicios antes de emitir.')}
+      </section>
+    </div>`;
 }
 
 function toSettlementParams(params) {
@@ -2896,11 +3005,12 @@ function settlementDiff(ctx, input, result) {
 
 function renderPreparation(ctx, params) {
   const input = toSettlementParams(params);
+  const backBtn = ctx.button('← Volver a liquidaciones', 'fin:settlements', '', 'back-link');
   let result;
   try {
     result = ctx.preview('settlementPreview', input);
   } catch (error) {
-    return `${heading(ctx, 'Preparar liquidación', error.message, ctx.button('Volver a liquidaciones', 'fin:settlements'))}`;
+    return `${heading(ctx, 'Preparar liquidación', error.message, '', backBtn)}`;
   }
   const blocked = result.unresolved.length > 0;
   const review = {...input, minimumPending: result.minimumPending};
@@ -2910,14 +3020,14 @@ function renderPreparation(ctx, params) {
   ]);
   const actions = ctx.button('Cambiar selección', 'fin:prepare')
     + (blocked ? '' : ctx.button('Emitir liquidación', 'fin:issue', '', 'primary'));
-  return `${heading(ctx, result.previous ? 'Preparar corrección' : 'Revisar liquidación', `${formatPeriod(input.period)} · ${titleForSettlement(ctx, {...input, rows: result.rows})}`, actions)}
+  return `${heading(ctx, result.previous ? 'Preparar corrección' : 'Revisar liquidación', `${formatPeriod(input.period)} · ${titleForSettlement(ctx, {...input, rows: result.rows})}`, actions, backBtn)}
     <div class="stack">
       ${result.minimumPending ? note(ctx, minimumText, 'warning') : ''}
       ${blocked ? `<section class="panel"><h2>Viajes pendientes</h2>
         ${note(ctx, `Resolvé los ${unsettled.length} viajes pendientes antes de emitir.`, 'warning')}
         ${columnsTable(ctx, ['Fecha', 'Hora', 'Recorrido', 'Estado', 'Detalle'], unsettled)}</section>` : ''}
       ${settlementDiff(ctx, input, result)}
-      ${settlementRowsPanel(ctx, review, result.rows.filter(row => row.status === 'Realizado' || row.status === 'No realizado'), result.total)}
+      ${settlementRowsPanel(ctx, review, result.rows.filter(row => row.status === 'Realizado' || row.status === 'No realizado'), result.total, true)}
       <div class="actions">${ctx.button('Volver a liquidaciones', 'fin:settlements')}</div>
     </div>`;
 }
@@ -2931,7 +3041,7 @@ function renderVersion(ctx, id) {
     version.id === item.id ? 'En pantalla' : {html: ctx.button('Ver versión', 'fin:version', `data-id="${ctx.h(version.id)}"`, 'small')},
   ]);
   const correction = history[0]?.id === item.id ? ctx.button('Preparar corrección', 'fin:correction', `data-id="${ctx.h(item.id)}"`) : '';
-  return `${heading(ctx, `Liquidación · ${titleForSettlement(ctx, item)}`, `${formatPeriod(item.period)} · Versión ${item.version} · Emitida el ${sessionTime(ctx, item.issuedAt)}`, ctx.button('Volver a liquidaciones', 'fin:settlements'))}
+  return `${heading(ctx, `Liquidación · ${titleForSettlement(ctx, item)}`, `${formatPeriod(item.period)} · Versión ${item.version} · Emitida el ${sessionTime(ctx, item.issuedAt)}`, '', ctx.button('← Volver a liquidaciones', 'fin:settlements', '', 'back-link'))}
     <div class="stack">
       ${note(ctx, 'Versión emitida de demostración. Las correcciones se guardan en una nueva versión.')}
       ${item.minimumPending ? note(ctx, minimumText, 'warning') : ''}
@@ -3275,7 +3385,7 @@ function downloadSettlement(ctx, id, format) {
   ctx.download(filename, blob);
 }
 
-const commercialActions = new Set(['new-tariff', 'adjust', 'adjustment-value', 'prepare', 'destination', 'issue', 'settlements', 'version', 'correction']);
+const commercialActions = new Set(['new-tariff', 'adjust', 'adjustment-value', 'prepare', 'quick-prepare', 'destination', 'issue', 'settlements', 'version', 'correction']);
 
 async function handle(ctx, action, el) {
   if (!action.startsWith('fin:')) return false;
@@ -3295,6 +3405,9 @@ async function handle(ctx, action, el) {
     }
     case 'prepare':
       prepareSettlement(ctx);
+      break;
+    case 'quick-prepare':
+      ctx.go('liquidaciones', {period: el.dataset.period, type: el.dataset.type || 'Transp SERV'});
       break;
     case 'destination': {
       const driver = el.form?.elements.namedItem('driverId');
@@ -3398,10 +3511,10 @@ return {exportData,render,handle};
   const navs=[['Trabajo diario',[['resumen','Resumen general','home','admin'],['jornada','Mi jornada','route','drive'],['agenda','Agenda general','calendar','plan'],['revisiones','Revisiones','check','plan'],['turnos','Turnos','clock','odometer'],['kilometraje','Kilometraje','car','odometer']]],['Administración',[['pacientes','Pacientes','people','masters'],['choferes','Choferes','people','fleetRead'],['vehiculos','Vehículos','car','fleetRead'],['recorridos','Recorridos','route','masters'],['combustible','Combustible','fuel','fuelRead'],['gastos','Gastos e intervenciones','receipt','expense']]],['Control',[['tarifas','Tarifas','receipt','commercial'],['liquidaciones','Liquidaciones','receipt','commercial'],['reportes','Reportes','chart','reports'],['usuarios','Usuarios','settings','users']]]];
   function allowed(next){if(['login','password','demo'].includes(next))return true;const flat=navs.flatMap(n=>n[1]);const item=flat.find(n=>n[0]===next);if(item)return can(item[3]);if(next==='viaje')return can('plan')||can('drive');if(next==='ficha')return can('fleetRead')||can('masters');if(next==='carga')return can('fuelRead');if(next==='liquidacion')return can('commercial');return false;}
   function nav(){return navs.map(([title,items])=>{const permitted=items.filter(n=>can(n[3]));return permitted.length?`<div class="nav-section">${title}</div>${permitted.map(([id,label,ico])=>`<button class="nav-item ${screen===id?'active':''}" data-action="shell:nav" data-screen="${id}" ${screen===id?'aria-current="page"':''}>${icon(ico)}${label}</button>`).join('')}`:'';}).join('');}
-  function loginPage(){const cards=[['u-admin','Alejandro','Administrador · control general','A'],['u-walter','Walter','Encargado y chofer','W'],['u-secretary','Secretaria','Combustible y comprobantes','S'],['u-driver','Chofer','Diego · viajes y jornada','D']];return `<main class="login-layout" id="main-content" tabindex="-1"><section class="login-story"><div class="login-brand"><img src="${IRID_LOGO}" alt="Logo original de IRID"><div><p>IRID</p><small>Gestión de traslados</small></div></div><div class="eyebrow" style="color:#e7c4cb">Un día de trabajo, conectado</div><h1>Cada traslado. <br>Cada persona. <br>Todo en su lugar.</h1><p class="intro">La agenda, los vehículos y la administración de IRID, en un mismo espacio para acompañar el trabajo de cada día.</p><div class="story-bottom"><div class="line"></div><p>Maqueta interactiva para conversar, recorrer y validar con el equipo. Todos los nombres, recorridos e importes de ejemplo son ficticios.</p></div></section><section class="login-panel"><div class="eyebrow">MAQUETA INTERACTIVA · NOVIEMBRE 2026</div><h2>Elegí cómo querés ingresar</h2><p>Recorré el sistema desde cada perfil. Podés cambiar de persona y conservar lo que hiciste en la demo.</p><div class="quick-grid">${cards.map(([id,name,role,initial])=>`<button class="quick-card" data-action="shell:quick" data-id="${id}"><span class="avatar">${initial}</span><span class="arrow">↗</span><strong>Ingresar como ${name}</strong><small>${role}</small></button>`).join('')}</div><details class="login-form"><summary>Ingresar con una cuenta de prueba</summary><form data-action="shell:login">${field('Nombre de usuario','username','','text','required autocomplete="username"')}${field('Contraseña','password','','password','required autocomplete="current-password"')}<button class="btn primary" type="submit">Iniciar sesión</button><p class="hint">Cuentas iniciales: alejandro, walter, secretaria y diego. Contraseña de ejemplo: <strong>demo123</strong>.</p><p class="login-error notice danger" hidden role="alert"></p></form></details><p class="login-note">Modo demostración. Los cambios se guardan en este navegador. No ingreses datos personales ni contraseñas reales.</p><div class="login-tools">${button('Cómo presentar la demo','shell:guide','','ghost')}${button('Reiniciar datos','shell:reset','','ghost')}</div></section></main>`;}
+  function loginPage(){const cards=[['u-admin','Alejandro','Control general y liquidaciones','A','Administrador'],['u-walter','Walter','Agenda, flota y recorridos','W','Encargado · Chofer'],['u-secretary','Secretaria','Combustible, boletas y gastos','S','Administración'],['u-driver','Diego López','Viajes del día y turnos','D','Chofer']];return `<main class="login-layout" id="main-content" tabindex="-1"><section class="login-story"><div class="login-brand"><img src="${IRID_LOGO}" alt="Logo original de IRID"><div><p>IRID</p><small>Gestión de traslados</small></div></div><div class="eyebrow" style="color:#e7c4cb">Un día de trabajo, conectado</div><h1>Cada traslado. <br>Cada persona. <br>Todo en su lugar.</h1><p class="intro">La agenda, los vehículos y la administración de IRID, en un mismo espacio para acompañar el trabajo de cada día.</p><div class="story-bottom"><div class="line"></div><p>Maqueta interactiva para conversar, recorrer y validar con el equipo. Todos los nombres, recorridos e importes de ejemplo son ficticios.</p></div></section><section class="login-panel"><div class="eyebrow">MAQUETA INTERACTIVA · NOVIEMBRE 2026</div><h2>Elegí cómo querés ingresar</h2><p>Recorré el sistema desde cada perfil. Podés cambiar de persona y conservar lo que hiciste en la demo.</p><div class="quick-grid">${cards.map(([id,name,role,initial,tag])=>`<button class="quick-card" data-action="shell:quick" data-id="${id}"><span class="avatar">${initial}</span><span class="arrow">↗</span><span class="quick-role">${tag}</span><strong>Ingresar como ${name}</strong><small>${role}</small></button>`).join('')}</div><details class="login-form"><summary>Ingresar con una cuenta de prueba</summary><form data-action="shell:login">${field('Nombre de usuario','username','','text','required autocomplete="username"')}${field('Contraseña','password','','password','required autocomplete="current-password"')}<button class="btn primary" type="submit">Iniciar sesión</button><p class="hint">Cuentas iniciales: alejandro, walter, secretaria y diego. Contraseña de ejemplo: <strong>demo123</strong>.</p><p class="login-error notice danger" hidden role="alert"></p></form></details><p class="login-note">Modo demostración. Los cambios se guardan en este navegador. No ingreses datos personales ni contraseñas reales.</p><div class="login-tools">${button('Cómo presentar la demo','shell:guide','','ghost')}${button('Reiniciar datos','shell:reset','','ghost')}</div></section></main>`;}
   function passwordPage(){return `<main id="main-content" tabindex="-1" class="panel forced-password"><div class="brand"><img src="${IRID_LOGO}" alt="IRID"><strong>IRID</strong></div><div class="eyebrow">Cuenta de prueba</div><h1>Cambiá tu contraseña</h1><p>Hola, ${h(user()?.name)}. Para continuar, reemplazá la contraseña temporal que recibiste.</p><form data-action="shell:password">${field('Nueva contraseña','password','','password','required minlength="6" autocomplete="new-password"')}${field('Repetir contraseña','repeat','','password','required minlength="6" autocomplete="new-password"')}<p class="hint">Usá al menos 6 caracteres de prueba. Esta maqueta no almacena credenciales de forma segura.</p><button type="submit" class="btn primary">Guardar y continuar</button><p class="login-error notice danger" hidden role="alert"></p></form>${button('Volver al inicio','shell:logout','','ghost')}</main>`;}
-  function overview(){const today=state.trips.filter(t=>t.date===state.today),pending=state.trips.filter(t=>t.status==='Programado'&&!t.driverId),reviews=state.trips.filter(t=>t.reviewReasons?.some(r=>!r.resolved)),odo=state.readingReviews.filter(r=>r.status==='Pendiente'),receipts=state.fuel.filter(f=>!f.verified);const total=today.length;return `<div class="page-head"><div><div class="eyebrow">Administración</div><h1>Resumen general</h1><p>Lo que pasa hoy y lo que necesita tu atención.</p></div><div class="actions">${button('Preparar liquidación','shell:nav','data-screen="liquidaciones"','primary')}</div></div><section class="dashboard-welcome"><div><h2>Buen día, Alejandro</h2><p>Tenés ${total} viajes previstos para hoy. Revisá los pendientes para que la jornada siga en orden.</p></div><div class="date-block"><strong>16</strong><span>Lunes · noviembre</span></div></section><div class="metrics">${['Programado','En curso','Realizado','No realizado'].map((s,i)=>`<button class="metric link ${i===2?'highlight':''}" data-action="shell:today-status" data-status="${h(s)}"><span>${h(s)}</span><strong>${today.filter(t=>t.status===s).length}</strong><p>Ver viajes de hoy →</p></button>`).join('')}</div><div class="grid-2 section-gap"><section class="panel"><div class="panel-head"><h2>Pendientes de atención</h2>${badge('Seguimiento','brand')}</div>${[[pending.length,'Viajes sin asignar','Elegí un chofer para cada servicio.','assignment'],[reviews.length,'Viajes por revisar','Bajas o cambios que necesitan una decisión.','reviews'],[odo.length,'Lecturas de kilometraje','Diferencias entre el cierre y la apertura.','odo'],[receipts.length,'Comprobantes pendientes','Cargas sin foto o por verificar.','receipts']].map(([n,title,desc,key])=>`<div class="list-row"><div><strong>${h(title)}</strong><p>${h(desc)}</p></div><button class="btn small" data-action="shell:pending" data-kind="${key}" aria-label="${h(title)}: ${n}">${n} ${icon('arrow')}</button></div>`).join('')}</section><section class="panel"><div class="panel-head"><h2>Próximos viajes</h2>${button('Ver agenda','shell:nav','data-screen="agenda"','ghost small')}</div>${today.filter(t=>t.status==='Programado').sort((a,b)=>a.time.localeCompare(b.time)).slice(0,4).map(t=>`<div class="list-row"><div><strong>${h(t.time)} <span class="muted">·</span> ${h(lookup('routes',t.routeId))}</strong><p>${h(t.type)} · ${h(lookup('drivers',t.driverId))}</p></div>${button('Ver viaje','shell:trip',`data-id="${h(t.id)}"`,'small')}</div>`).join('')||empty('No hay viajes programados','Podés revisar la agenda o generar una programación.')}<div class="notice info" style="margin-top:18px">El día de ejemplo es el 16/11/2026. Los horarios son ilustrativos; su interpretación está pendiente de IRID.</div></section></div><div class="panel section-gap"><div class="panel-head"><div><h2>Para la próxima conversación con IRID</h2><p class="hint">Tres definiciones siguen abiertas y se conservan separadas de la demo.</p></div>${button('Ver pendientes','shell:guide','','secondary')}</div><div class="grid-3"><div><strong>Mínimo mensual</strong><p class="hint">Importe, alcance y aplicación a Walter.</p></div><div><strong>Volumen de traslados</strong><p class="hint">Cantidad aproximada de viajes diarios.</p></div><div><strong>Significado de los horarios</strong><p class="hint">Inicio del recorrido o llegada/salida de la institución.</p></div></div></div>`;}
-  function guide(){return `<div class="demo-guide"><div class="page-head"><div><div class="eyebrow">Validación con el cliente</div><h1>Un recorrido por IRID</h1><p>La demo reúne las funciones acordadas para conversar sobre cómo se usarían en una jornada real.</p></div>${button('Reiniciar demo','shell:reset','','secondary')}</div><div class="notice info">Todos los registros son ficticios. Los cambios se conservan sólo en este navegador y en este archivo. Los accesos rápidos simulan roles; no son una autenticación segura.</div><div class="grid-2 section-gap">${[['01','Chofer · un día de trabajo','Abrí un turno con Vehículo 01 y la lectura de referencia. Entrá a un viaje, iniciá, marcá pasajeros y finalizá. Registrá combustible, adjuntá una boleta y cerrá el turno.','u-driver'],['02','Walter · la operación','Revisá la agenda, asigná viajes, generá un mes y explorá una reprogramación. Confirmá diferencias de odómetro y cerrá un turno olvidado. Mi jornada muestra sus viajes como chofer.','u-walter'],['03','Secretaria · el control','Revisá cargas pendientes, adjuntá una imagen de prueba y verificá el comprobante. Registrá un gasto desde la ficha de un vehículo y consultá los totales.','u-secretary'],['04','Alejandro · la administración','Prepará Transp SERV de octubre de 2026, emití y descargá Excel/PDF. Corregí un viaje para crear una nueva versión. Probá tarifas, usuarios, roles y contraseñas temporales.','u-admin']].map(([n,title,body,id])=>`<article class="panel"><span class="number">${n}</span><h3>${h(title)}</h3><p>${h(body)}</p>${button('Probar este perfil','shell:quick',`data-id="${id}"`,'primary')}</article>`).join('')}</div><section class="panel section-gap"><h2>Escenarios preparados</h2><ul><li><strong>Noviembre:</strong> viajes pendientes que bloquean la emisión, servicios sin asignar, diferencias de lectura y cargas sin comprobante.</li><li><strong>Octubre:</strong> viajes resueltos para emitir Transp SERV y la liquidación por servicios de Diego. Walter ya tiene una versión emitida para revisar el historial.</li><li><strong>Errores y permisos:</strong> una asignación con igual fecha y hora se bloquea; un viaje en curso impide cerrar turno; una boleta sin imagen no puede verificarse.</li><li><strong>Usuarios:</strong> una cuenta nueva o restablecida exige cambiar su contraseña temporal. Usá siempre claves ficticias.</li></ul></section><section class="panel section-gap"><h2>Las tres preguntas pendientes</h2><div class="stack"><div><strong>Q-001 · Mínimo mensual garantizado</strong><p class="hint">Falta confirmar importe, si es común o individual y su aplicación a Walter con doble rol. La demo muestra la suma de servicios y advierte que el mínimo no está calculado.</p></div><div><strong>Q-002 · Cantidad diaria de traslados</strong><p class="hint">Falta una estimación real, contando Entrada y Salida como viajes separados. El volumen de ejemplo no representa capacidad validada.</p></div><div><strong>Q-003 · Interpretación del horario</strong><p class="hint">Falta confirmar si indica inicio del recorrido o llegada/salida institucional. La demo conserva el campo sin atribuirle una interpretación definitiva.</p></div></div></section><section class="panel section-gap"><h2>Qué queda para el sistema real</h2><p>Servidor, base de datos, autenticación segura, almacenamiento privado de comprobantes, copias diarias, recuperación, despliegue y pruebas con la operación real. No se configuraron respaldos ni servicios externos en esta maqueta.</p><p class="hint">Validar esta demo no resuelve automáticamente las preguntas pendientes ni reemplaza el plan de implementación. La idea es registrar ajustes con el cliente antes de desarrollar.</p></section></div>`;}
+  function overview(){const today=state.trips.filter(t=>t.date===state.today),pending=state.trips.filter(t=>t.status==='Programado'&&!t.driverId),reviews=state.trips.filter(t=>t.reviewReasons?.some(r=>!r.resolved)),odo=state.readingReviews.filter(r=>r.status==='Pendiente'),receipts=state.fuel.filter(f=>!f.verified);const total=today.length;return `<div class="page-head"><div><div class="eyebrow">Administración</div><h1>Resumen general</h1><p>Lo que pasa hoy y lo que necesita tu atención.</p></div><div class="actions">${button('Preparar liquidación','shell:nav','data-screen="liquidaciones"','primary')}</div></div><section class="dashboard-welcome"><div><h2>Buen día, Alejandro</h2><p>Tenés ${total} viajes previstos para hoy. Revisá los pendientes para que la jornada siga en orden.</p></div><div class="date-block"><strong>16</strong><span>Lunes · noviembre</span></div></section><div class="metrics">${['Programado','En curso','Realizado','No realizado'].map((s,i)=>{const count=today.filter(t=>t.status===s).length;return `<button class="metric link ${i===2?'highlight':''} ${count===0?'is-zero':''}" data-action="shell:today-status" data-status="${h(s)}"><span>${h(s)}</span><strong>${count}</strong><p>Ver viajes de hoy →</p></button>`;}).join('')}</div><div class="grid-2 section-gap"><section class="panel"><div class="panel-head"><h2>Pendientes de atención</h2>${badge('Seguimiento','brand')}</div>${[[pending.length,'Viajes sin asignar','Elegí un chofer para cada servicio.','assignment'],[reviews.length,'Viajes por revisar','Bajas o cambios que necesitan una decisión.','reviews'],[odo.length,'Lecturas de kilometraje','Diferencias entre el cierre y la apertura.','odo'],[receipts.length,'Comprobantes pendientes','Cargas sin foto o por verificar.','receipts']].map(([n,title,desc,key])=>`<div class="list-row"><div><strong>${h(title)}</strong><p>${h(desc)}</p></div><button class="btn small ${n>0?'has-items':'is-zero'}" data-action="shell:pending" data-kind="${key}" aria-label="${h(title)}: ${n}">${n===0?'Al día':n} ${icon('arrow')}</button></div>`).join('')}</section><section class="panel"><div class="panel-head"><h2>Próximos viajes</h2>${button('Ver agenda','shell:nav','data-screen="agenda"','ghost small')}</div>${today.filter(t=>t.status==='Programado').sort((a,b)=>a.time.localeCompare(b.time)).slice(0,4).map(t=>`<div class="list-row"><div><strong>${h(t.time)} <span class="muted">·</span> ${h(lookup('routes',t.routeId))}</strong><p>${h(t.type)} · ${h(lookup('drivers',t.driverId))}</p></div>${button('Ver viaje','shell:trip',`data-id="${h(t.id)}"`,'small')}</div>`).join('')||empty('No hay viajes programados','Podés revisar la agenda o generar una programación.')}<div class="notice info" style="margin-top:18px">El día de ejemplo es el 16/11/2026. Los horarios son ilustrativos; su interpretación está pendiente de IRID.</div></section></div><div class="panel questions-panel section-gap"><div class="panel-head"><div><h2>Para la próxima conversación con IRID</h2><p class="hint">Tres definiciones siguen abiertas y se conservan separadas de la demo.</p></div>${button('Ver pendientes','shell:guide','','secondary small')}</div><div class="grid-3"><div><strong>Mínimo mensual</strong><p class="hint">Importe, alcance y aplicación a Walter.</p></div><div><strong>Volumen de traslados</strong><p class="hint">Cantidad aproximada de viajes diarios.</p></div><div><strong>Significado de los horarios</strong><p class="hint">Inicio del recorrido o llegada/salida de la institución.</p></div></div></div>`;}
+  function guide(){const steps=[['1. Chofer · jornada completa','Abrí turno con Móvil 01, iniciá el primer traslado, marcá pasajeros y cerrá el turno.','u-driver','jornada','','Ir como Diego'],['2. Walter · agenda y asignación','Asigná viajes desde la tarjeta, probá vistas día/semana/mes y revisá odómetros.','u-walter','agenda','','Ir a Agenda'],['3. Secretaria · comprobantes','Revisá cargas pendientes, adjuntá una boleta ficticia y verificala abajo de la foto.','u-secretary','combustible',JSON.stringify({filter:'pending'}),'Ver pendientes'],['4. Alejandro · liquidación Octubre','Revisá Transp SERV lista para emitir, ajustá una fila si querés y descargá Excel/PDF.','u-admin','liquidaciones',JSON.stringify({period:'2026-10',type:'Transp SERV'}),'Abrir Octubre'],['5. Alejandro · usuarios y roles','Creá una cuenta o restablecé una clave para probar el cambio obligatorio de contraseña.','u-admin','usuarios','','Ir a Usuarios'],['6. Reportes por perfil','Consultá totales, filtros y exportaciones; cambiá de perfil para validar permisos.','u-admin','reportes','','Ir a Reportes']];return `<div class="demo-guide"><div class="page-head"><div><div class="eyebrow">Validación con el cliente</div><h1>Un recorrido por IRID</h1><p>La demo reúne las funciones acordadas para conversar sobre cómo se usarían en una jornada real.</p></div>${button('Reiniciar demo','shell:reset','','secondary')}</div><div class="notice info">Todos los registros son ficticios. Los cambios se conservan sólo en este navegador y en este archivo. Los accesos rápidos simulan roles; no son una autenticación segura.</div><section class="panel section-gap"><h2>Recorrido guiado de la reunión</h2><p class="hint">Saltá directo a cada paso con el perfil y la pantalla preparados.</p>${steps.map(([title,desc,id,sc,pr,btnLabel])=>`<div class="list-row"><div><strong>${h(title)}</strong><p>${h(desc)}</p></div>${button(btnLabel,'shell:quick',`data-id="${id}" data-screen="${h(sc)}"${pr?` data-params='${h(pr)}'`:''}`,'secondary small')}</div>`).join('')}</section><div class="grid-2 section-gap">${[['01','Chofer · un día de trabajo','Abrí un turno con Vehículo 01 y la lectura de referencia. Entrá a un viaje, iniciá, marcá pasajeros y finalizá. Registrá combustible, adjuntá una boleta y cerrá el turno.','u-driver'],['02','Walter · la operación','Revisá la agenda, asigná viajes, generá un mes y explorá una reprogramación. Confirmá diferencias de odómetro y cerrá un turno olvidado. Mi jornada muestra sus viajes como chofer.','u-walter'],['03','Secretaria · el control','Revisá cargas pendientes, adjuntá una imagen de prueba y verificá el comprobante. Registrá un gasto desde la ficha de un vehículo y consultá los totales.','u-secretary'],['04','Alejandro · la administración','Prepará Transp SERV de octubre de 2026, emití y descargá Excel/PDF. Corregí un viaje para crear una nueva versión. Probá tarifas, usuarios, roles y contraseñas temporales.','u-admin']].map(([n,title,body,id])=>`<article class="panel"><span class="number">${n}</span><h3>${h(title)}</h3><p>${h(body)}</p>${button('Probar este perfil','shell:quick',`data-id="${id}"`,'primary')}</article>`).join('')}</div><section class="panel section-gap"><h2>Escenarios preparados</h2><ul><li><strong>Noviembre:</strong> viajes pendientes que bloquean la emisión, servicios sin asignar, diferencias de lectura y cargas sin comprobante.</li><li><strong>Octubre:</strong> viajes resueltos para emitir Transp SERV y la liquidación por servicios de Diego. Walter ya tiene una versión emitida para revisar el historial.</li><li><strong>Errores y permisos:</strong> una asignación con igual fecha y hora se bloquea; un viaje en curso impide cerrar turno; una boleta sin imagen no puede verificarse.</li><li><strong>Usuarios:</strong> una cuenta nueva o restablecida exige cambiar su contraseña temporal. Usá siempre claves ficticias.</li></ul></section><section class="panel section-gap"><h2>Las tres preguntas pendientes</h2><div class="stack"><div><strong>Q-001 · Mínimo mensual garantizado</strong><p class="hint">Falta confirmar importe, si es común o individual y su aplicación a Walter con doble rol. La demo muestra la suma de servicios y advierte que el mínimo no está calculado.</p></div><div><strong>Q-002 · Cantidad diaria de traslados</strong><p class="hint">Falta una estimación real, contando Entrada y Salida como viajes separados. El volumen de ejemplo no representa capacidad validada.</p></div><div><strong>Q-003 · Interpretación del horario</strong><p class="hint">Falta confirmar si indica inicio del recorrido o llegada/salida institucional. La demo conserva el campo sin atribuirle una interpretación definitiva.</p></div></div></section><section class="panel section-gap"><h2>Qué queda para el sistema real</h2><p>Servidor, base de datos, autenticación segura, almacenamiento privado de comprobantes, copias diarias, recuperación, despliegue y pruebas con la operación real. No se configuraron respaldos ni servicios externos en esta maqueta.</p><p class="hint">Validar esta demo no resuelve automáticamente las preguntas pendientes ni reemplaza el plan de implementación. La idea es registrar ajustes con el cliente antes de desarrollar.</p></section></div>`;}
   function render(){const u=user();if(!u||!u.active||!u.roles?.length){userId=null;screen='login';saveSession();}else if(u.mustChangePassword)screen='password';else if(screen==='login'||screen==='password')screen=Domain.home(state,userId);
     if(screen==='login'){$('#app').innerHTML=loginPage();syncPresentation();return;}if(screen==='password'){$('#app').innerHTML=passwordPage();syncPresentation();return;}
     if(!allowed(screen)){screen=Domain.home(state,userId);params={};toast('Ese perfil no tiene acceso a la sección solicitada.','error');}
@@ -3414,11 +3527,11 @@ return {exportData,render,handle};
     if(action==='shell:nav'){go(el.dataset.screen);return;}if(action==='shell:home'){go(Domain.home(state,userId));return;}if(action==='shell:today-status'){go('agenda',{date:state.today,view:'day',status:el.dataset.status});return;}if(action==='shell:trip'){go('viaje',{id:el.dataset.id,back:'agenda'});return;}
     if(action==='shell:pending'){const routes={assignment:['agenda',{filter:'unassigned'}],reviews:['revisiones',{}],odo:['kilometraje',{}],receipts:['combustible',{filter:'pending'}]};go(...routes[el.dataset.kind]);return;}
     if(action==='shell:guide'){if(userId)go('demo');else dialog({title:'Cómo presentar la demo',body:guide()});return;}
-    if(action==='shell:quick'){const selected=state.users.find(u=>u.id===el.dataset.id);if(!selected?.active||!selected?.roles?.length)throw Error('Esta cuenta de prueba está sin acceso. Podés reactivarla desde Alejandro o reiniciar los datos.');const enter=()=>{closeDialog(true);userId=selected.id;screen=Domain.home(state,userId);params={};saveSession();render();window.scrollTo({top:0});};if(isDirty())askDiscard(enter);else enter();return;}
-    if(action==='shell:logout'){const exit=()=>{closeDialog(true);userId=null;screen='login';params={};saveSession();render();window.scrollTo({top:0});};if(isDirty())askDiscard(exit);else exit();return;}
-    if(action==='shell:reset'){confirm('Reiniciar los datos de la demo','<p>Se reemplazarán los cambios de prueba hechos en este navegador por los ejemplos iniciales. El archivo de la maqueta y las descargas realizadas se conservan.</p>',()=>{const fresh=Domain.seed();persist(fresh);state=fresh;userId=null;screen='login';params={};saveSession();render();toast('La demo volvió a sus datos iniciales.');},'Reiniciar demo');return;}
-    if(action==='shell:login'){const v=ctx.form(el);userId=Domain.login(state,v.username,v.password);screen=Domain.home(state,userId);saveSession();render();return;}
-    if(action==='shell:password'){const v=ctx.form(el);run('changePassword',v);screen=Domain.home(state,userId);render();toast('Contraseña de prueba actualizada.');return;}
+    if(action==='shell:quick'){const selected=state.users.find(u=>u.id===el.dataset.id);if(!selected?.active||!selected?.roles?.length)throw Error('Esta cuenta de prueba está sin acceso. Podés reactivarla desde Alejandro o reiniciar los datos.');const enter=()=>{closeDialog(true);userId=selected.id;const nextScreen=el.dataset.screen;let nextParams={};try{nextParams=el.dataset.params?JSON.parse(el.dataset.params):{};}catch{}screen=nextScreen&&allowed(nextScreen)?nextScreen:Domain.home(state,userId);params=nextScreen&&screen===nextScreen?nextParams:{};saveSession();render();window.scrollTo({top:0});$('#main-content')?.focus({preventScroll:true});};if(isDirty())askDiscard(enter);else enter();return;}
+    if(action==='shell:logout'){const exit=()=>{closeDialog(true);userId=null;screen='login';params={};saveSession();render();window.scrollTo({top:0});$('#main-content')?.focus({preventScroll:true});};if(isDirty())askDiscard(exit);else exit();return;}
+    if(action==='shell:reset'){confirm('Reiniciar los datos de la demo','<p>Se reemplazarán los cambios de prueba hechos en este navegador por los ejemplos iniciales. El archivo de la maqueta y las descargas realizadas se conservan.</p>',()=>{const fresh=Domain.seed();persist(fresh);state=fresh;userId=null;screen='login';params={};saveSession();render();$('#main-content')?.focus({preventScroll:true});toast('La demo volvió a sus datos iniciales.');},'Reiniciar demo');return;}
+    if(action==='shell:login'){const v=ctx.form(el);userId=Domain.login(state,v.username,v.password);screen=Domain.home(state,userId);saveSession();render();window.scrollTo({top:0});$('#main-content')?.focus({preventScroll:true});return;}
+    if(action==='shell:password'){const v=ctx.form(el);run('changePassword',v);screen=Domain.home(state,userId);render();window.scrollTo({top:0});$('#main-content')?.focus({preventScroll:true});toast('Contraseña de prueba actualizada.');return;}
   }
   async function dispatch(action,el,event){try{if(action.startsWith('shell:'))await shell(action,el,event);else {const ctx=context();if(action.startsWith('op:'))await Operations.handle(ctx,action,el,event);else if(action.startsWith('mg:'))await Management.handle(ctx,action,el,event);else if(action.startsWith('fin:'))await Finance.handle(ctx,action,el,event);}}catch(e){console.error(e);const error=modal?$('#dialog-error'):el.closest('form')?.querySelector('.login-error');if(error){error.textContent=e.message;error.hidden=false;error.focus?.();}else toast(e.message,'error');}}
   document.addEventListener('click',event=>{const el=event.target.closest('[data-action]');if(!el||el.tagName==='FORM'||el.disabled)return;event.preventDefault();dispatch(el.dataset.action,el,event);});
@@ -3455,6 +3568,7 @@ return {exportData,render,handle};
     document.body.style.overflow=modal||drawer?'hidden':'';
     document.querySelectorAll('.table-wrap').forEach((wrap,index)=>{
       const overflow=wrap.scrollWidth>wrap.clientWidth+1;
+      wrap.classList.toggle('has-scroll',overflow);
       let hint=wrap.nextElementSibling?.classList.contains('scroll-hint')?wrap.nextElementSibling:null;
       if(overflow){
         if(!hint){hint=document.createElement('p');hint.className='scroll-hint';wrap.after(hint);}
@@ -3482,7 +3596,7 @@ return {exportData,render,handle};
     if(wasInMenu)($('.mobile-toggle')?.offsetParent?$('.mobile-toggle'):$('#main-content'))?.focus();
   });
   document.fonts.ready.then(syncPresentation);
-  window.IRID_DEMO={getState:()=>structuredClone(state),getScreen:()=>({screen,params,userId}),version:'1.1.0'};
+  window.IRID_DEMO={getState:()=>structuredClone(state),getScreen:()=>({screen,params,userId}),version:'1.2.0'};
   render();
 })();
 

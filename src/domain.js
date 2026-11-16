@@ -202,7 +202,8 @@ function optional(value) {
 function number(value, label, { minimum = 0, integer = false } = {}) {
   const validInput = typeof value === 'number' || (typeof value === 'string' && value.trim() !== '');
   const parsed = validInput ? Number(value) : NaN;
-  ensure(Number.isFinite(parsed) && parsed >= minimum && (!integer || Number.isSafeInteger(parsed)), 'Ingresá ' + label + ' válido.');
+  const suffix = label.startsWith('una ') ? ' válida.' : ' válido.';
+  ensure(Number.isFinite(parsed) && parsed >= minimum && (!integer || Number.isSafeInteger(parsed)), 'Ingresá ' + label + suffix);
   return parsed;
 }
 
