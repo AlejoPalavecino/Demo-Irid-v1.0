@@ -72,6 +72,7 @@ function tripCard(ctx, trip, showDriver = true, isNext = false) {
   const reasons = ctx.can('plan') ? pendingReviews(trip) : [];
   const patientNames = trip.passengers.map(passenger => ctx.lookup('patients', passenger.patientId)).filter(Boolean);
   const passengersLine = patientNames.length ? `<p class="trip-patients">${ctx.h(patientNames.join(' · '))}</p>` : '';
+  const reviewReason = reasons.length ? `<p class="hint">Aviso: ${ctx.h(reasons[0].reason)}</p>` : '';
   const canStart = !showDriver && owns(ctx, trip) && trip.status === 'Programado' && ownShift(ctx)
     && !ctx.getState().trips.some(item => item.id !== trip.id && item.driverId === ctx.driver?.id && item.status === 'En curso');
   const quickAction = canStart
@@ -79,7 +80,7 @@ function tripCard(ctx, trip, showDriver = true, isNext = false) {
     : showDriver && ctx.can('plan') && trip.status === 'Programado'
       ? act(ctx, trip.driverId ? 'Reasignar' : 'Asignar chofer', 'assign', trip.id, trip.driverId ? 'secondary' : 'primary')
       : '';
-  return `<article class="trip-card${isNext ? ' next' : ''}"><div class="trip-top"><div><strong class="time">${ctx.h(trip.time)}</strong> <span class="section-label">${ctx.h(trip.type)}</span></div>${ctx.badge(trip.status, TONES[trip.status])}</div><h3>${ctx.h(route?.name || 'Recorrido')}</h3><p>${ctx.h(route?.destination || '—')} · ${trip.passengers.length} ${trip.passengers.length === 1 ? 'pasajero' : 'pasajeros'}</p>${passengersLine}<div class="trip-bottom"><div>${showDriver ? `<p>${ctx.h(driverName(ctx, trip.driverId))}</p>` : ''}${reasons.length ? ctx.badge('Pendiente de revisión', 'warning') : ''}</div><div class="actions">${quickAction}${act(ctx, 'Ver viaje', 'trip', trip.id)}</div></div></article>`;
+  return `<article class="trip-card${isNext ? ' next' : ''}"><div class="trip-top"><div><strong class="time">${ctx.h(trip.time)}</strong> <span class="section-label">${ctx.h(trip.type)}</span></div>${ctx.badge(trip.status, TONES[trip.status])}</div><h3>${ctx.h(route?.name || 'Recorrido')}</h3><p>${ctx.h(route?.destination || '—')} · ${trip.passengers.length} ${trip.passengers.length === 1 ? 'pasajero' : 'pasajeros'}</p>${passengersLine}${reviewReason}<div class="trip-bottom"><div>${showDriver ? `<p>${ctx.h(driverName(ctx, trip.driverId))}</p>` : ''}${reasons.length ? ctx.badge('Pendiente de revisión', 'warning') : ''}</div><div class="actions">${quickAction}${act(ctx, 'Ver viaje', 'trip', trip.id)}</div></div></article>`;
 }
 function unavailable(ctx) { return ctx.empty('Vista no disponible', 'No tenés acceso a esta información con tu cuenta.'); }
 
@@ -123,6 +124,9 @@ function calendar(ctx, days, trips) {
   }
   return `<div class="table-wrap calendar-wrap"><table class="table" aria-label="Calendario del mes"><thead><tr>${['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(day => `<th scope="col">${day}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
 }
+function stepCard(num, title, description, actionsHTML) {
+  return `<article class="step-card"><div class="step-head"><span class="step-num">${num}</span><h2>${title}</h2></div><p>${description}</p><div class="actions">${actionsHTML}</div></article>`;
+}
 function agenda(ctx, input) {
   const plan = ctx.can('plan');
   if (!plan && !ctx.can('drive')) return unavailable(ctx);
@@ -131,7 +135,8 @@ function agenda(ctx, input) {
   const { date, view, driverId, status, filter } = params;
   const days = agendaDays(params);
   const { today, drivers, trips } = ctx.getState();
-  const periodTrips = ordered(trips.filter(trip => (plan || owns(ctx, trip)) && trip.date >= days[0] && trip.date <= days.at(-1)));
+  const visibleTrips = ordered(trips.filter(trip => plan || owns(ctx, trip)));
+  const periodTrips = visibleTrips.filter(trip => trip.date >= days[0] && trip.date <= days.at(-1));
   const filtered = periodTrips.filter(trip => (!driverId || trip.driverId === driverId) && (!status || trip.status === status) && (filter !== 'unassigned' || !trip.driverId) && (filter !== 'review' || pendingReviews(trip).length));
   const rows = new Map();
   for (const trip of filtered) {
@@ -144,29 +149,58 @@ function agenda(ctx, input) {
     const mode = ['day', 'week', 'month'][index];
     return act(ctx, label, 'view', '', view === mode ? 'primary' : 'secondary', `data-view="${mode}" aria-pressed="${view === mode}"`);
   }).join('');
-  const clear = act(ctx, 'Limpiar filtros', 'clear-filters');
-  const quick = plan ? `<div class="actions">${act(ctx, 'Sin asignar', 'quick-filter', '', filter === 'unassigned' ? 'primary' : 'secondary', `data-filter="unassigned" aria-pressed="${filter === 'unassigned'}"`)}${act(ctx, 'Pendientes de revisión', 'quick-filter', '', filter === 'review' ? 'primary' : 'secondary', `data-filter="review" aria-pressed="${filter === 'review'}"`)}</div>` : '';
-  const agendaActions = plan ? `${act(ctx, 'Reprogramar', 'reschedule')}${act(ctx, 'Generar mes', 'generate', '', 'primary')}` : '';
+  const clear = act(ctx, 'Ver todos', 'clear-filters');
+  const unassignedInPeriod = periodTrips.filter(trip => !trip.driverId).length;
+  const reviewInPeriod = periodTrips.filter(trip => pendingReviews(trip).length).length;
+  const monthPrefix = date.slice(0, 7);
+  const monthTrips = visibleTrips.filter(trip => trip.date.startsWith(monthPrefix));
+  const unassignedInMonth = monthTrips.filter(trip => !trip.driverId).length;
+  const reviewInMonth = monthTrips.filter(trip => pendingReviews(trip).length).length;
+  const monthCue = view !== 'month' && (unassignedInMonth > unassignedInPeriod || reviewInMonth > reviewInPeriod)
+    ? `<p class="hint">En ${ctx.h(monthName.format(timeOf(`${monthPrefix}-01`)))}: ${unassignedInMonth} sin asignar · ${reviewInMonth} por revisar. ${act(ctx, 'Ver todo el mes', 'view', '', 'ghost small', 'data-view="month"')}</p>`
+    : '';
+  const steps = plan ? `<section class="agenda-steps" aria-label="Pasos de trabajo en la agenda">
+    ${stepCard(1, 'Programar el mes', 'Crea los viajes de Entrada y Salida según los días de tus recorridos, sin duplicar los existentes.', act(ctx, 'Generar mes', 'generate', '', 'primary'))}
+    ${stepCard(2, 'Asignar y revisar', 'Filtrá rápido los viajes sin chofer o con avisos para asignarlos o marcarlos revisados.', `${act(ctx, `Sin asignar (${unassignedInPeriod})`, 'quick-filter', '', filter === 'unassigned' ? 'primary' : 'secondary', `data-filter="unassigned" aria-pressed="${filter === 'unassigned'}"`)}${act(ctx, `Por revisar (${reviewInPeriod})`, 'quick-filter', '', filter === 'review' ? 'primary' : 'secondary', `data-filter="review" aria-pressed="${filter === 'review'}"`)}${monthCue}`)}
+    ${stepCard(3, 'Cambiar horarios', 'Modificá la hora de Entrada o Salida de un recorrido para una fecha o hasta fin de mes.', act(ctx, 'Reprogramar', 'reschedule'))}
+  </section>` : '';
+  const activeFilterParts = [
+    filter === 'unassigned' ? 'sólo viajes sin chofer asignado' : '',
+    filter === 'review' ? 'sólo viajes pendientes de revisión' : '',
+    driverId ? `chofer ${driverName(ctx, driverId)}` : '',
+    status ? `estado ${status}` : ''
+  ].filter(Boolean);
+  const filterBanner = activeFilterParts.length
+    ? notice('info', `<div class="panel-head"><span><strong>Filtro activo:</strong> ${ctx.h(activeFilterParts.join(' · '))}</span>${clear}</div>`)
+    : '';
   const statuses = STATES.map(state => ({ id: state, name: state }));
-  const noTrips = driverId || status || filter ? ctx.empty('Sin coincidencias', 'Probá con otros filtros para este período.', clear)
-    : ctx.empty('Sin viajes en este período', plan ? 'Podés elegir otras fechas o generar viajes desde los recorridos activos.' : 'Tus viajes asignados aparecerán acá.', plan ? act(ctx, 'Generar mes', 'generate') : '');
+  const emptyActions = view !== 'month' && ((filter === 'unassigned' && unassignedInMonth > 0) || (filter === 'review' && reviewInMonth > 0))
+    ? `${act(ctx, 'Ver todo el mes', 'view', '', 'primary', 'data-view="month"')}${clear}`
+    : clear;
+  const emptyHint = view !== 'month' && filter === 'unassigned' && unassignedInMonth > 0
+    ? `No hay viajes sin asignar en esta vista, pero quedan ${unassignedInMonth} en ${monthName.format(timeOf(`${monthPrefix}-01`))}.`
+    : view !== 'month' && filter === 'review' && reviewInMonth > 0
+      ? `No hay avisos pendientes en esta vista, pero quedan ${reviewInMonth} en ${monthName.format(timeOf(`${monthPrefix}-01`))}.`
+      : 'Probá cambiando los filtros o el período para ver otros viajes.';
+  const noTrips = driverId || status || filter ? ctx.empty('Sin viajes con este filtro', emptyHint, emptyActions)
+    : ctx.empty('Sin viajes en este período', plan ? 'Podés cambiar de fecha arriba o usar "Generar mes" en el Paso 1.' : 'Tus viajes asignados aparecerán acá.', plan ? act(ctx, 'Generar mes', 'generate') : '');
   const groups = [...rows].map(([day, group]) => {
     const groupTitle = view === 'day' ? 'Programación del día' : `${weekday.format(timeOf(day))} ${ctx.date(day)}`;
     return `<section class="stack"><div class="panel-head"><h3>${ctx.h(groupTitle)}</h3><span>${group.length} ${group.length === 1 ? 'viaje' : 'viajes'}</span></div>${group.map(trip => tripCard(ctx, trip, plan)).join('')}</section>`;
   }).join('');
-  return `${heading(ctx, plan ? 'Agenda' : 'Mis viajes', plan ? 'Consultá la programación y organizá las asignaciones.' : 'Consultá tus viajes asignados por fecha.', agendaActions)}
-    <div class="stack"><section class="panel stack" aria-label="Controles de agenda">
-      <div class="agenda-bar"><h2>${ctx.h(caption)}</h2><div class="agenda-nav"><div class="actions">${act(ctx, 'Anterior', 'move', '', 'secondary', 'data-direction="-1"')}${act(ctx, 'Hoy', 'today', '', date === today ? 'ghost' : 'secondary')}${act(ctx, 'Siguiente', 'move', '', 'secondary', 'data-direction="1"')}</div><div class="actions" aria-label="Vista de agenda">${switchView}</div></div></div>
-      <form class="toolbar" data-action="op:agenda-filter">${ctx.field('Ir a la fecha', 'date', date, 'date', 'required data-change="op:agenda-filter"')}${plan ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...drivers], driverId, 'data-change="op:agenda-filter"') : ''}${ctx.select('Estado', 'status', [{ id: '', name: 'Todos' }, ...statuses], status, 'data-change="op:agenda-filter"')}<button type="submit" class="btn secondary">Aplicar filtros</button>${driverId || status || filter ? clear : ''}</form>${quick}
-    </section>${view === 'month' ? `<section class="panel">${calendar(ctx, days, filtered)}</section>` : ''}${groups || noTrips}</div>`;
+  return `${heading(ctx, plan ? 'Agenda' : 'Mis viajes', plan ? 'Seguí los tres pasos para generar el mes, cubrir choferes y ajustar horarios.' : 'Consultá tus viajes asignados por fecha.')}
+    <div class="stack">${steps}<section class="panel stack" aria-label="Controles de agenda">
+      <div class="agenda-bar"><h2>${ctx.h(caption)}</h2><div class="agenda-nav"><div class="actions">${act(ctx, '← Anterior', 'move', '', 'secondary', 'data-direction="-1"')}${act(ctx, 'Hoy', 'today', '', date === today ? 'ghost' : 'secondary')}${act(ctx, 'Siguiente →', 'move', '', 'secondary', 'data-direction="1"')}</div><div class="actions" aria-label="Vista de agenda">${switchView}</div></div></div>
+      <form class="toolbar" data-action="op:agenda-filter">${ctx.field('Ir a la fecha', 'date', date, 'date', 'required data-change="op:agenda-filter"')}${plan ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...drivers], driverId, 'data-change="op:agenda-filter"') : ''}${ctx.select('Estado', 'status', [{ id: '', name: 'Todos' }, ...statuses], status, 'data-change="op:agenda-filter"')}${driverId || status || filter ? clear : ''}</form>
+    </section>${filterBanner}${view === 'month' ? `<section class="panel">${calendar(ctx, days, filtered)}</section>` : ''}${groups || noTrips}</div>`;
 }
 
 function rowTable(ctx, headers, rows) {
   return `<div class="table-wrap"><table class="table"><thead><tr>${headers.map(label => `<th scope="col">${ctx.h(label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(value => `<td>${ctx.h(value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
-function editDraft(ctx, open) {
+function editDraft(ctx, open, label = '← Volver a editar') {
   resumeDraft = open;
-  return act(ctx, 'Volver a editar', 'edit-draft');
+  return act(ctx, label, 'edit-draft');
 }
 function confirmGenerate(ctx, payload) {
   const preview = ctx.preview('generateMonth', payload);
@@ -177,20 +211,23 @@ function confirmGenerate(ctx, payload) {
     groups.get(key)[existing ? 4 : (trip.type === 'Entrada' ? 2 : 3)] += 1;
   }
   const rows = [...groups].sort(([a], [b]) => a.localeCompare(b)).map(([, row]) => row);
-  const table = groups.size ? rowTable(ctx, ['Recorrido', 'Fecha', 'Entradas nuevas', 'Salidas nuevas', 'Se conservan'], rows) : '<p>El mes seleccionado no tiene viajes previstos.</p>';
-  const body = `<div class="stack"><p>${ctx.h(monthName.format(timeOf(`${payload.month}-01`)))}</p><div class="metrics">${metric(ctx, 'Entradas nuevas', preview.entries)}${metric(ctx, 'Salidas nuevas', preview.exits)}${metric(ctx, 'Viajes que se conservan', preview.existing.length)}</div>${!preview.missing.length && preview.existing.length ? '<p>Los viajes seleccionados ya están generados.</p>' : ''}${table}<div class="actions">${editDraft(ctx, () => generate(ctx, payload))}</div></div>`;
+  const table = groups.size ? rowTable(ctx, ['Recorrido', 'Fecha', 'Entradas nuevas', 'Salidas nuevas', 'Se conservan'], rows) : '<p>El mes seleccionado no tiene viajes previstos para estos recorridos.</p>';
+  const stepNote = preview.missing.length
+    ? notice('info', '<p><strong>Paso 2 de 2 ·</strong> Revisá cuántos viajes se van a agregar. No se guarda nada hasta confirmar.</p>')
+    : notice('success', '<p><strong>Mes ya cubierto:</strong> todos los viajes de estos recorridos ya están creados. Volvé al paso 1 si querés probar otro mes.</p>');
+  const body = `<div class="stack">${stepNote}<div class="panel-head"><h3>${ctx.h(monthName.format(timeOf(`${payload.month}-01`)))}</h3>${editDraft(ctx, () => generate(ctx, payload), '← Cambiar mes o recorridos')}</div><div class="metrics">${metric(ctx, 'Entradas nuevas', preview.entries)}${metric(ctx, 'Salidas nuevas', preview.exits)}${metric(ctx, 'Viajes que se conservan', preview.existing.length)}</div>${table}</div>`;
   if (!preview.missing.length) { ctx.dialog({ title: 'Vista previa de generación', body }); return; }
   ctx.confirm('Vista previa de generación', body, () => {
     result(ctx, 'generateMonth', payload, data => `Se generaron ${data.created} viajes. Se conservaron ${data.existing} existentes.`);
-  }, 'Generar viajes');
+  }, 'Confirmar y generar viajes');
 }
 function generate(ctx, draft) {
   const { routes } = ctx.getState();
   const active = routes.filter(route => route.active);
   if (!active.length) { ctx.dialog({ title: 'Generar mes', body: '<p>Necesitás un recorrido activo para generar viajes.</p>' }); return; }
-  ctx.dialog({ title: 'Generar mes', submitLabel: 'Ver vista previa',
-    body: `<div class="stack">${ctx.field('Mes a generar', 'month', draft?.month || agendaParams(ctx, ctx.params).date.slice(0, 7), 'month', 'required')}
-    <fieldset><legend>Recorridos activos</legend>${active.map(route => `<label class="list-row"><span><strong>${ctx.h(route.name)}</strong><br><small>${route.group === 'LMV' ? 'Lunes, miércoles y viernes' : 'Martes, jueves y sábados'}</small></span><input type="checkbox" name="routeIds" value="${ctx.h(route.id)}"${!draft || draft.routeIds.includes(route.id) ? ' checked' : ''}></label>`).join('')}</fieldset></div>`,
+  ctx.dialog({ title: 'Generar viajes del mes', submitLabel: 'Paso 2: Ver vista previa →',
+    body: `<div class="stack">${notice('info', '<p><strong>Paso 1 de 2 ·</strong> Elegí el mes y los recorridos. Se crearán viajes de Entrada y Salida según sus días, sin duplicar los existentes.</p>')}${ctx.field('Mes a generar', 'month', draft?.month || agendaParams(ctx, ctx.params).date.slice(0, 7), 'month', 'required')}
+    <fieldset><legend>Recorridos activos a incluir</legend>${active.map(route => `<label class="list-row"><span><strong>${ctx.h(route.name)}</strong><br><small>${route.group === 'LMV' ? 'Lun, mié y vie' : 'Mar, jue y sáb'} · Entrada ${ctx.h(route.entryTime)} / Salida ${ctx.h(route.exitTime)} · ${route.patientIds.length} pasajeros</small></span><input type="checkbox" name="routeIds" value="${ctx.h(route.id)}"${!draft || draft.routeIds.includes(route.id) ? ' checked' : ''}></label>`).join('')}</fieldset></div>`,
     onSubmit(values, form) { const routeIds = new FormData(form).getAll('routeIds'); if (!routeIds.length) throw new Error('Elegí al menos un recorrido.'); confirmGenerate(ctx, { month: values.month, routeIds }); }
   });
 }
@@ -214,8 +251,8 @@ function reprogram(ctx, trip, routeId, draft) {
   const date = draft?.date || trip?.date || ctx.params.date || today;
   const entry = trips.find(item => item.date === date && item.routeId === route.id && item.type === 'Entrada');
   const exit = trips.find(item => item.date === date && item.routeId === route.id && item.type === 'Salida');
-  ctx.dialog({ title: 'Reprogramar recorrido', submitLabel: 'Revisar cambios',
-    body: `<div class="form-grid">${ctx.select('Recorrido', 'routeId', choices, route.id, 'required data-change="op:reprogram-route"')}${ctx.field('Fecha desde la que se revisa', 'date', date, 'date', 'required data-change="op:reprogram-route"')}${ctx.select('Alcance', 'scope', [{ id: 'one', name: 'Sólo esta fecha' }, { id: 'rest', name: 'Desde esta fecha hasta fin de mes' }], draft?.scope || 'one')}${ctx.field('Horario de Entrada', 'entryTime', draft?.entryTime || entry?.time || route.entryTime, 'time', 'required')}${ctx.field('Horario de Salida', 'exitTime', draft?.exitTime || exit?.time || route.exitTime, 'time', 'required')}</div>${FORM_ERROR}`,
+  ctx.dialog({ title: 'Reprogramar recorrido', submitLabel: 'Paso 2: Revisar afectados →',
+    body: `<div class="stack">${notice('info', '<p><strong>Paso 1 de 2 ·</strong> Elegí el recorrido, la fecha y los nuevos horarios. Sólo se ajustan viajes sin iniciar.</p>')}<div class="form-grid">${ctx.select('Recorrido', 'routeId', choices, route.id, 'required data-change="op:reprogram-route"')}${ctx.field('Fecha desde la que se revisa', 'date', date, 'date', 'required data-change="op:reprogram-route"')}<div class="field-full">${ctx.select('Alcance', 'scope', [{ id: 'one', name: 'Sólo esta fecha (únicamente el día elegido)' }, { id: 'rest', name: 'Desde esta fecha hasta fin de mes (futuros sin iniciar)' }], draft?.scope || 'one')}</div>${ctx.field('Horario de Entrada', 'entryTime', draft?.entryTime || entry?.time || route.entryTime, 'time', 'required')}${ctx.field('Horario de Salida', 'exitTime', draft?.exitTime || exit?.time || route.exitTime, 'time', 'required')}</div>${FORM_ERROR}</div>`,
     onSubmit(payload, form) {
       try {
         const preview = ctx.preview('reschedule', payload);
@@ -223,7 +260,10 @@ function reprogram(ctx, trip, routeId, draft) {
         const changed = comparisons.filter(([, , before, after]) => before !== after);
         const excluded = preview.excluded.map(({ trip: item, reason }) => [ctx.date(item.date), item.type, item.time, reason]);
         excluded.push(...comparisons.filter(([, , before, after]) => before === after).map(([date, type, time]) => [date, type, time, 'El horario propuesto coincide con el actual']));
-        const body = `<div class="stack"><p>${ctx.h(ctx.lookup('routes', payload.routeId))}</p><section><h3>Viajes que se modificarán (${changed.length})</h3>${changed.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario actual', 'Horario propuesto'], changed) : '<p>La selección no tiene cambios de horario aplicables.</p>'}</section><section><h3>Viajes excluidos (${excluded.length})</h3>${excluded.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario', 'Motivo'], excluded) : '<p>Sin exclusiones.</p>'}</section><div class="actions">${editDraft(ctx, () => reprogram(ctx, trip, routeId, payload))}</div></div>${FORM_ERROR}`;
+        const stepBanner = notice(changed.length ? 'info' : 'warning', changed.length
+          ? '<p><strong>Paso 2 de 2 ·</strong> Confirmá los viajes que cambian de hora. Los excluidos quedan intactos.</p>'
+          : '<p>No hay cambios aplicables con estos horarios. Volvé al paso 1 para probar otra fecha o alcance.</p>');
+        const body = `<div class="stack">${stepBanner}<div class="panel-head"><h3>${ctx.h(ctx.lookup('routes', payload.routeId))}</h3>${editDraft(ctx, () => reprogram(ctx, trip, routeId, payload), '← Cambiar horarios')}</div><section><h3>Viajes que se modificarán (${changed.length})</h3>${changed.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario actual', 'Horario propuesto'], changed) : '<p>La selección no tiene cambios de horario aplicables.</p>'}</section><section><h3>Viajes excluidos (${excluded.length})</h3>${excluded.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario', 'Motivo'], excluded) : '<p>Sin exclusiones.</p>'}</section></div>${FORM_ERROR}`;
         if (!changed.length) { ctx.dialog({ title: 'Revisión de programación', body }); return; }
         ctx.dialog({ title: 'Revisión de programación', body, submitLabel: 'Confirmar reprogramación', onSubmit(_, confirmForm) {
           try { result(ctx, 'reschedule', payload, data => `Viajes reprogramados: ${data.changed}. Excluidos: ${excluded.length}.`); }
@@ -319,7 +359,7 @@ function tripDetail(ctx, params) {
 function assign(ctx, trip) {
   const drivers = ctx.getState().drivers.filter(driver => driver.active);
   ctx.dialog({ title: 'Asignar o cambiar chofer', submitLabel: 'Confirmar asignación',
-    body: `<div class="stack"><p>${ctx.h(`${ctx.date(trip.date)} · ${trip.time} · ${trip.type}`)}</p>${facts(ctx, [['Chofer actual', driverName(ctx, trip.driverId)]])}
+    body: `<div class="stack"><p>${ctx.h(`${ctx.date(trip.date)} · ${trip.time} · ${trip.type} · ${ctx.lookup('routes', trip.routeId)}`)}</p><p class="hint">Elegí un chofer activo. Si ya tiene otro viaje exactamente en esta fecha y hora, el sistema te avisa para evitar choques.</p>${facts(ctx, [['Chofer actual', driverName(ctx, trip.driverId)]])}
     ${ctx.select('Chofer asignado', 'driverId', [{ id: '', name: 'Elegí un chofer' }, ...drivers], trip.driverId || '', 'required')}${FORM_ERROR}</div>`,
     onSubmit({ driverId }, form) {
       try { result(ctx, 'assignTrip', { id: trip.id, driverId }, 'Asignación guardada.'); }
