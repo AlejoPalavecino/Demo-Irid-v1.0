@@ -14,9 +14,9 @@ Consultá la [guía de presentación](docs/guia-demo.md). Podés usar el [compro
 
 ## Versión 1.2 · Flujos ágiles y presentación
 
-Conserva el bordó institucional, los fondos claros, Montserrat y el logo original. Esta iteración suma atajos operativos sin cambiar las reglas de negocio: inicio de viaje y asignación directa desde tarjetas, marcado rápido de pasajeros, cierre previo sugerido al abrir turno, verificación debajo de la boleta, compresión automática de fotos en navegador, auto-filtrado de selects, períodos directos y ajuste en fila en liquidaciones, y recorrido guiado en seis pasos con salto directo desde la guía.
+Conserva el bordó institucional, los fondos claros, Montserrat y el logo original. Esta iteración suma flujo guiado en 3 pasos y hoja de ruta cronológica en **Agenda general**, mejoras globales de legibilidad, selectores, entradas, tarjetas de salida de datos y transiciones cuidadas, sin cambiar las reglas de negocio: inicio de viaje y asignación directa desde tarjetas, marcado rápido de pasajeros, cierre previo sugerido al abrir turno, verificación debajo de la boleta, compresión automática de fotos en navegador, auto-filtrado de selects, períodos directos y ajuste en fila en liquidaciones, y recorrido guiado en seis pasos con salto directo desde la guía.
 
-[Descargar paquete portable v1.2](releases/IRID-demo-v1.2.zip) · [Verificación anterior v1.1](docs/verification/responsive-v1-1/verification.md)
+[Explicación completa de secciones y flujos por rol (PDF)](docs/IRID-explicacion-maqueta.pdf) · [Descargar paquete portable v1.2](releases/IRID-demo-v1.2.zip) · [Verificación anterior v1.1](docs/verification/responsive-v1-1/verification.md)
 
 ![Resumen general en escritorio](docs/verification/responsive-v1-1/dashboard-1440.png)
 
