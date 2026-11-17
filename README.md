@@ -12,13 +12,13 @@ Los cambios se guardan en el navegador usado. «Cambiar de perfil» los conserva
 
 Consultá la [guía de presentación](docs/guia-demo.md). Podés usar el [comprobante ficticio](tests/fixtures/comprobante-ficticio.png) para probar los adjuntos.
 
-## Versión 1.2 · Flujos ágiles y presentación
+## Versión 1.3 · Hoja de ruta operativa
 
-Conserva el bordó institucional, los fondos claros, Montserrat y el logo original. Esta iteración suma flujo guiado en 3 pasos y hoja de ruta cronológica en **Agenda general**, mejoras globales de legibilidad, selectores, entradas, tarjetas de salida de datos y transiciones cuidadas, sin cambiar las reglas de negocio: inicio de viaje y asignación directa desde tarjetas, marcado rápido de pasajeros, cierre previo sugerido al abrir turno, verificación debajo de la boleta, compresión automática de fotos en navegador, auto-filtrado de selects, períodos directos y ajuste en fila en liquidaciones, y recorrido guiado en seis pasos con salto directo desde la guía.
+En el ingreso, cada perfil muestra qué tareas permite probar. En **Mi jornada**, Diego abre el turno y registra a cada pasajero por separado. Puede indicar que un viaje completo no se realizó y dejar el motivo. Si intenta cerrar el turno con un viaje en curso, puede abrirlo desde el aviso.
 
-[Explicación completa de secciones y flujos por rol (PDF)](docs/IRID-explicacion-maqueta.pdf) · [Descargar paquete portable v1.2](releases/IRID-demo-v1.2.zip) · [Verificación anterior v1.1](docs/verification/responsive-v1-1/verification.md)
+En **Operación de hoy**, Alejandro ve la agenda y los pendientes primero. El contador de viajes sin chofer abre todos los servicios que cuenta, agrupados por fecha. Puede asignarlos en esa lista hasta que quede vacía.
 
-![Resumen general en escritorio](docs/verification/responsive-v1-1/dashboard-1440.png)
+[Explicación de pantallas y flujos por rol (PDF)](docs/IRID-explicacion-maqueta.pdf) · [Descargar paquete portable v1.3](releases/IRID-demo-v1.3.zip)
 
 ## Desarrollo
 

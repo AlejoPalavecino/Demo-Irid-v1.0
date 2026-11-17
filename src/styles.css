@@ -338,3 +338,8 @@ form[aria-busy=true] button[type=submit]::before,.load-status::before {content:"
   .run-row {grid-template-columns:54px minmax(0,1fr);gap:8px 12px}
   .run-row .badge {width:max-content;max-width:100%;grid-column:2}.run-row .btn {grid-column:2;justify-self:start}
 }
+
+.trip-exception {display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px;border-top:1px solid var(--line);padding-top:8px}
+.trip-exception span {font-size:14px;color:var(--muted)}
+.run-board .list-row:has([data-kind="assignment"]) {flex-wrap:wrap}
+.schedule-day-head h2 {font-size:16px;margin:0}

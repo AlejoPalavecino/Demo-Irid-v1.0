@@ -1,4 +1,4 @@
-# IRID · Guía de la maqueta interactiva
+# IRID · Guía de la maqueta interactiva v1.3
 
 Esta demo permite revisar con el cliente los flujos acordados antes de implementar el sistema real. Usa bordó, fondos claros, Montserrat y el logo original de IRID.
 
@@ -6,7 +6,7 @@ Esta demo permite revisar con el cliente los flujos acordados antes de implement
 
 Abrí `IRID-maqueta-interactiva.html` con Chrome, Edge o un navegador actual. No requiere instalación ni conexión: el logo, la tipografía y los módulos están dentro del archivo. Para compartirla, enviá el HTML o el ZIP de entrega; no publiques datos reales en la demo.
 
-En el repositorio, el mismo archivo se llama `index.html`. El paquete actualizado es `releases/IRID-demo-v1.2.zip`. En tablet y celular, el botón de menú abre las secciones del perfil; en listados administrativos cada registro se presenta como una ficha. En liquidaciones y reportes, deslizá la tabla cuando aparezca el aviso de columnas adicionales. Dentro de la app, la sección «Guía de la demo» incluye accesos directos para saltar a cada paso del recorrido durante la reunión.
+En el repositorio, el mismo archivo se llama `index.html`. El paquete actualizado es `releases/IRID-demo-v1.3.zip`. En tablet y celular, el botón de menú abre las secciones del perfil; en listados administrativos cada registro se presenta como una ficha. En liquidaciones y reportes, deslizá la tabla cuando aparezca el aviso de columnas adicionales. Dentro de la app, la sección «Guía de la demo» incluye accesos directos para saltar a cada paso del recorrido durante la reunión.
 
 Para probar el adjunto de una boleta, usá `IRID-comprobante-ficticio.png`, incluido en esta entrega.
 
@@ -16,10 +16,10 @@ El día de la demo es el **lunes 16 de noviembre de 2026**. Las fechas e importe
 
 ## Recorrido sugerido para la reunión
 
-1. **Chofer:** entrar a «Mi jornada», abrir un turno con Móvil 01 y una lectura de 50.000 km; abrir el viaje de las 08:00, iniciarlo, registrar pasajeros y finalizarlo. Probar también un pasajero sin marcar para ver el bloqueo. Registrar combustible y dejar una carga sin comprobante. Cerrar el turno después de resolver el viaje.
+1. **Chofer:** elegí a Diego y abrí el turno de Móvil 01. En el escenario inicial podés probar con 50.000 km. Desde «Mi jornada», iniciá el viaje de las 08:00. Marcá «Recogido» o «No viajó» junto a cada nombre. Cuando estén todos registrados, tocá «Finalizar viaje», revisá la lista y confirmá. Aparece el siguiente traslado. Para probar una excepción, tocá «El viaje no se realizó» junto al recorrido, escribí el motivo y confirmá. También podés intentar «Cerrar turno» con un viaje en curso: el aviso identifica el servicio y ofrece «Ir al viaje». Al devolver el vehículo, completá el kilometraje final y confirmá el cierre.
 2. **Walter:** recorrer las vistas de día, semana y mes; asignar un viaje sin chofer, probar una coincidencia exacta de fecha/hora, generar un mes y repetir la generación. Revisar una reprogramación con viajes excluidos. Resolver diferencias de odómetro y probar el cierre por olvido. Walter conserva «Mi jornada» porque también tiene rol Chofer.
 3. **Secretaria:** revisar la carga sin comprobante, comprobar que no puede verificarla, adjuntar una imagen ficticia y verificarla expresamente. Registrar un gasto desde la ficha de un vehículo y comprobar su historial y total.
-4. **Alejandro:** revisar el resumen y sus pendientes, crear o editar maestros, consultar tarifas e historial. Preparar **Transp SERV de octubre de 2026**, emitir y descargar Excel/PDF. Corregir un viaje y preparar una nueva versión conservando la anterior. Noviembre tiene viajes sin resolver para mostrar el bloqueo de emisión.
+4. **Alejandro:** desde «Operación de hoy», abrir el contador de viajes sin chofer. En los datos iniciales hay dos, del 16 y del 17 de noviembre. Asignar uno desde su fila, comprobar que queda el otro y volver al resumen. También se puede crear o editar maestros, consultar tarifas e historial. Preparar **Transp SERV de octubre de 2026**, emitir y descargar Excel/PDF. Corregir un viaje y preparar una nueva versión conservando la anterior. Noviembre tiene viajes sin resolver para mostrar el bloqueo de emisión.
 5. **Usuarios:** crear una cuenta de prueba, copiar la contraseña temporal e ingresar con ella; cambiarla obligatoriamente. Revisar qué accesos se agregan o quitan al editar roles. La baja de un chofer conserva otros roles y deja sus viajes futuros sin asignar.
 6. **Reportes:** elegir tipo y período, revisar resultados y totales y descargar. Cambiar de perfil para comprobar que la información comercial está reservada a Alejandro.
 
