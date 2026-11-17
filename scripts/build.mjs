@@ -14,9 +14,16 @@ for(const [file,name] of modules){
   parts.push(`const ${name}=(()=>{\n${source.replace(/^export\s+/gm,'')}\nreturn {${exports.join(',')}};\n})();`);
 }
 parts.push(await read('src/main.js'));
-const font=(await read('assets/fonts/Montserrat-variable.ttf',null)).toString('base64');
+const font = await read('assets/fonts/Montserrat-variable.ttf', null);
+const face = `@font-face{font-family:Montserrat;font-weight:100 900;font-display:swap;src:url(data:font/ttf;base64,${font.toString('base64')}) format('truetype')}`;
 const logo=(await read('assets/brand/logo-original.jpg',null)).toString('base64');
-const css=(await read('src/styles.css')).replace('%%FONT%%',font);
+const tokens = JSON.parse(await read('tokens/irid.tokens.json'));
+const variables = Object.entries(tokens).flatMap(([group, entries]) =>
+  Object.entries(entries).map(([key, value]) => `--irid-${group}-${key}: ${value};`)
+);
+const css=[face, `:root {
+${variables.join('\n')}
+}`, await read('src/styles.css')].join('\n');
 const js=parts.join('\n').replaceAll('</script','<\\/script');
 const html=(await read('src/template.html')).replace('%%CSS%%',()=>css).replace('%%LOGO%%',()=>logo).replace('%%JS%%',()=>js);
 if(/%%(?:FONT|CSS|LOGO|JS)%%/.test(html))throw Error('Quedan recursos sin incrustar.');

@@ -50,37 +50,74 @@ function result(ctx, type, payload, feedback) {
   const data = ctx.run(type, payload);
   ctx.toast(typeof feedback === 'function' ? feedback(data) : feedback);
 }
+function passengerRows(ctx, trip, editable) {
+  return trip.passengers.map(passenger => {
+    const patient = records(ctx, 'patients', passenger.patientId);
+    const status = passenger.status || 'Sin registrar';
+    const picks = editable ? `<div class="actions">${['Recogido', 'No viajó'].map(value => act(ctx, value, 'passenger', trip.id, passenger.status === value ? 'primary' : 'secondary', `data-patient="${ctx.h(passenger.patientId)}" data-status="${ctx.h(value)}" aria-label="${ctx.h(`${value}: ${patient?.name || 'pasajero'}`)}" aria-pressed="${passenger.status === value}"`)).join('')}</div>` : '';
+    return `<li class="list-row"><div><strong>${ctx.h(patient?.name || 'Pasajero')}</strong><p>${ctx.h(patient?.address || 'Sin domicilio registrado')}</p>${ctx.badge(status, passenger.status === 'Recogido' ? 'success' : passenger.status === 'No viajó' ? 'warning' : '')}</div>${picks}</li>`;
+  }).join('');
+}
+
+function journeyStep(ctx, shift, trip, hasTrips) {
+  if (!trip && hasTrips && !shift) {
+    return '<h2>Ya completaste los viajes de hoy</h2><p>Tu turno está cerrado. Podés consultar los viajes registrados más abajo.</p>';
+  }
+  if (!shift) {
+    return `<h2>¿Con qué vehículo vas a trabajar?</h2><p>Elegí el vehículo y anotá los kilómetros que marca el tablero.</p>
+      ${act(ctx, 'Abrir turno', 'open-shift', '', 'primary')}`;
+  }
+  if (!trip) {
+    return `<h2>${hasTrips ? 'Ya completaste los viajes de hoy' : 'Sin viajes asignados hoy'}</h2>
+      <p>Cuando termines de usar el vehículo, anotá los kilómetros finales y cerrá el turno.</p>
+      ${act(ctx, 'Cerrar turno', 'close-shift', shift.id, 'primary')}`;
+  }
+  const route = records(ctx, 'routes', trip.routeId);
+  const driving = trip.status === 'En curso';
+  const tripInfo = `<p class="section-label">${driving ? 'Viaje en curso' : 'Próximo viaje'}</p>
+    <h2><time class="route-time">${ctx.h(trip.time)}</time> ${ctx.h(route?.name || 'Recorrido')}</h2>
+    <p>${ctx.h(trip.type)} · ${ctx.h(route?.destination || 'Sin destino registrado')}</p>`;
+  if (!driving) {
+    return tripInfo + act(ctx, `Iniciar viaje de las ${trip.time}`, 'start-trip', trip.id, 'primary');
+  }
+  const remaining = trip.passengers.filter(p => !p.status).length;
+  const prompt = remaining === 1 ? 'Falta marcar 1 pasajero' : `Faltan marcar ${remaining} pasajeros`;
+  return `${tripInfo}<h3>${remaining ? prompt : 'Todo listo para finalizar'}</h3>
+    <p>${remaining ? 'Indicá si recogiste a cada persona.' : 'Cuando llegues al destino, confirmá el final del viaje.'}</p>
+    <ul class="journey-passengers">${passengerRows(ctx, trip, true)}</ul>
+    ${remaining ? '' : act(ctx, 'Finalizar viaje', 'finish-trip', trip.id, 'primary')}`;
+}
+
 function journey(ctx) {
   if (!ctx.can('drive') || !ctx.driver) return unavailable(ctx);
   const { today, trips, fuel } = ctx.getState();
   const shift = ownShift(ctx);
   const todayTrips = ordered(trips.filter(trip => trip.date === today && owns(ctx, trip)));
-  const activeTrip = todayTrips.find(trip => trip.status === 'En curso') || todayTrips.find(trip => trip.status === 'Programado');
+  const current = trips.find(trip => owns(ctx, trip) && trip.status === 'En curso')
+    || todayTrips.find(trip => trip.status === 'Programado');
   const receipts = fuel.filter(item => item.driverId === ctx.driver.id && !item.receipt);
-  const fuelButton = shift ? ctx.button('Registrar combustible', 'mg:fuel-edit', `data-vehicle="${ctx.h(shift.vehicleId)}"`, 'primary') : '';
-  const turn = shift
-    ? `<div><p class="section-label">Turno del vehículo</p><h2>${ctx.h(vehicleName(ctx, shift.vehicleId))}</h2><p>Odómetro inicial <strong>${ctx.h(km(shift.startKm))}</strong></p></div><div class="actions">${fuelButton}${act(ctx, 'Cerrar turno', 'close-shift', shift.id)}</div>`
-    : `<div><p class="section-label">Turno del vehículo</p><h2>Sin turno abierto</h2><p>Elegí el vehículo y registrá la lectura del tablero para empezar.</p></div>${act(ctx, 'Abrir turno', 'open-shift', '', 'primary')}`;
-  const receiptNotice = receipts.length ? notice('warning', `<div class="panel-head"><div><strong>${receipts.length === 1 ? 'Tenés 1 comprobante pendiente' : `Tenés ${receipts.length} comprobantes pendientes`}</strong><p>Adjuntá la foto a la carga que ya registraste.</p></div>${receipts.length === 1 ? act(ctx, 'Adjuntar comprobante', 'receipt', receipts[0].id) : act(ctx, 'Ver comprobantes', 'receipts')}</div>`) : '';
+  const utility = [];
+  if (shift) {
+    utility.push(ctx.button('Registrar combustible', 'mg:fuel-edit', `data-vehicle="${ctx.h(shift.vehicleId)}"`));
+    if (current && current.status !== 'En curso') utility.push(act(ctx, 'Cerrar turno', 'close-shift', shift.id));
+  } else if (!current && todayTrips.length) {
+    utility.push(act(ctx, 'Abrir otro turno', 'open-shift'));
+  }
+  if (receipts.length) utility.push(receipts.length === 1
+    ? act(ctx, 'Adjuntar comprobante pendiente', 'receipt', receipts[0].id)
+    : act(ctx, `Ver comprobantes pendientes (${receipts.length})`, 'receipts'));
+  const tripList = todayTrips.map(trip => {
+    const route = records(ctx, 'routes', trip.routeId);
+    return `<li class="list-row"><div><strong>${ctx.h(trip.time)} · ${ctx.h(route?.name || 'Recorrido')}</strong>
+      <p>${ctx.h(trip.type)} · ${ctx.h(route?.destination || 'Sin destino registrado')}</p>
+      ${ctx.badge(trip.status, TONES[trip.status])}</div>${act(ctx, 'Ver viaje', 'trip', trip.id)}</li>`;
+  }).join('');
   return `${heading(ctx, 'Mi jornada', `${ctx.driver.name} · ${weekday.format(timeOf(today))} ${ctx.date(today)}`)}
-    <div class="stack"><section class="panel"><div class="panel-head">${turn}</div></section>${receiptNotice}
-    <section class="stack" aria-label="Viajes de hoy"><div class="panel-head"><h2>Viajes de hoy</h2><span>${todayTrips.length} ${todayTrips.length === 1 ? 'viaje' : 'viajes'}</span></div>
-    ${todayTrips.length ? todayTrips.map(trip => tripCard(ctx, trip, false, trip.id === activeTrip?.id)).join('') : ctx.empty('Sin viajes asignados hoy', 'Los viajes que te asignen para hoy aparecen acá.')}</section></div>`;
-}
-function tripCard(ctx, trip, showDriver = true, isNext = false) {
-  const route = records(ctx, 'routes', trip.routeId);
-  const reasons = ctx.can('plan') ? pendingReviews(trip) : [];
-  const patientNames = trip.passengers.map(passenger => ctx.lookup('patients', passenger.patientId)).filter(Boolean);
-  const passengersLine = patientNames.length ? `<p class="trip-patients">${ctx.h(patientNames.join(' · '))}</p>` : '';
-  const reviewReason = reasons.length ? `<p class="hint">Aviso: ${ctx.h(reasons[0].reason)}</p>` : '';
-  const canStart = !showDriver && owns(ctx, trip) && trip.status === 'Programado' && ownShift(ctx)
-    && !ctx.getState().trips.some(item => item.id !== trip.id && item.driverId === ctx.driver?.id && item.status === 'En curso');
-  const quickAction = canStart
-    ? act(ctx, 'Iniciar viaje', 'start-trip', trip.id, 'primary')
-    : showDriver && ctx.can('plan') && trip.status === 'Programado'
-      ? act(ctx, trip.driverId ? 'Reasignar' : 'Asignar chofer', 'assign', trip.id, trip.driverId ? 'secondary' : 'primary')
-      : '';
-  return `<article class="trip-card${isNext ? ' next' : ''}"><div class="trip-top"><div><strong class="time">${ctx.h(trip.time)}</strong> <span class="section-label">${ctx.h(trip.type)}</span></div>${ctx.badge(trip.status, TONES[trip.status])}</div><h3>${ctx.h(route?.name || 'Recorrido')}</h3><p>${ctx.h(route?.destination || '—')} · ${trip.passengers.length} ${trip.passengers.length === 1 ? 'pasajero' : 'pasajeros'}</p>${passengersLine}${reviewReason}<div class="trip-bottom"><div>${showDriver ? `<p>${ctx.h(driverName(ctx, trip.driverId))}</p>` : ''}${reasons.length ? ctx.badge('Pendiente de revisión', 'warning') : ''}</div><div class="actions">${quickAction}${act(ctx, 'Ver viaje', 'trip', trip.id)}</div></div></article>`;
+    <div class="stack"><section class="journey-step">${journeyStep(ctx, shift, current, todayTrips.length)}</section>
+    <section class="panel"><h2>Viajes de hoy</h2>${tripList ? `<ul class="journey-list">${tripList}</ul>` : '<p>Los viajes que te asignen para hoy aparecen acá.</p>'}</section>
+    <section class="panel"><h2>Vehículo y comprobantes</h2>
+    ${shift ? `<p>${ctx.h(vehicleName(ctx, shift.vehicleId))} · Inicio del turno: ${ctx.h(km(shift.startKm))}</p>` : '<p>Sin turno abierto.</p>'}
+    <div class="actions">${utility.join('')}</div></section></div>`;
 }
 function unavailable(ctx) { return ctx.empty('Vista no disponible', 'No tenés acceso a esta información con tu cuenta.'); }
 
@@ -378,12 +415,7 @@ function tripDetail(ctx, params) {
   if (mayCorrect(ctx, trip)) buttons.push(act(ctx, 'Corregir kilómetros o chofer', 'correct-trip', trip.id));
   if (ctx.can('commercial')) buttons.push(ctx.button('Ajustar importes', 'fin:adjust', idAttr(ctx, trip.id)));
   if (own || plan) buttons.push(act(ctx, 'Registrar novedad', 'note', trip.id));
-  const persons = trip.passengers.map(passenger => {
-    const patient = records(ctx, 'patients', passenger.patientId);
-    const status = passenger.status || 'Sin registrar';
-    const picks = own && inCourse ? `<div class="actions">${['Recogido', 'No viajó'].map(value => act(ctx, value, 'passenger', trip.id, passenger.status === value ? 'primary' : 'secondary', `data-patient="${ctx.h(passenger.patientId)}" data-status="${ctx.h(value)}" aria-label="${ctx.h(`${value}: ${patient?.name || 'pasajero'}`)}" aria-pressed="${passenger.status === value}"`)).join('')}</div>` : '';
-    return `<li class="list-row"><div><strong>${ctx.h(patient?.name || 'Pasajero')}</strong><p>${ctx.h(patient?.address || 'Sin domicilio registrado')}</p>${ctx.badge(status, passenger.status === 'Recogido' ? 'success' : passenger.status === 'No viajó' ? 'warning' : '')}</div>${picks}</li>`;
-  }).join('');
+  const persons = passengerRows(ctx, trip, own && inCourse);
   const factsHtml = facts(ctx, [['Horario', trip.time], ['Tipo', trip.type], ['Destino', route?.destination], ['Chofer', driverName(ctx, trip.driverId)], ['Vehículo del viaje', trip.vehicleId ? vehicleName(ctx, trip.vehicleId) : 'Se toma del turno al iniciar'], ...(plan ? [['Kilómetros comerciales', km(trip.commercialKm)]] : []), ...(ctx.can('commercial') ? [['Importe del viaje', ctx.money(trip.amount)], ['Remuneración', ctx.money(trip.driverPay)]] : [])]);
   const reviewNotice = reviews.length ? notice('warning', `<h2>Motivos de revisión</h2><ul>${reviews.map(review => `<li class="list-row"><span>${ctx.h(review.reason)}</span>${act(ctx, 'Marcar como revisado', 'review-trip', trip.id, 'secondary', `data-review="${ctx.h(review.id)}"`)}</li>`).join('')}</ul>`) : '';
   const notes = [...trip.notes].reverse().map(note => `<li><p>${ctx.h(note.text)}</p><p class="hint">${ctx.h(dateTime(ctx, note.at))} · ${ctx.h(ctx.lookup('users', note.authorId))}</p></li>`).join('');
@@ -414,7 +446,10 @@ function finish(ctx, trip) {
   const picked = trip.passengers.filter(passenger => passenger.status === 'Recogido');
   const noRide = trip.passengers.filter(passenger => passenger.status === 'No viajó');
   const names = list => list.map(passenger => ctx.lookup('patients', passenger.patientId)).join(', ') || '—';
-  ctx.confirm('Finalizar viaje', `<div class="stack">${facts(ctx, [[`Recogidos (${picked.length})`, names(picked)], [`No viajaron (${noRide.length})`, names(noRide)]])}${picked.length ? '' : notice('info', '<p>Confirmá si hiciste el recorrido previsto, aunque no haya viajado ningún pasajero.</p>')}</div>`, () => result(ctx, 'finishTrip', { id: trip.id }, 'Viaje registrado como realizado.'), 'Confirmar finalización');
+  ctx.confirm('Finalizar viaje', `<div class="stack">${facts(ctx, [[`Recogidos (${picked.length})`, names(picked)], [`No viajaron (${noRide.length})`, names(noRide)]])}${picked.length ? '' : notice('info', '<p>Confirmá si hiciste el recorrido previsto, aunque no haya viajado ningún pasajero.</p>')}</div>`, () => {
+    result(ctx, 'finishTrip', { id: trip.id }, 'Viaje registrado como realizado.');
+    if (ctx.screen === 'jornada' || ctx.params.back === 'jornada') ctx.go('jornada');
+  }, 'Confirmar finalización');
 }
 function tripState(ctx, trip) {
   const status = trip.status === 'Realizado' ? 'No realizado' : 'Realizado';
@@ -476,7 +511,7 @@ function openShift(ctx) {
     body: `<div class="stack">${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Elegí un vehículo' }, ...options], '', 'required data-change="op:opening-vehicle" aria-describedby="opening-reference"')}
     <p class="hint" id="opening-reference" data-opening-reference aria-live="polite">${ctx.h(openingReference(ctx))}</p>
     <div data-opening-quick hidden><button type="button" class="btn small secondary" data-action="op:use-last-km" data-km=""></button></div>
-    ${ctx.field('Lectura actual del odómetro (km)', 'reading', '', 'number', 'required min="0" step="1" inputmode="numeric"')}${FORM_ERROR}</div>`,
+    ${ctx.field('Kilómetros que marca el tablero', 'reading', '', 'number', 'required min="0" step="1" inputmode="numeric"')}${FORM_ERROR}</div>`,
     onSubmit(values, form) {
       try { result(ctx, 'openShift', values, 'Turno abierto.'); }
       catch (error) {
@@ -636,7 +671,7 @@ export async function handle(ctx, action, el) {
     case 'op:trip': goTrip(ctx, id); break;
     case 'op:back': {
       const fallback = plan ? 'agenda' : 'jornada';
-      const destinations = ['agenda', 'jornada', 'revisiones', 'turnos', ...(ctx.can('commercial') ? ['liquidaciones', 'liquidacion'] : [])];
+      const destinations = [...(ctx.can('admin') ? ['resumen'] : []), 'agenda', 'jornada', 'revisiones', 'turnos', ...(ctx.can('commercial') ? ['liquidaciones', 'liquidacion'] : [])];
       const back = destinations.includes(ctx.params.back) ? ctx.params.back : fallback;
       ctx.go(back, ctx.params.returnParams || {}); break;
     }
@@ -714,10 +749,21 @@ export async function handle(ctx, action, el) {
     case 'op:start-trip': {
       requirePermission(own && trip.status === 'Programado');
       result(ctx, 'startTrip', { id }, 'Viaje iniciado.');
-      if (ctx.screen !== 'viaje') ctx.go('viaje', { id, back: ctx.screen, returnParams: ctx.params });
+      if (ctx.screen === 'jornada') ctx.go('jornada');
+      else if (ctx.screen !== 'viaje') ctx.go('viaje', { id, back: ctx.screen, returnParams: ctx.params });
       break;
     }
-    case 'op:passenger': requirePermission(own && trip.status === 'En curso'); ctx.run('passenger', { id, patientId: el.dataset.patient, status: el.dataset.status }); break;
+    case 'op:passenger': {
+      requirePermission(own && trip.status === 'En curso');
+      const { patient, status } = el.dataset;
+      ctx.run('passenger', { id, patientId: patient, status });
+      const buttons = document.querySelectorAll('[data-action="op:passenger"]');
+      const selected = [...buttons].find(button => button.dataset.patient === patient && button.dataset.status === status);
+      selected?.focus({preventScroll:true});
+      const pending = records(ctx, 'trips', id).passengers.filter(person => !person.status).length;
+      ctx.toast(pending ? `Guardado. ${pending === 1 ? 'Falta marcar 1 pasajero' : `Faltan marcar ${pending} pasajeros`}.` : 'Pasajeros registrados. Ya podés finalizar el viaje.');
+      break;
+    }
     case 'op:passengers-all': {
       requirePermission(own && trip.status === 'En curso');
       for (const item of trip.passengers) {

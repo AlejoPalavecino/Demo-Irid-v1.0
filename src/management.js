@@ -371,6 +371,7 @@ function receiptFields(ctx, receipt, required) {
       <label class="field"><span>Sacar una foto</span><input type="file" name="capturePhoto" accept="image/*" capture="environment" data-change="mg:receipt-change" aria-describedby="mg-receipt-help"></label>
       <label class="field"><span>Elegir una imagen</span><input type="file" name="uploadPhoto" accept="image/*" data-change="mg:receipt-change" aria-describedby="mg-receipt-help"></label>
     </div>
+    <p class="load-status" data-receipt-loading role="status" hidden>Preparando la foto…</p>
     <div data-receipt-original>${receiptImage(ctx, receipt)}</div>
     <img class="receipt-preview" data-receipt-preview hidden alt="Vista previa del comprobante">
     <p class="notice danger" data-receipt-error hidden role="alert"></p>
@@ -383,6 +384,7 @@ function updateReceipt(form, upload) {
   const original = form.querySelector('[data-receipt-original]');
   const error = form.querySelector('[data-receipt-error]');
   const reset = form.querySelector('[data-receipt-reset]');
+  form.querySelector('[data-receipt-loading]').hidden = !upload.loading;
   preview.hidden = !upload.data;
   original.hidden = Boolean(upload.data);
   if (upload.data) preview.src = upload.data;

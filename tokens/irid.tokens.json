@@ -1,0 +1,48 @@
+{
+  "color": {
+    "stage": "#F8F7F4",
+    "brand": "#7B1F36",
+    "on-brand": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "surface-soft": "#FAF8F7",
+    "text": "#292529",
+    "text-secondary": "#5D5458",
+    "divider": "#E4DDDF",
+    "control-border": "#88767D",
+    "action": "#7B1F36",
+    "on-action": "#FFFFFF",
+    "action-hover": "#65192C",
+    "action-pressed": "#501322",
+    "highlight": "#9ACCEE",
+    "on-highlight": "#292529",
+    "rose": "#D9ACB8",
+    "chart-fill": "#D8ACB8",
+    "chart-outline": "#764653",
+    "chart-highlight-outline": "#285674",
+    "promo": "#F3E7EB",
+    "focus": "#501322",
+    "disabled-bg": "#EDE8E9",
+    "disabled-text": "#665A60",
+    "success": "#176347",
+    "success-bg": "#E6F4EC",
+    "warning": "#704700",
+    "warning-bg": "#FFF0D4",
+    "danger": "#A32935",
+    "danger-bg": "#FCE7EA",
+    "info": "#235B75",
+    "info-bg": "#E5F1F8"
+  },
+  "radius": {
+    "shell": "40px",
+    "content": "32px",
+    "card": "24px",
+    "control": "12px",
+    "pill": "999px",
+    "badge": "6px"
+  },
+  "shadow": {
+    "shell": "0 28px 72px rgba(80, 19, 34, 0.15)",
+    "floating": "0 8px 28px rgba(41, 37, 41, 0.12)",
+    "none": "none"
+  }
+}
