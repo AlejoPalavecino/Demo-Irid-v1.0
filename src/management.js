@@ -53,7 +53,7 @@ function panel(ctx, title, body) {
 }
 
 function kv(ctx, pairs) {
-  return `<dl class="key-value">${pairs.map(([label, value]) => `<dt>${ctx.h(label)}</dt><dd>${ctx.h(value ?? '—')}</dd>`).join('')}</dl>`;
+  return `<dl class="key-value">${pairs.map(([label, value]) => `<div><dt>${ctx.h(label)}</dt><dd>${ctx.h(value ?? '—')}</dd></div>`).join('')}</dl>`;
 }
 
 function table(ctx, caption, headers, rows) {
@@ -120,8 +120,8 @@ function masterList(ctx, collection, params) {
     return (status === 'all' || item.active === (status === 'active')) && searchable.some(value => value.includes(normalize(q)));
   }).sort((a, b) => recordName(a).localeCompare(recordName(b), 'es-AR'));
   const tool = `<form class="toolbar" data-action="mg:master-filter" ${attr(ctx, 'collection', collection)}>
-    ${ctx.field('Buscar', 'q', q, 'search')}${ctx.select('Estado', 'status', activityOptions, status, 'data-change="mg:master-filter"')}
-    <button type="submit" class="btn secondary">Aplicar filtros</button>
+    ${ctx.field('Buscar', 'q', q, 'search', 'placeholder="Nombre, patente o domicilio..."')}${ctx.select('Estado', 'status', activityOptions, status, 'data-change="mg:master-filter"')}
+    <button type="submit" class="btn secondary small">Buscar</button>${q || status !== 'active' ? ctx.button('Limpiar filtros', 'mg:master-clear', attr(ctx, 'collection', collection), 'secondary small') : ''}
   </form>`;
   const details = {
     patients: ['Domicilio', item => item.address],
@@ -144,7 +144,7 @@ function masterDetail(ctx, collection, item) {
   const meta = masters[collection];
   const recordAttrs = `${attr(ctx, 'collection', collection)} ${attr(ctx, 'id', item.id)}`;
   const editable = item.active && ctx.can('masters');
-  const backBtn = ctx.button(`← Volver a ${meta.title.toLowerCase()}`, 'mg:master-back',
+  const backBtn = ctx.button(`Volver a ${meta.title.toLowerCase()}`, 'mg:master-back',
     `${attr(ctx, 'collection', collection)} ${attr(ctx, 'q', ctx.params?.q ?? '')} ${attr(ctx, 'status', ctx.params?.status ?? 'active')}`, 'back-link');
   const actions = [
     editable ? ctx.button('Editar', 'mg:master-edit', recordAttrs, 'primary') : '',
@@ -269,8 +269,8 @@ function dateTime(ctx, item) {
   return `${ctx.date(item.date)}${item.time ? ` · ${item.time}` : ''}`;
 }
 
-function stat(ctx, label, value) {
-  return `<div class="metric"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
+function stat(ctx, label, value, extra = '') {
+  return `<div class="metric${extra ? ` ${extra}` : ''}"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
 }
 
 function fuelList(ctx, params) {
@@ -284,17 +284,20 @@ function fuelList(ctx, params) {
     return fuelStatus(item) === filter;
   }).sort((a, b) => `${b.date}${b.time}`.localeCompare(`${a.date}${a.time}`));
   const newButton = openShift(ctx) ? ctx.button('Registrar combustible', 'mg:fuel-edit', '', 'primary') : '';
+  const hasActiveFilters = filter !== 'pending' || vehicleId || driverId || month;
   const tool = `<form class="toolbar" data-action="mg:fuel-filter">
     ${ctx.field('Mes', 'month', month, 'month', 'data-change="mg:fuel-filter"')}
     ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx).filter(vehicle => fuelScopeAll(ctx) || all.some(item => item.vehicleId === vehicle.id))], vehicleId, 'data-change="mg:fuel-filter"')}
     ${fuelScopeAll(ctx) ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...ctx.state.drivers], driverId, 'data-change="mg:fuel-filter"') : ''}
     ${ctx.select('Comprobante', 'filter', fuelFilters, filter, 'data-change="mg:fuel-filter"')}
-    <button type="submit" class="btn secondary">Aplicar filtros</button>
+    <button type="submit" class="btn secondary small">Filtrar</button>${hasActiveFilters ? ctx.button('Limpiar', 'mg:fuel-clear', '', 'secondary small') : ''}
   </form>`;
+  const verifiedItems = monthAndScope.filter(verified);
+  const pendingItems = monthAndScope.filter(item => !verified(item));
   const sum = records => ctx.money(records.reduce((total, item) => total + item.amount, 0));
   const totals = monthAndScope.length ? `<section class="panel stack">
     <h2>Totales de combustible</h2><p class="hint">Incluyen cargas verificadas y pendientes del mes, vehículo y chofer seleccionados.</p>
-    <div class="grid-3">${stat(ctx, 'Total registrado', sum(monthAndScope))}${stat(ctx, 'Verificado', sum(monthAndScope.filter(verified)))}${stat(ctx, 'Pendiente', sum(monthAndScope.filter(item => !verified(item))))}</div>
+    <div class="metrics">${stat(ctx, 'Total registrado', sum(monthAndScope))}${stat(ctx, 'Verificado', sum(verifiedItems), verifiedItems.length ? 'metric-good' : '')}${stat(ctx, 'Pendiente', sum(pendingItems), pendingItems.length ? 'metric-warn' : '')}</div>
     ${table(ctx, 'Cantidades por tipo de combustible', ['Combustible', 'Cantidad total', 'Verificado', 'Pendiente'], fuels.filter(type => monthAndScope.some(item => item.type === type)).map(type => {
       const items = monthAndScope.filter(item => item.type === type);
       const quantity = records => ctx.h(`${number(records.reduce((total, item) => total + item.quantity, 0))} ${unit(type)}`);
@@ -323,7 +326,7 @@ function receiptImage(ctx, receipt) {
 function fuelDetail(ctx, item) {
   const itemAttr = attr(ctx, 'id', item.id);
   const editable = fuelEdit(ctx, item);
-  const backBtn = ctx.button('← Volver a combustible', 'mg:fuel-back', ['filter', 'month', 'vehicleId', 'driverId'].map(key => {
+  const backBtn = ctx.button('Volver a combustible', 'mg:fuel-back', ['filter', 'month', 'vehicleId', 'driverId'].map(key => {
     const dataKey = { vehicleId: 'vehicle-id', driverId: 'driver-id' }[key] ?? key;
     return attr(ctx, dataKey, ctx.params?.[key] ?? '');
   }).join(' '), 'back-link');
@@ -350,7 +353,7 @@ function fuelDetail(ctx, item) {
     ? ctx.state.fuel.filter(entry => entry.id !== item.id && entry.receipt && !entry.verified)
     : [];
   const nextNotice = pendingOthers.length
-    ? `<div class="notice info"><div class="panel-head"><span>${ctx.h(pendingOthers.length === 1 ? 'Queda 1 comprobante pendiente de verificación.' : `Quedan ${pendingOthers.length} comprobantes pendientes de verificación.`)}</span>${ctx.button('Ir al siguiente pendiente →', 'mg:fuel-view', attr(ctx, 'id', pendingOthers[0].id), 'small')}</div></div>`
+    ? `<div class="notice info"><div class="panel-head"><span>${ctx.h(pendingOthers.length === 1 ? 'Queda 1 comprobante pendiente de verificación.' : `Quedan ${pendingOthers.length} comprobantes pendientes de verificación.`)}</span>${ctx.button('Ir al siguiente pendiente', 'mg:fuel-view', attr(ctx, 'id', pendingOthers[0].id), 'small')}</div></div>`
     : '';
   return page(ctx, 'Detalle de carga', dateTime(ctx, item), controls, 'Combustible', backBtn) + `<div class="stack">${nextNotice}<div class="grid-2">
     ${panel(ctx, 'Datos de la carga', fuelBadge(ctx, item) + kv(ctx, pairs))}
@@ -459,8 +462,8 @@ function fuelForm(ctx, item, attach = false) {
   const vehicle = vehicleOptions(ctx).find(option => option.id === record.vehicleId);
   const typeSelector = ctx.select('Combustible', 'type', options(fuels), record.type, 'required data-change="mg:fuel-type"');
   const fields = attach
-    ? `<p class="field-full"><strong>${ctx.h(vehicle?.name ?? '')}</strong> · ${ctx.h(dateTime(ctx, record))} · ${ctx.h(record.type)}</p>`
-    : `<p class="field-full"><strong>Vehículo</strong> · ${ctx.h(vehicle?.name ?? '')}</p>
+    ? `<div class="notice info field-full"><p><strong>${ctx.h(vehicle?.name ?? '')}</strong> — ${ctx.h(dateTime(ctx, record))} (${ctx.h(record.type)})</p></div>`
+    : `<div class="notice info field-full"><p><strong>Vehículo:</strong> ${ctx.h(vehicle?.name ?? '')}</p></div>
       ${ctx.field('Fecha', 'date', record.date, 'date', 'required')}
       ${ctx.field('Hora', 'time', record.time, 'time', 'required')}
       ${typeSelector}
@@ -526,7 +529,7 @@ function expenseList(ctx, params) {
     ${ctx.field('Mes', 'month', month, 'month', 'data-change="mg:expense-filter"')}
     ${ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Todos' }, ...vehicleOptions(ctx)], vehicleId, 'data-change="mg:expense-filter"')}
     ${ctx.select('Categoría', 'category', [{ id: '', name: 'Todas' }, ...options(expenseCategories)], category, 'data-change="mg:expense-filter"')}
-    <button type="submit" class="btn secondary">Aplicar filtros</button>
+    <button type="submit" class="btn secondary small">Filtrar</button>${month || vehicleId || category ? ctx.button('Limpiar', 'mg:expense-clear', '', 'secondary small') : ''}
   </form>`;
   const content = items.length
     ? `<div class="metrics">${stat(ctx, 'Total de la consulta', ctx.money(items.reduce((total, item) => total + item.amount, 0)))}</div>${expenseRows(ctx, items, true)}`
@@ -553,7 +556,7 @@ function expenseForm(ctx, item, vehicleId) {
   const currentVehicle = item?.vehicleId ?? vehicleId;
   const lockedVehicle = !item && currentVehicle ? vehicleOptions(ctx).find(vehicle => vehicle.id === currentVehicle) : null;
   const fields = (lockedVehicle
-    ? `<p class="field-full"><strong>Vehículo</strong> · ${ctx.h(lockedVehicle.name)}</p>`
+    ? `<div class="notice info field-full"><p><strong>Vehículo:</strong> ${ctx.h(lockedVehicle.name)}</p></div>`
     : ctx.select('Vehículo', 'vehicleId', [{ id: '', name: 'Elegí un vehículo' }, ...vehicleOptions(ctx)], currentVehicle ?? '', 'required'))
     + ctx.field('Fecha', 'date', item?.date ?? ctx.state.today, 'date', 'required')
     + ctx.select('Categoría', 'category', options(expenseCategories), item?.category ?? 'Mantenimiento', 'required')
@@ -589,8 +592,14 @@ function userList(ctx) {
 }
 
 function roleFields(ctx, selected = []) {
+  const summaries = {
+    admin: 'Control total, tarifas, liquidaciones y usuarios',
+    encargado: 'Agenda, revisiones, flota, kilometraje y gastos',
+    secretaria: 'Flota, combustible y gastos',
+    chofer: 'Mi jornada, viajes propios y turnos'
+  };
   return `<fieldset class="field-full stack"><legend>Roles</legend>${Object.entries(roles).map(([id, role]) =>
-    `<label class="list-row"><span><input type="checkbox" name="roles" value="${ctx.h(id)}"${selected.includes(id) ? ' checked' : ''} data-change="mg:role-change"> ${ctx.h(role.name)}</span></label>`
+    `<label class="list-row"><span><strong>${ctx.h(role.name)}</strong><br><small>${ctx.h(summaries[id] ?? role.access[0])}</small></span><input type="checkbox" name="roles" value="${ctx.h(id)}"${selected.includes(id) ? ' checked' : ''} data-change="mg:role-change"></label>`
   ).join('')}</fieldset>`;
 }
 

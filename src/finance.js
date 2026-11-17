@@ -417,7 +417,7 @@ function settlementDiff(ctx, input, result) {
 
 function renderPreparation(ctx, params) {
   const input = toSettlementParams(params);
-  const backBtn = ctx.button('← Volver a liquidaciones', 'fin:settlements', '', 'back-link');
+  const backBtn = ctx.button('Volver a liquidaciones', 'fin:settlements', '', 'back-link');
   let result;
   try {
     result = ctx.preview('settlementPreview', input);
@@ -453,7 +453,7 @@ function renderVersion(ctx, id) {
     version.id === item.id ? 'En pantalla' : {html: ctx.button('Ver versión', 'fin:version', `data-id="${ctx.h(version.id)}"`, 'small')},
   ]);
   const correction = history[0]?.id === item.id ? ctx.button('Preparar corrección', 'fin:correction', `data-id="${ctx.h(item.id)}"`) : '';
-  return `${heading(ctx, `Liquidación · ${titleForSettlement(ctx, item)}`, `${formatPeriod(item.period)} · Versión ${item.version} · Emitida el ${sessionTime(ctx, item.issuedAt)}`, '', ctx.button('← Volver a liquidaciones', 'fin:settlements', '', 'back-link'))}
+  return `${heading(ctx, `Liquidación · ${titleForSettlement(ctx, item)}`, `${formatPeriod(item.period)} · Versión ${item.version} · Emitida el ${sessionTime(ctx, item.issuedAt)}`, '', ctx.button('Volver a liquidaciones', 'fin:settlements', '', 'back-link'))}
     <div class="stack">
       ${note(ctx, 'Versión emitida de demostración. Las correcciones se guardan en una nueva versión.')}
       ${item.minimumPending ? note(ctx, minimumText, 'warning') : ''}

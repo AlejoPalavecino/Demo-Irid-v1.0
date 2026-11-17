@@ -22,8 +22,8 @@ function act(ctx, label, action, id, kind = 'secondary', more = '') {
 function heading(ctx, title, subtitle, actions = '', backHTML = '') {
   return `<header class="page-head"><div>${backHTML}<h1>${ctx.h(title)}</h1><p>${ctx.h(subtitle)}</p></div>${actions ? `<div class="actions">${actions}</div>` : ''}</header>`;
 }
-function metric(ctx, label, value) {
-  return `<div class="metric"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
+function metric(ctx, label, value, extra = '') {
+  return `<div class="metric${extra ? ` ${extra}` : ''}"><span>${ctx.h(label)}</span><strong>${ctx.h(value)}</strong></div>`;
 }
 function facts(ctx, pairs) {
   return `<dl class="key-value">${pairs.map(([label, value]) => `<div><dt>${ctx.h(label)}</dt><dd>${ctx.h(value ?? '—')}</dd></div>`).join('')}</dl>`;
@@ -124,8 +124,36 @@ function calendar(ctx, days, trips) {
   }
   return `<div class="table-wrap calendar-wrap"><table class="table" aria-label="Calendario del mes"><thead><tr>${['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(day => `<th scope="col">${day}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
 }
-function stepCard(num, title, description, actionsHTML) {
-  return `<article class="step-card"><div class="step-head"><span class="step-num">${num}</span><h2>${title}</h2></div><p>${description}</p><div class="actions">${actionsHTML}</div></article>`;
+function sentenceCase(text) {
+  return text ? text[0].toUpperCase() + text.slice(1) : '';
+}
+function stepItem(num, title, description, actionsHTML, cueHTML = '') {
+  return `<section class="workflow-step"><div class="step-head"><span class="step-num">${num}</span><h2>${title}</h2></div><p>${description}</p><div class="actions">${actionsHTML}</div>${cueHTML}</section>`;
+}
+function dispatchRow(ctx, trip, plan) {
+  const route = records(ctx, 'routes', trip.routeId);
+  const reasons = plan ? pendingReviews(trip) : [];
+  const patientNames = trip.passengers.map(passenger => ctx.lookup('patients', passenger.patientId)).filter(Boolean);
+  const passengersLine = patientNames.length ? `<p class="dispatch-passengers">${ctx.h(patientNames.join(', '))}</p>` : '';
+  const alertLine = reasons.length ? `<p class="dispatch-alert">Aviso: ${ctx.h(reasons[0].reason)}</p>` : '';
+  const quickAction = plan && trip.status === 'Programado'
+    ? act(ctx, trip.driverId ? 'Reasignar' : 'Asignar chofer', 'assign', trip.id, trip.driverId ? 'secondary small' : 'primary small')
+    : '';
+  const rowTone = plan && !trip.driverId && trip.status === 'Programado'
+    ? ' is-attention'
+    : (reasons.length ? ' is-review' : '');
+  const driverHTML = plan
+    ? `<span class="dispatch-driver${trip.driverId ? '' : ' is-missing'}">${ctx.h(driverName(ctx, trip.driverId))}</span>`
+    : '';
+  return `<article class="dispatch-row${rowTone}">
+    <div class="dispatch-time"><time>${ctx.h(trip.time)}</time><span class="dir-tag ${trip.type === 'Entrada' ? 'is-entry' : 'is-exit'}">${ctx.h(trip.type)}</span></div>
+    <div class="dispatch-main">
+      <div class="dispatch-title"><h4>${ctx.h(route?.name || 'Recorrido')}</h4>${ctx.badge(trip.status, TONES[trip.status])}${reasons.length ? ctx.badge('Por revisar', 'warning') : ''}</div>
+      <p class="dispatch-dest">${ctx.h(route?.destination || '—')} (${trip.passengers.length} ${trip.passengers.length === 1 ? 'pasajero' : 'pasajeros'})</p>
+      ${passengersLine}${alertLine}
+    </div>
+    <div class="dispatch-actions">${driverHTML}<div class="actions">${quickAction}${act(ctx, 'Ver viaje', 'trip', trip.id, 'secondary small')}</div></div>
+  </article>`;
 }
 function agenda(ctx, input) {
   const plan = ctx.can('plan');
@@ -137,7 +165,8 @@ function agenda(ctx, input) {
   const { today, drivers, trips } = ctx.getState();
   const visibleTrips = ordered(trips.filter(trip => plan || owns(ctx, trip)));
   const periodTrips = visibleTrips.filter(trip => trip.date >= days[0] && trip.date <= days.at(-1));
-  const filtered = periodTrips.filter(trip => (!driverId || trip.driverId === driverId) && (!status || trip.status === status) && (filter !== 'unassigned' || !trip.driverId) && (filter !== 'review' || pendingReviews(trip).length));
+  const needsDriver = trip => !trip.driverId && trip.status === 'Programado';
+  const filtered = periodTrips.filter(trip => (!driverId || trip.driverId === driverId) && (!status || trip.status === status) && (filter !== 'unassigned' || needsDriver(trip)) && (filter !== 'review' || pendingReviews(trip).length));
   const rows = new Map();
   for (const trip of filtered) {
     if (!rows.has(trip.date)) rows.set(trip.date, []);
@@ -147,23 +176,29 @@ function agenda(ctx, input) {
     : view === 'week' ? `${ctx.date(days[0])} al ${ctx.date(days.at(-1))}` : monthName.format(timeOf(date));
   const switchView = ['Día', 'Semana', 'Mes'].map((label, index) => {
     const mode = ['day', 'week', 'month'][index];
-    return act(ctx, label, 'view', '', view === mode ? 'primary' : 'secondary', `data-view="${mode}" aria-pressed="${view === mode}"`);
+    return act(ctx, label, 'view', '', view === mode ? 'primary small' : 'secondary small', `data-view="${mode}" aria-pressed="${view === mode}"`);
   }).join('');
-  const clear = act(ctx, 'Ver todos', 'clear-filters');
-  const unassignedInPeriod = periodTrips.filter(trip => !trip.driverId).length;
+  const clear = act(ctx, 'Limpiar filtros', 'clear-filters', '', 'secondary small');
+  const unassignedInPeriod = periodTrips.filter(needsDriver).length;
   const reviewInPeriod = periodTrips.filter(trip => pendingReviews(trip).length).length;
   const monthPrefix = date.slice(0, 7);
   const monthTrips = visibleTrips.filter(trip => trip.date.startsWith(monthPrefix));
-  const unassignedInMonth = monthTrips.filter(trip => !trip.driverId).length;
+  const unassignedInMonth = monthTrips.filter(needsDriver).length;
   const reviewInMonth = monthTrips.filter(trip => pendingReviews(trip).length).length;
   const monthCue = view !== 'month' && (unassignedInMonth > unassignedInPeriod || reviewInMonth > reviewInPeriod)
-    ? `<p class="hint">En ${ctx.h(monthName.format(timeOf(`${monthPrefix}-01`)))}: ${unassignedInMonth} sin asignar · ${reviewInMonth} por revisar. ${act(ctx, 'Ver todo el mes', 'view', '', 'ghost small', 'data-view="month"')}</p>`
+    ? `<div class="workflow-cue"><span>En ${ctx.h(sentenceCase(monthName.format(timeOf(`${monthPrefix}-01`))))}: ${unassignedInMonth} sin chofer, ${reviewInMonth} con aviso</span><button type="button" class="btn-inline" data-action="op:view" data-view="month">Ver mes</button></div>`
     : '';
-  const steps = plan ? `<section class="agenda-steps" aria-label="Pasos de trabajo en la agenda">
-    ${stepCard(1, 'Programar el mes', 'Crea los viajes de Entrada y Salida según los días de tus recorridos, sin duplicar los existentes.', act(ctx, 'Generar mes', 'generate', '', 'primary'))}
-    ${stepCard(2, 'Asignar y revisar', 'Filtrá rápido los viajes sin chofer o con avisos para asignarlos o marcarlos revisados.', `${act(ctx, `Sin asignar (${unassignedInPeriod})`, 'quick-filter', '', filter === 'unassigned' ? 'primary' : 'secondary', `data-filter="unassigned" aria-pressed="${filter === 'unassigned'}"`)}${act(ctx, `Por revisar (${reviewInPeriod})`, 'quick-filter', '', filter === 'review' ? 'primary' : 'secondary', `data-filter="review" aria-pressed="${filter === 'review'}"`)}${monthCue}`)}
-    ${stepCard(3, 'Cambiar horarios', 'Modificá la hora de Entrada o Salida de un recorrido para una fecha o hasta fin de mes.', act(ctx, 'Reprogramar', 'reschedule'))}
+  const steps = plan ? `<section class="agenda-workflow" aria-label="Flujo de trabajo de la agenda">
+    ${stepItem(1, 'Programar el mes', 'Creá entradas y salidas del mes según sus días, sin duplicar viajes cargados.', act(ctx, 'Generar mes', 'generate', '', 'primary small'))}
+    ${stepItem(2, 'Asignar y revisar', 'Filtrá rápido los viajes pendientes para cubrir choferes o resolver avisos.', `${act(ctx, `Sin chofer (${unassignedInPeriod})`, 'quick-filter', '', filter === 'unassigned' ? 'primary small' : 'secondary small', `data-filter="unassigned" aria-pressed="${filter === 'unassigned'}"`)}${act(ctx, `Con aviso (${reviewInPeriod})`, 'quick-filter', '', filter === 'review' ? 'primary small' : 'secondary small', `data-filter="review" aria-pressed="${filter === 'review'}"`)}`, monthCue)}
+    ${stepItem(3, 'Cambiar horarios', 'Ajustá la hora de Entrada o Salida de un recorrido para una fecha o hasta fin de mes.', act(ctx, 'Reprogramar', 'reschedule', '', 'secondary small'))}
   </section>` : '';
+  const readinessParts = [unassignedInPeriod ? `${unassignedInPeriod} sin chofer` : '', reviewInPeriod ? `${reviewInPeriod} con aviso` : ''].filter(Boolean);
+  const readiness = plan && periodTrips.length
+    ? readinessParts.length
+      ? `<span class="badge ${unassignedInPeriod ? 'brand' : 'warning'}">${ctx.h(`${periodTrips.length} ${periodTrips.length === 1 ? 'viaje' : 'viajes'}: ${readinessParts.join(', ')}`)}</span>`
+      : `<span class="badge success">${periodTrips.length} ${periodTrips.length === 1 ? 'viaje cubierto' : 'viajes cubiertos'}</span>`
+    : '';
   const activeFilterParts = [
     filter === 'unassigned' ? 'sólo viajes sin chofer asignado' : '',
     filter === 'review' ? 'sólo viajes pendientes de revisión' : '',
@@ -171,36 +206,42 @@ function agenda(ctx, input) {
     status ? `estado ${status}` : ''
   ].filter(Boolean);
   const filterBanner = activeFilterParts.length
-    ? notice('info', `<div class="panel-head"><span><strong>Filtro activo:</strong> ${ctx.h(activeFilterParts.join(' · '))}</span>${clear}</div>`)
+    ? notice('info', `<div class="panel-head"><span><strong>Mostrando:</strong> ${ctx.h(activeFilterParts.join(', '))}</span>${clear}</div>`)
     : '';
   const statuses = STATES.map(state => ({ id: state, name: state }));
   const emptyActions = view !== 'month' && ((filter === 'unassigned' && unassignedInMonth > 0) || (filter === 'review' && reviewInMonth > 0))
     ? `${act(ctx, 'Ver todo el mes', 'view', '', 'primary', 'data-view="month"')}${clear}`
     : clear;
   const emptyHint = view !== 'month' && filter === 'unassigned' && unassignedInMonth > 0
-    ? `No hay viajes sin asignar en esta vista, pero quedan ${unassignedInMonth} en ${monthName.format(timeOf(`${monthPrefix}-01`))}.`
+    ? `No hay viajes sin chofer en esta vista, pero quedan ${unassignedInMonth} en ${monthName.format(timeOf(`${monthPrefix}-01`))}.`
     : view !== 'month' && filter === 'review' && reviewInMonth > 0
       ? `No hay avisos pendientes en esta vista, pero quedan ${reviewInMonth} en ${monthName.format(timeOf(`${monthPrefix}-01`))}.`
       : 'Probá cambiando los filtros o el período para ver otros viajes.';
   const noTrips = driverId || status || filter ? ctx.empty('Sin viajes con este filtro', emptyHint, emptyActions)
-    : ctx.empty('Sin viajes en este período', plan ? 'Podés cambiar de fecha arriba o usar "Generar mes" en el Paso 1.' : 'Tus viajes asignados aparecerán acá.', plan ? act(ctx, 'Generar mes', 'generate') : '');
+    : ctx.empty('Sin viajes en este período', plan ? 'Cambiá de fecha o usá Generar mes para programar los recorridos.' : 'Tus viajes asignados aparecerán acá.', plan ? act(ctx, 'Generar mes', 'generate') : '');
   const groups = [...rows].map(([day, group]) => {
-    const groupTitle = view === 'day' ? 'Programación del día' : `${weekday.format(timeOf(day))} ${ctx.date(day)}`;
-    return `<section class="stack"><div class="panel-head"><h3>${ctx.h(groupTitle)}</h3><span>${group.length} ${group.length === 1 ? 'viaje' : 'viajes'}</span></div>${group.map(trip => tripCard(ctx, trip, plan)).join('')}</section>`;
+    const groupTitle = view === 'day' ? 'Hoja de ruta del día' : sentenceCase(`${weekday.format(timeOf(day))} ${ctx.date(day)}`);
+    const dayUnassigned = plan ? group.filter(needsDriver).length : 0;
+    const dayReviews = plan ? group.filter(trip => pendingReviews(trip).length).length : 0;
+    const daySummary = [`${group.length} ${group.length === 1 ? 'viaje' : 'viajes'}`, dayUnassigned ? `${dayUnassigned} sin chofer` : '', dayReviews ? `${dayReviews} con aviso` : ''].filter(Boolean).join(', ');
+    return `<section class="schedule-day"><div class="schedule-day-head"><h3>${ctx.h(groupTitle)}</h3><span class="schedule-summary">${ctx.h(daySummary)}</span></div>${group.map(trip => dispatchRow(ctx, trip, plan)).join('')}</section>`;
   }).join('');
-  return `${heading(ctx, plan ? 'Agenda' : 'Mis viajes', plan ? 'Seguí los tres pasos para generar el mes, cubrir choferes y ajustar horarios.' : 'Consultá tus viajes asignados por fecha.')}
-    <div class="stack">${steps}<section class="panel stack" aria-label="Controles de agenda">
-      <div class="agenda-bar"><h2>${ctx.h(caption)}</h2><div class="agenda-nav"><div class="actions">${act(ctx, '← Anterior', 'move', '', 'secondary', 'data-direction="-1"')}${act(ctx, 'Hoy', 'today', '', date === today ? 'ghost' : 'secondary')}${act(ctx, 'Siguiente →', 'move', '', 'secondary', 'data-direction="1"')}</div><div class="actions" aria-label="Vista de agenda">${switchView}</div></div></div>
-      <form class="toolbar" data-action="op:agenda-filter">${ctx.field('Ir a la fecha', 'date', date, 'date', 'required data-change="op:agenda-filter"')}${plan ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...drivers], driverId, 'data-change="op:agenda-filter"') : ''}${ctx.select('Estado', 'status', [{ id: '', name: 'Todos' }, ...statuses], status, 'data-change="op:agenda-filter"')}${driverId || status || filter ? clear : ''}</form>
+  return `${heading(ctx, plan ? 'Agenda' : 'Mis viajes', plan ? 'Organizá los viajes del mes, cubrí choferes y ajustá horarios desde un solo lugar.' : 'Consultá tus viajes asignados por fecha.')}
+    <div class="stack">${steps}<section class="panel stack agenda-controls" aria-label="Controles de agenda">
+      <div class="agenda-bar"><div class="agenda-title-group"><h2>${ctx.h(sentenceCase(caption))}</h2>${readiness}</div><div class="agenda-nav"><div class="actions">${act(ctx, 'Anterior', 'move', '', 'secondary small', 'data-direction="-1"')}${act(ctx, 'Hoy', 'today', '', date === today ? 'ghost small' : 'secondary small')}${act(ctx, 'Siguiente', 'move', '', 'secondary small', 'data-direction="1"')}</div><div class="actions" aria-label="Vista de agenda">${switchView}</div></div></div>
+      <form class="toolbar" data-action="op:agenda-filter">${ctx.field('Fecha', 'date', date, 'date', 'required data-change="op:agenda-filter"')}${plan ? ctx.select('Chofer', 'driverId', [{ id: '', name: 'Todos' }, ...drivers], driverId, 'data-change="op:agenda-filter"') : ''}${ctx.select('Estado', 'status', [{ id: '', name: 'Todos' }, ...statuses], status, 'data-change="op:agenda-filter"')}${driverId || status || filter ? clear : ''}</form>
     </section>${filterBanner}${view === 'month' ? `<section class="panel">${calendar(ctx, days, filtered)}</section>` : ''}${groups || noTrips}</div>`;
 }
 
 function rowTable(ctx, headers, rows) {
   return `<div class="table-wrap"><table class="table"><thead><tr>${headers.map(label => `<th scope="col">${ctx.h(label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(value => `<td>${ctx.h(value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
-function editDraft(ctx, open, label = '← Volver a editar') {
+function editDraft(ctx, open, label = 'Volver a editar') {
   resumeDraft = open;
-  return act(ctx, label, 'edit-draft');
+  return act(ctx, label, 'edit-draft', '', 'secondary small');
+}
+function wizardSteps(active, first, second) {
+  return `<div class="wizard-steps" aria-label="Pasos"><span class="wizard-step${active === 1 ? ' is-active' : ''}">${first}</span><span class="wizard-step${active === 2 ? ' is-active' : ''}">${second}</span></div>`;
 }
 function confirmGenerate(ctx, payload) {
   const preview = ctx.preview('generateMonth', payload);
@@ -213,9 +254,9 @@ function confirmGenerate(ctx, payload) {
   const rows = [...groups].sort(([a], [b]) => a.localeCompare(b)).map(([, row]) => row);
   const table = groups.size ? rowTable(ctx, ['Recorrido', 'Fecha', 'Entradas nuevas', 'Salidas nuevas', 'Se conservan'], rows) : '<p>El mes seleccionado no tiene viajes previstos para estos recorridos.</p>';
   const stepNote = preview.missing.length
-    ? notice('info', '<p><strong>Paso 2 de 2 ·</strong> Revisá cuántos viajes se van a agregar. No se guarda nada hasta confirmar.</p>')
-    : notice('success', '<p><strong>Mes ya cubierto:</strong> todos los viajes de estos recorridos ya están creados. Volvé al paso 1 si querés probar otro mes.</p>');
-  const body = `<div class="stack">${stepNote}<div class="panel-head"><h3>${ctx.h(monthName.format(timeOf(`${payload.month}-01`)))}</h3>${editDraft(ctx, () => generate(ctx, payload), '← Cambiar mes o recorridos')}</div><div class="metrics">${metric(ctx, 'Entradas nuevas', preview.entries)}${metric(ctx, 'Salidas nuevas', preview.exits)}${metric(ctx, 'Viajes que se conservan', preview.existing.length)}</div>${table}</div>`;
+    ? '<p class="hint">Revisá cuántos viajes se agregarán antes de confirmar. No se guardan duplicados.</p>'
+    : notice('success', '<p>Todos los viajes de estos recorridos ya están creados en ese mes. Editá la selección para probar otro mes.</p>');
+  const body = `<div class="stack">${wizardSteps(2, '1. Mes y recorridos', '2. Revisar y confirmar')}${stepNote}<div class="panel-head"><h3>${ctx.h(sentenceCase(monthName.format(timeOf(`${payload.month}-01`))))}</h3>${editDraft(ctx, () => generate(ctx, payload), 'Cambiar selección')}</div><div class="metrics">${metric(ctx, 'Entradas nuevas', preview.entries)}${metric(ctx, 'Salidas nuevas', preview.exits)}${metric(ctx, 'Viajes existentes', preview.existing.length)}</div>${table}</div>`;
   if (!preview.missing.length) { ctx.dialog({ title: 'Vista previa de generación', body }); return; }
   ctx.confirm('Vista previa de generación', body, () => {
     result(ctx, 'generateMonth', payload, data => `Se generaron ${data.created} viajes. Se conservaron ${data.existing} existentes.`);
@@ -225,9 +266,9 @@ function generate(ctx, draft) {
   const { routes } = ctx.getState();
   const active = routes.filter(route => route.active);
   if (!active.length) { ctx.dialog({ title: 'Generar mes', body: '<p>Necesitás un recorrido activo para generar viajes.</p>' }); return; }
-  ctx.dialog({ title: 'Generar viajes del mes', submitLabel: 'Paso 2: Ver vista previa →',
-    body: `<div class="stack">${notice('info', '<p><strong>Paso 1 de 2 ·</strong> Elegí el mes y los recorridos. Se crearán viajes de Entrada y Salida según sus días, sin duplicar los existentes.</p>')}${ctx.field('Mes a generar', 'month', draft?.month || agendaParams(ctx, ctx.params).date.slice(0, 7), 'month', 'required')}
-    <fieldset><legend>Recorridos activos a incluir</legend>${active.map(route => `<label class="list-row"><span><strong>${ctx.h(route.name)}</strong><br><small>${route.group === 'LMV' ? 'Lun, mié y vie' : 'Mar, jue y sáb'} · Entrada ${ctx.h(route.entryTime)} / Salida ${ctx.h(route.exitTime)} · ${route.patientIds.length} pasajeros</small></span><input type="checkbox" name="routeIds" value="${ctx.h(route.id)}"${!draft || draft.routeIds.includes(route.id) ? ' checked' : ''}></label>`).join('')}</fieldset></div>`,
+  ctx.dialog({ title: 'Generar viajes del mes', submitLabel: 'Revisar viajes a crear',
+    body: `<div class="stack">${wizardSteps(1, '1. Mes y recorridos', '2. Revisar y confirmar')}<p class="hint">Elegí el mes y los recorridos activos. Se programan viajes de Entrada y Salida sin duplicar existentes.</p>${ctx.field('Mes a generar', 'month', draft?.month || agendaParams(ctx, ctx.params).date.slice(0, 7), 'month', 'required')}
+    <fieldset><legend>Recorridos activos a incluir</legend>${active.map(route => `<label class="list-row"><span><strong>${ctx.h(route.name)}</strong><br><small>${route.group === 'LMV' ? 'Lun, mié y vie' : 'Mar, jue y sáb'} — Entrada ${ctx.h(route.entryTime)}, salida ${ctx.h(route.exitTime)} (${route.patientIds.length} pasajeros)</small></span><input type="checkbox" name="routeIds" value="${ctx.h(route.id)}"${!draft || draft.routeIds.includes(route.id) ? ' checked' : ''}></label>`).join('')}</fieldset></div>`,
     onSubmit(values, form) { const routeIds = new FormData(form).getAll('routeIds'); if (!routeIds.length) throw new Error('Elegí al menos un recorrido.'); confirmGenerate(ctx, { month: values.month, routeIds }); }
   });
 }
@@ -251,8 +292,8 @@ function reprogram(ctx, trip, routeId, draft) {
   const date = draft?.date || trip?.date || ctx.params.date || today;
   const entry = trips.find(item => item.date === date && item.routeId === route.id && item.type === 'Entrada');
   const exit = trips.find(item => item.date === date && item.routeId === route.id && item.type === 'Salida');
-  ctx.dialog({ title: 'Reprogramar recorrido', submitLabel: 'Paso 2: Revisar afectados →',
-    body: `<div class="stack">${notice('info', '<p><strong>Paso 1 de 2 ·</strong> Elegí el recorrido, la fecha y los nuevos horarios. Sólo se ajustan viajes sin iniciar.</p>')}<div class="form-grid">${ctx.select('Recorrido', 'routeId', choices, route.id, 'required data-change="op:reprogram-route"')}${ctx.field('Fecha desde la que se revisa', 'date', date, 'date', 'required data-change="op:reprogram-route"')}<div class="field-full">${ctx.select('Alcance', 'scope', [{ id: 'one', name: 'Sólo esta fecha (únicamente el día elegido)' }, { id: 'rest', name: 'Desde esta fecha hasta fin de mes (futuros sin iniciar)' }], draft?.scope || 'one')}</div>${ctx.field('Horario de Entrada', 'entryTime', draft?.entryTime || entry?.time || route.entryTime, 'time', 'required')}${ctx.field('Horario de Salida', 'exitTime', draft?.exitTime || exit?.time || route.exitTime, 'time', 'required')}</div>${FORM_ERROR}</div>`,
+  ctx.dialog({ title: 'Reprogramar recorrido', submitLabel: 'Revisar viajes afectados',
+    body: `<div class="stack">${wizardSteps(1, '1. Recorrido y horarios', '2. Revisar afectados')}<p class="hint">Elegí el recorrido, desde qué fecha revisar y los nuevos horarios. Sólo cambian viajes sin iniciar.</p><div class="form-grid">${ctx.select('Recorrido', 'routeId', choices, route.id, 'required data-change="op:reprogram-route"')}${ctx.field('Fecha desde la que se revisa', 'date', date, 'date', 'required data-change="op:reprogram-route"')}<div class="field-full">${ctx.select('Alcance', 'scope', [{ id: 'one', name: 'Sólo esta fecha (únicamente el día elegido)' }, { id: 'rest', name: 'Desde esta fecha hasta fin de mes (futuros sin iniciar)' }], draft?.scope || 'one')}</div>${ctx.field('Horario de Entrada', 'entryTime', draft?.entryTime || entry?.time || route.entryTime, 'time', 'required')}${ctx.field('Horario de Salida', 'exitTime', draft?.exitTime || exit?.time || route.exitTime, 'time', 'required')}</div>${FORM_ERROR}</div>`,
     onSubmit(payload, form) {
       try {
         const preview = ctx.preview('reschedule', payload);
@@ -260,10 +301,10 @@ function reprogram(ctx, trip, routeId, draft) {
         const changed = comparisons.filter(([, , before, after]) => before !== after);
         const excluded = preview.excluded.map(({ trip: item, reason }) => [ctx.date(item.date), item.type, item.time, reason]);
         excluded.push(...comparisons.filter(([, , before, after]) => before === after).map(([date, type, time]) => [date, type, time, 'El horario propuesto coincide con el actual']));
-        const stepBanner = notice(changed.length ? 'info' : 'warning', changed.length
-          ? '<p><strong>Paso 2 de 2 ·</strong> Confirmá los viajes que cambian de hora. Los excluidos quedan intactos.</p>'
-          : '<p>No hay cambios aplicables con estos horarios. Volvé al paso 1 para probar otra fecha o alcance.</p>');
-        const body = `<div class="stack">${stepBanner}<div class="panel-head"><h3>${ctx.h(ctx.lookup('routes', payload.routeId))}</h3>${editDraft(ctx, () => reprogram(ctx, trip, routeId, payload), '← Cambiar horarios')}</div><section><h3>Viajes que se modificarán (${changed.length})</h3>${changed.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario actual', 'Horario propuesto'], changed) : '<p>La selección no tiene cambios de horario aplicables.</p>'}</section><section><h3>Viajes excluidos (${excluded.length})</h3>${excluded.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario', 'Motivo'], excluded) : '<p>Sin exclusiones.</p>'}</section></div>${FORM_ERROR}`;
+        const stepBanner = changed.length
+          ? '<p class="hint">Confirmá los cambios antes de aplicarlos. Los viajes excluidos quedan intactos.</p>'
+          : notice('warning', '<p>No hay cambios aplicables con estos horarios. Editá los horarios para probar otra fecha o alcance.</p>');
+        const body = `<div class="stack">${wizardSteps(2, '1. Recorrido y horarios', '2. Revisar afectados')}${stepBanner}<div class="panel-head"><h3>${ctx.h(ctx.lookup('routes', payload.routeId))}</h3>${editDraft(ctx, () => reprogram(ctx, trip, routeId, payload), 'Editar horarios')}</div><section><h3>Viajes que se modificarán (${changed.length})</h3>${changed.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario actual', 'Horario propuesto'], changed) : '<p>La selección no tiene cambios de horario aplicables.</p>'}</section><section><h3>Viajes excluidos (${excluded.length})</h3>${excluded.length ? rowTable(ctx, ['Fecha', 'Tipo', 'Horario', 'Motivo'], excluded) : '<p>Sin exclusiones.</p>'}</section></div>${FORM_ERROR}`;
         if (!changed.length) { ctx.dialog({ title: 'Revisión de programación', body }); return; }
         ctx.dialog({ title: 'Revisión de programación', body, submitLabel: 'Confirmar reprogramación', onSubmit(_, confirmForm) {
           try { result(ctx, 'reschedule', payload, data => `Viajes reprogramados: ${data.changed}. Excluidos: ${excluded.length}.`); }
@@ -341,7 +382,7 @@ function tripDetail(ctx, params) {
     const patient = records(ctx, 'patients', passenger.patientId);
     const status = passenger.status || 'Sin registrar';
     const picks = own && inCourse ? `<div class="actions">${['Recogido', 'No viajó'].map(value => act(ctx, value, 'passenger', trip.id, passenger.status === value ? 'primary' : 'secondary', `data-patient="${ctx.h(passenger.patientId)}" data-status="${ctx.h(value)}" aria-label="${ctx.h(`${value}: ${patient?.name || 'pasajero'}`)}" aria-pressed="${passenger.status === value}"`)).join('')}</div>` : '';
-    return `<li class="list-row"><div><strong>${ctx.h(patient?.name || 'Pasajero')}</strong><p>${ctx.h(patient?.address || 'Sin domicilio registrado')}</p>${ctx.badge(status, passenger.status === 'Recogido' ? 'success' : '')}</div>${picks}</li>`;
+    return `<li class="list-row"><div><strong>${ctx.h(patient?.name || 'Pasajero')}</strong><p>${ctx.h(patient?.address || 'Sin domicilio registrado')}</p>${ctx.badge(status, passenger.status === 'Recogido' ? 'success' : passenger.status === 'No viajó' ? 'warning' : '')}</div>${picks}</li>`;
   }).join('');
   const factsHtml = facts(ctx, [['Horario', trip.time], ['Tipo', trip.type], ['Destino', route?.destination], ['Chofer', driverName(ctx, trip.driverId)], ['Vehículo del viaje', trip.vehicleId ? vehicleName(ctx, trip.vehicleId) : 'Se toma del turno al iniciar'], ...(plan ? [['Kilómetros comerciales', km(trip.commercialKm)]] : []), ...(ctx.can('commercial') ? [['Importe del viaje', ctx.money(trip.amount)], ['Remuneración', ctx.money(trip.driverPay)]] : [])]);
   const reviewNotice = reviews.length ? notice('warning', `<h2>Motivos de revisión</h2><ul>${reviews.map(review => `<li class="list-row"><span>${ctx.h(review.reason)}</span>${act(ctx, 'Marcar como revisado', 'review-trip', trip.id, 'secondary', `data-review="${ctx.h(review.id)}"`)}</li>`).join('')}</ul>`) : '';
@@ -350,7 +391,7 @@ function tripDetail(ctx, params) {
     ? act(ctx, 'Marcar todos recogidos', 'passengers-all', trip.id, 'secondary small') : '';
   const footerFinish = own && inCourse
     ? `<div class="actions section-gap">${act(ctx, 'Finalizar viaje', 'finish-trip', trip.id, 'primary', unmarked ? 'disabled' : '')}${unmarked ? `<span class="hint">${ctx.h(unmarked === 1 ? 'Falta indicar 1 pasajero.' : `Faltan indicar ${unmarked} pasajeros.`)}</span>` : ''}</div>` : '';
-  return `${heading(ctx, route?.name || 'Detalle del viaje', `${ctx.date(trip.date)} · ${trip.type} · ${trip.time}`, '', act(ctx, '← Volver', 'back', '', 'back-link'))}
+  return `${heading(ctx, route?.name || 'Detalle del viaje', `${ctx.date(trip.date)} · ${trip.type} · ${trip.time}`, '', act(ctx, 'Volver', 'back', '', 'back-link'))}
     <div class="stack"><section class="panel stack"><div class="panel-head"><h2>Datos del viaje</h2>${ctx.badge(trip.status, TONES[trip.status])}</div>${factsHtml}${trip.nonperformanceReason ? `<p><strong>Motivo de no realización</strong> ${ctx.h(trip.nonperformanceReason)}</p>` : ''}${workflow.join('')}${buttons.length ? `<div class="actions">${buttons.join('')}</div>` : ''}</section>${reviewNotice}
     <section class="panel"><div class="panel-head"><h2>Pasajeros</h2>${batchBtn}</div>${persons ? `<ul class="stack">${persons}</ul>` : '<p class="hint">Sin pasajeros previstos.</p>'}${footerFinish}</section>
     <section class="panel"><h2>Historial del viaje</h2>${notes ? `<h3>Novedades</h3><ol class="history">${notes}</ol>` : ''}${history(ctx, trip.history)}</section></div>`;
@@ -413,7 +454,11 @@ function reviews(ctx) {
   if (!ctx.can('plan')) return unavailable(ctx);
   const trips = ordered(ctx.getState().trips.filter(trip => pendingReviews(trip).length));
   return `${heading(ctx, 'Viajes a revisar', 'Consultá los motivos y registrá el resultado de cada revisión.')}
-    <div class="stack">${trips.map(trip => `<section class="panel stack">${tripCard(ctx, trip)}<p class="hint">${ctx.h(ctx.date(trip.date))}</p><ul class="stack">${pendingReviews(trip).map(review => `<li class="list-row"><span>${ctx.h(review.reason)}</span>${act(ctx, 'Marcar como revisado', 'review-trip', trip.id, 'secondary', `data-review="${ctx.h(review.id)}"`)}</li>`).join('')}</ul></section>`).join('') || ctx.empty('Sin revisiones pendientes', 'Los viajes con avisos operativos aparecen acá.')}</div>`;
+    <div class="stack">${trips.map(trip => {
+      const items = pendingReviews(trip);
+      const dayTitle = sentenceCase(`${weekday.format(timeOf(trip.date))} ${ctx.date(trip.date)}`);
+      return `<section class="schedule-day"><div class="schedule-day-head"><h3>${ctx.h(dayTitle)}</h3><span class="schedule-summary">${items.length} ${items.length === 1 ? 'aviso pendiente' : 'avisos pendientes'}</span></div>${dispatchRow(ctx, trip, true)}<div style="padding:14px 22px;background:#fcfbfa;border-top:1px solid #f1edef"><ul class="stack">${items.map(review => `<li class="list-row"><span>${ctx.h(review.reason)}</span>${act(ctx, 'Marcar como revisado', 'review-trip', trip.id, 'primary small', `data-review="${ctx.h(review.id)}"`)}</li>`).join('')}</ul></div></section>`;
+    }).join('') || ctx.empty('Sin revisiones pendientes', 'Los viajes con avisos operativos aparecen acá.')}</div>`;
 }
 
 function openingReference(ctx, vehicle) {
@@ -476,7 +521,7 @@ function shifts(ctx) {
   const list = [...ctx.getState().shifts].sort((a, b) => b.openedAt.localeCompare(a.openedAt));
   const open = list.filter(shift => !shift.closedAt);
   const closed = list.filter(shift => shift.closedAt);
-  const row = (shift, isOpen) => `<article class="list-row"><div><strong>${ctx.h(vehicleName(ctx, shift.vehicleId))}</strong><p>${ctx.h(driverName(ctx, shift.driverId))} · Apertura ${ctx.h(dateTime(ctx, shift.openedAt))}</p><p>${isOpen ? `Lectura inicial ${ctx.h(km(shift.startKm))}` : `Cierre ${ctx.h(dateTime(ctx, shift.closedAt))} · ${ctx.h(km(shift.endKm - shift.startKm))}`}</p></div><div class="actions">${act(ctx, 'Ver turno', 'shift-detail', shift.id)}${isOpen ? act(ctx, 'Cerrar turno por olvido', 'close-shift', shift.id, 'secondary', 'data-forgotten="true"') : ''}</div></article>`;
+  const row = (shift, isOpen) => `<article class="list-row"><div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><strong>${ctx.h(vehicleName(ctx, shift.vehicleId))}</strong>${ctx.badge(isOpen ? 'Sin cerrar' : 'Cerrado', isOpen ? 'warning' : 'success')}</div><p>${ctx.h(driverName(ctx, shift.driverId))} — Apertura ${ctx.h(dateTime(ctx, shift.openedAt))}</p><p>${isOpen ? `Lectura inicial ${ctx.h(km(shift.startKm))}` : `Cierre ${ctx.h(dateTime(ctx, shift.closedAt))} · ${ctx.h(km(shift.endKm - shift.startKm))}`}</p></div><div class="actions">${act(ctx, 'Ver turno', 'shift-detail', shift.id, 'secondary small')}${isOpen ? act(ctx, 'Cerrar turno por olvido', 'close-shift', shift.id, 'secondary small', 'data-forgotten="true"') : ''}</div></article>`;
   return `${heading(ctx, 'Turnos', 'Consultá el uso de cada vehículo y atendé cierres pendientes.')}
     <div class="stack"><section class="panel stack"><div class="panel-head"><h2>Turnos abiertos</h2>${ctx.badge(`${open.length} ${open.length === 1 ? 'abierto' : 'abiertos'}`, open.length ? 'warning' : 'success')}</div>${open.map(shift => row(shift, true)).join('') || ctx.empty('Sin turnos abiertos', 'Los turnos en uso aparecen acá.')}</section>
     <section class="panel stack"><h2>Turnos cerrados</h2>${closed.map(shift => row(shift, false)).join('') || ctx.empty('Sin turnos cerrados', 'Los turnos que cierren los choferes o el equipo de operación aparecen acá.')}</section></div>`;
@@ -540,7 +585,7 @@ function readings(ctx) {
   const pending = readingReviews.filter(item => item.status === 'Pendiente');
   const resolved = readingReviews.filter(item => item.status === 'Resuelta');
   const card = (review, isPending) => `<article class="panel stack"><div class="panel-head"><div><h3>${ctx.h(vehicleName(ctx, review.vehicleId))}</h3><p>${ctx.h(driverName(ctx, review.driverId))}</p></div>${ctx.badge(review.status, isPending ? 'warning' : 'success')}</div>
-    <div class="metrics">${metric(ctx, 'Último cierre', km(review.lastCloseKm))}${metric(ctx, 'Lectura informada', km(review.reading))}${metric(ctx, 'Diferencia', delta(review.difference))}</div>
+    <div class="metrics">${metric(ctx, 'Último cierre', km(review.lastCloseKm))}${metric(ctx, 'Lectura informada', km(review.reading))}${metric(ctx, 'Diferencia', delta(review.difference), isPending ? (review.kind === 'negative' ? 'metric-danger' : 'metric-warn') : 'metric-good')}</div>
     ${review.reason ? `<p>${ctx.h(review.reason)}</p>` : ''}${isPending && review.kind === 'negative' ? notice('warning', '<p>Apertura bloqueada hasta corregir el registro de cierre.</p>') : ''}
     <div class="actions">${act(ctx, 'Historial de lecturas', 'reading-history', review.vehicleId)}${isPending && review.kind === 'positive' ? act(ctx, 'Confirmar diferencia', 'confirm-reading', review.id) : ''}${isPending && readingTargets(ctx, review).length ? act(ctx, 'Corregir registro', 'correct-reading', review.id, 'primary') : ''}</div></article>`;
   return `${heading(ctx, 'Diferencias de kilometraje', 'Compará el último cierre con la lectura que informó el chofer.')}
